@@ -1,0 +1,11 @@
+Package: cdb
+Title: Aerobatic Contest Database Query Utilities
+Version: 0.1
+Date: 2016-11-25
+Author: Douglas Lovell
+Maintainer: Douglas Lovell <doug@wbreeze.com>
+Description: A collection of classes and functions for retrieving
+    and manipulating data frames from an aerobatic contest database (CDB).
+License: GPL-3 | file LICENSE
+Depends: jsonlite
+

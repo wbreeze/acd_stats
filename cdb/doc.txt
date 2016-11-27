@@ -1,0 +1,12 @@
+
+    The database is organized in a very hierarchal manner:
+    Contests contain categories which contain flight programs.
+    Flight programs contain results for pilots and judges.
+    Flight programs contain the detailed grading record of
+    grades given by each judge to each pilot for each figure.
+    
+    This package is limited to methods for querying the CDB and organizing the
+    results into data frames.  The CDB raw interface is a RESTful one that returns
+    JSON data strings.  This package is a fairly thin layer over the RESTful
+    JSON interface.
+    
