@@ -1,12 +1,11 @@
 Package: aerobatStats
-Type: Package
-Title: Computations with aerobatic contest data
-Version: 1.0
-Date: 2017-03-24
-Author: Douglas Lovell
-Maintainer: Douglas Lovell <doug@wbreeze.com>
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9000
+Authors@R: person("Douglas", "Lovell", email = "doug@wbreeze.com", role = c("aut", "cre"))
 Description:
   First off we'll compute raw data rankings of the pilots in a flight from each judge
+Depends: R (>= 3.3.2), aerobatDB
 License: GPL-3 | file LICENSE
-Depends: aerobatDB
-
+Encoding: UTF-8
+LazyData: true
+Suggests: testthat
