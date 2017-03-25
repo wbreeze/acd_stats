@@ -1,4 +1,4 @@
-library(cdb)
+library(aerobatDB)
 context("flight program")
 
 test_that("constructor retrieves a flight program", {

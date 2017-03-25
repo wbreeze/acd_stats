@@ -27,7 +27,7 @@ See many documents at fai.org, iac.org
 }
 \keyword{ aerobatics }
 \seealso{
-\code{\link[cdb:cdb-package]{cdb}}
+\code{\link[aerobatDB:aerobatDB-package]{aerobatDB}}
 }
 \examples{
 }

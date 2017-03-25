@@ -1,5 +1,5 @@
 library(testthat)
-library(cdb)
+library(aerobatDB)
 
-test_check("cdb")
+test_check("aerobatDB")
 

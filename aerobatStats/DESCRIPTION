@@ -8,5 +8,5 @@ Maintainer: Douglas Lovell <doug@wbreeze.com>
 Description:
   First off we'll compute raw data rankings of the pilots in a flight from each judge
 License: GPL-3 | file LICENSE
-Depends: cdb
+Depends: aerobatDB
 
