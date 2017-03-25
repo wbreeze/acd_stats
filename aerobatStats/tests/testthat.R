@@ -1,5 +1,5 @@
 library(testthat)
-library(aerobatstats)
+library(aerobatStats)
 
-test_check("aerobatstats")
+test_check("aerobatStats")
 
