@@ -11,6 +11,19 @@ CDBFlightProgram <- function(url) {
   cfp$raw <- fromJSON(url)
 
   # Gather all of the judges' grades for all of the pilots in the flight program.
+  # A grade of -30 encodes HZ: Hard Zero
+  # A grade of -20 encodes CA: Conference Average
+  # A grade of -10 encodes  A: Average
+  # A grade of   0 encodes a soft zero
+  # In IAC prior to the year 2014, 0 encodes a hard zero
+  # 'data.frame':  14 obs. of  7 variables:
+  #  $ K    : int  10 14 10 4 5 10 3 10 14 10 4 ... Figure K value
+  #  $ FN   : int  1 2 3 4 5 6 7 1 2 3 4 5 6 7 ... Figure number
+  #  $ PN   : int  2915 2915 2915 2915 2915 2915 ... Pilot identifier
+  #  $ X1695: int  65 70 70 70 80 75 45 90 90 95 ... Judge grades
+  #  $ X744 : int  80 75 90 80 80 75 70 90 90 90 ...
+  #  $ X657 : int  70 75 75 80 75 80 65 85 85 90 ...
+  #  $ X456 : int  80 85 80 80 75 85 80 80 85 90 ...
   cfp$gradesByJudge <- function() {
     judges <- cfp$raw$flight$line_judges
     judgeId <- judges$judge$id
