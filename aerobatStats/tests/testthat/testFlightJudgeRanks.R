@@ -1,5 +1,5 @@
 library(aerobatStats)
-context("flight program")
+context("Flight judge ranks")
 
 test_that("computes raw score from each judge", {
   fp <- CDBFlightProgram("https://iaccdb.iac.org/flights/9014.json")
@@ -7,4 +7,3 @@ test_that("computes raw score from each judge", {
   expect_false(is.null(fjr))
   expect_false(is.null(fjr$rawScoresByJudge()))
 })
-
