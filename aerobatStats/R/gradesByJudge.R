@@ -26,3 +26,14 @@ setGrade.GradesByJudge <- function(gbj, judge, pilot, figure, grade) {
   gbj$grades[[judge]][gbj$column_for(pilot, figure)] <- grade
   return(gbj)
 }
+
+resolveZerosAndAverages <- function(gbj) {
+  UseMethod("resolveZerosAndAverages", gbj)
+}
+resolveZerosAndAverages.GradesByJudge <- function(gbj) {
+  return(gbj)
+}
+
+print.GradesByJudge <- function(gbj) {
+  print(gbj$grades)
+}

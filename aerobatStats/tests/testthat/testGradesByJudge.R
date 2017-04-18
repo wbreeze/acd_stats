@@ -28,14 +28,33 @@ describe("Zeros and averages", {
   setupZerosAndAverages <- function() {
     fp <- CDBFlightProgram("https://iaccdb.iac.org/flights/9014.json")
     gbj <- GradesByJudge(fp$gradesByJudge())
-    #gbj$writeGrade('X1695', 2915, 4, 0)
+    gbj <- setGrade(gbj, 'X1695', 2915, 2, -10)
+    gbj <- setGrade(gbj, 'X744', 2915, 2, -20)
+    gbj <- setGrade(gbj, 'X657', 2915, 2, -10)
+    gbj <- setGrade(gbj, 'X1695', 2915, 3, -30)
+    gbj <- setGrade(gbj, 'X744', 2915, 3, -30)
+    gbj <- setGrade(gbj, 'X657', 2915, 3, 0)
+    gbj <- setGrade(gbj, 'X1695', 2915, 4, -30)
+    gbj <- setGrade(gbj, 'X744', 2915, 4, -30)
+    gbj <- setGrade(gbj, 'X1695', 2915, 5, -30)
+    gbj <- setGrade(gbj, 'X744', 2915, 5, -30)
+    gbj <- setGrade(gbj, 'X657', 2915, 5, -30)
+    gbj <- setGrade(gbj, 'X1695', 2915, 6, -30)
+    gbj <- setGrade(gbj, 'X744', 2915, 6, -30)
+    gbj <- setGrade(gbj, 'X657', 2915, 6, -10)
+    gbj <- setGrade(gbj, 'X1695', 2915, 7, -30)
+    gbj <- setGrade(gbj, 'X744', 2915, 7, -30)
+    gbj <- setGrade(gbj, 'X657', 2915, 7, -20)
+    print("GRADES BY JUDGE BEFORE")
+    print(gbj)
+    gbj <- resolveZerosAndAverages(gbj)
+    print("GRADES BY JUDGE AFTER")
+    print(gbj)
     return(gbj)
   }
 
   it("properly resolves majority zeros", {
-    jgs <- setupZerosAndAverages()
-    #print("GRADES BY JUDGE")
-    #str(jgs)
+    gbj <- setupZerosAndAverages()
   })
 
   it("properly resolves minority zeros", {
