@@ -57,7 +57,7 @@ Pilot X Judge X Figure.  Each pilot receives one grade from each judge for each
 figure.
 
 [Aerobatic Competition Grades
-(illustration)](file:./AerobaticCompetitionGrades.jpg)
+(illustration)](./AerobaticCompetitionGrades.jpg)
 
 To complicate the grading slightly, a zero grade can take multiple forms.
 One form is that incremental flaws resulted in deductions that summed to
