@@ -45,11 +45,7 @@ describe("Zeros and averages", {
     gbj <- setGrade(gbj, 'X1695', 2915, 7, -30)
     gbj <- setGrade(gbj, 'X744', 2915, 7, -30)
     gbj <- setGrade(gbj, 'X657', 2915, 7, -20)
-    print("GRADES BY JUDGE BEFORE")
-    print(gbj)
     gbj <- resolveZerosAndAverages(gbj)
-    print("GRADES BY JUDGE AFTER")
-    print(gbj)
     return(gbj)
   }
 
