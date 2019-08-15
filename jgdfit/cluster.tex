@@ -1,0 +1,51 @@
+\section{Clustering}
+
+In order to apply the Chi-Square metric, we need to cluster grades which
+were given by the judge less than five times together with neighboring
+grades.
+
+Example
+
+The optimal method for doing this is the one that has least impact on
+the mean and variance of the data. The method described by
+Greenacre \ref{Greenacre}
+and implemented by the
+greenclust \ref{greenclust}
+R package provides one; however, it reorders the clusters.
+We need to join only adjacent clusters, to maintain the order.
+
+Another paper
+\ref {partitioning}
+from ten authors at NASA Ames and San Jose State University
+maintains order of partitions, but does not enable the constraint of
+minimum partition size. This and other algorithms for k-shape
+ordered partitioning require a cumulative
+function that measures the quality of each partition.
+Here, we find that the mean and variance do not always decrease or
+increase when joining two clusters.
+
+The constraints at play here are:
+\begin{enumerate}
+\item{A minimum number of five grades in any cluster}
+\item{Only adjacent clusters may be combined}
+\item{Combine the least number}
+\item{Have the weighted mean and variance close to the original}
+\end{enumerate}
+
+Where $n$ is the number of grade values in the range of grades,
+we explore the $2^{n-1}$ combinations of joins using the heuristic
+of choosing to join clusters with result of the smallest number of grades
+in the new cluster and a bound of minimum count of joins. The partition
+is complete when no cluster contains less than five grades. If two solutions
+have the same number of joins, we select the one with minimum of
+$(\mu' - \mu)^2 + (\sigma' - \sigma)^2$, in which
+$\mu' - \mu^2$ is
+the difference in the weighted mean, and
+$\sigma' - \sigma$ is
+the difference in the variation.
+
+We generate a normal model from the clustered data set and report
+the fit. We also report the fit of the clustered data set to
+the distribution, with low counts, and the normal model generated
+from it by FPS.
+We also report the mean and variance of both normal models.
