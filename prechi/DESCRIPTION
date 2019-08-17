@@ -1,0 +1,17 @@
+Package: prechi
+Title: Prepare grade data for Chi-Square goodness of fit measurement
+Version: 0.0.1
+Authors@R: person("Douglas", "Lovell", email = "doug@wbreeze.com", role = c("aut", "cre"))
+Description:
+  The grades given by judges are discrete, however ordinal.
+  When a judge awards a grade to fewer than five pilots, in order to do
+  a Chi-Squared goodness of fit test, the instances of that grade must be
+  merged with an adjacent grade. This process must iterate until there are
+  five instances for each grade group. The code here does that using a full
+  scan of the possible groupings, following a heuristic of smallest first,
+  and bounded by largest possible number of groupings.
+Depends: R (>= 3.3.2)
+License: GPL-3 | file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests: testthat
