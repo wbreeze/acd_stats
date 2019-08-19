@@ -1,6 +1,6 @@
 #ifndef TEST_PARTITION_H
 #define TEST_PARTITION_H
 
-#include "../src/partition.h"
+#include "../src/prechi_partition.h"
 
 #endif

@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libprechi.la
 nobase_include_HEADERS = \
-  partition.h
+  prechi_partition.h
 
 libprechi_la_SOURCES = \
-  partiton.h, partition.c
+  prechi_partiton.h, prechi_partition.c
