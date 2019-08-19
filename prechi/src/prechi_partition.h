@@ -4,7 +4,7 @@
 
 typedef struct PrechiPartition {
   int size;
-  float *boundaries;
+  float *weights;
   int *counts;
   int *spans;
   int removed_count;
