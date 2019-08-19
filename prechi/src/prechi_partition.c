@@ -12,7 +12,14 @@ PrechiPartition *prechi_partition_create(int size) {
 }
 
 PrechiPartition *prechi_partition_copy(PrechiPartition *part) {
-  return NULL;
+  PrechiPartition *copy = prechi_partition_create(part->size);
+  for(int i = 0; i < part->size; ++i) {
+    copy->boundaries[i] = part->boundaries[i];
+    copy->counts[i] = part->counts[i];
+    copy->spans[i] = part->spans[i];
+  }
+  copy->removed_count = part->removed_count;
+  return copy;
 }
 
 PrechiPartition *prechi_partition_destroy(PrechiPartition *part) {
