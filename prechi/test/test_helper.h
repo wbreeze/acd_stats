@@ -1,7 +1,12 @@
 #ifndef TEST_HELPER_H
 #define TEST_HELPER_H
 
+#include <math.h>
 #include <string.h>
+
+#define assert_equal_float(expected, have, places) \
+  cut_assert_equal_int((int)(expected * pow(10, places)), \
+    (int)(have * pow(10, places)))
 
 #define set_array(array, value, count) \
   for(int i = 0; i < count; ++i) array[i] = value;
