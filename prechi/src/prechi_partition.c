@@ -51,7 +51,7 @@ void do_join(PrechiPartition *part, int offset) {
 }
 
 void prechi_partition_join(PrechiPartition *part, int offset) {
-  if (0 <= offset && offset < part->size) do_join(part, offset);
+  if (0 <= offset && offset < part->size - 1) do_join(part, offset);
 }
 
 int prechi_partition_sorted_offset(PrechiPartition *part, int offset) {

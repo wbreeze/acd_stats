@@ -73,7 +73,7 @@ void test_partition_join_bounds(void) {
   PrechiPartition *part = prechi_partition_create(n);
   prechi_partition_join(part, -1);
   cut_assert_equal_int(n, part->size);
-  prechi_partition_join(part, n);
+  prechi_partition_join(part, n-1);
   cut_assert_equal_int(n, part->size);
 }
 
