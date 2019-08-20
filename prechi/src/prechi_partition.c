@@ -2,34 +2,40 @@
 #include "prechi_partition.h"
 
 /*
- Sort the partition offsets into sorted_offsets by minimum count of
- adjacent buckets.
+ Return "value" given the partition at a given offset.
+ The value is used to sort the partitions by in order of interest.
+ We favor removing ones in which the bins on either side have smaller counts.
 */
-void prechi_partition_initial_sort(PrechiPartition *part) {
-  int *min_counts = (int *)calloc(part->size, sizeof(int));
+int prechi_partition_value(PrechiPartition *part, int offset) {
+  int value;
+  if (part->counts[offset] < part->counts[offset + 1]) {
+    value = part->counts[offset];
+  } else {
+    value = part->counts[offset + 1];
+  }
+  return value;
+}
 
-  // precompute minimum counts
+/*
+ Sort the partition offsets into sorted_offsets by increasing value.
+ We use insertion sort to arrange the offsets based on the values.
+*/
+static void sort_partitions(PrechiPartition *part) {
+  int *values = (int *)calloc(part->size, sizeof(int));
   for(int ofs = 0; ofs < part->size - 1; ++ofs) {
-    if (part->counts[ofs] < part->counts[ofs+1]) {
-      min_counts[ofs] = part->counts[ofs];
-    } else {
-      min_counts[ofs] = part->counts[ofs+1];
-    }
+    values[ofs] = prechi_partition_value(part, ofs);
   }
 
-  // execute insertion sort
   int *sofs = part->sorted_offsets;
   for(int i = 0; i < part->size - 1; ++i) {
-    int ct = min_counts[i];
-    int j = i;
-    while (0 < j && ct < min_counts[j-1]) {
+    int j;
+    for(j = i; 0 < j && values[i] < values[sofs[j-1]]; --j) {
       sofs[j] = sofs[j-1];
-      --j;
     }
     sofs[j] = i;
   }
 
-  free(min_counts);
+  free(values);
 }
 
 /*
@@ -49,7 +55,7 @@ PrechiPartition *prechi_partition_create(
     part->counts[i] = counts[i];
     part->spans[i] = 1;
   }
-  prechi_partition_initial_sort(part);
+  sort_partitions(part);
   return part;
 }
 
@@ -78,14 +84,14 @@ PrechiPartition *prechi_partition_copy(PrechiPartition *part) {
   return copy;
 }
 
-float compute_balanced_mean(PrechiPartition *part, int offset) {
+static float compute_balanced_mean(PrechiPartition *part, int offset) {
   float left = part->spans[offset] * part->weights[offset];
   float right = part->spans[offset + 1] * part->weights[offset + 1];
   int new_span = part->spans[offset] + part->spans[offset + 1];
   return ((left + right) / new_span);
 }
 
-void do_join(PrechiPartition *part, int offset) {
+static void do_join(PrechiPartition *part, int offset) {
   part->counts[offset] += part->counts[offset + 1];
   part->weights[offset] = compute_balanced_mean(part, offset);
   part->spans[offset] += part->spans[offset + 1];
@@ -95,6 +101,7 @@ void do_join(PrechiPartition *part, int offset) {
     part->spans[i] = part->spans[i + 1];
     part->weights[i] = part->weights[i + 1];
   }
+  sort_partitions(part);
 }
 
 /*
@@ -108,8 +115,7 @@ partitions on either side of the offset are one. In the combined
 partition:
 - the count is the sum of counts
 - the weight is the average by spans and weights
-- the span is the sum of the spans
-of the joined partitions.
+- the span is the sum of the spans of the joined partitions.
 The sorted_offsets are updated to keep partitions in order of increasing count.
 
 offset is in range 0 <= offset < part->size - 1

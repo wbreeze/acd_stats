@@ -16,5 +16,6 @@ PrechiPartition *prechi_partition_copy(PrechiPartition *part);
 
 void prechi_partition_join(PrechiPartition *part, int offset);
 int prechi_partition_sorted_offset(PrechiPartition *part, int offset);
+int prechi_partition_value(PrechiPartition *part, int offset);
 
 #endif
