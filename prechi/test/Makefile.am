@@ -10,4 +10,7 @@ test_prechi_la_LIBADD = $(CUTTER_LIBS) $(top_builddir)/src/libprechi.la
 AM_LDFLAGS = -module -rpath $(libdir) -avoid-version -no-undefined
 
 test_prechi_la_SOURCES = \
-  test_partition.h, test_partition.c
+  test_partition.h \
+  test_partition.c \
+  test_partition_create.c \
+  test_partition_join.c
