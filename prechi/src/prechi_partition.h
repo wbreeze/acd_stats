@@ -10,7 +10,7 @@ typedef struct PrechiPartition {
   int *sorted_offsets;
 } PrechiPartition;
 
-PrechiPartition *prechi_partition_create(int size);
+PrechiPartition *prechi_partition_create(int size, float *weights, int *counts);
 PrechiPartition *prechi_partition_destroy(PrechiPartition *part);
 PrechiPartition *prechi_partition_copy(PrechiPartition *part);
 

@@ -1,13 +1,19 @@
 #include <stdlib.h>
 #include "prechi_partition.h"
 
-PrechiPartition *prechi_partition_create(int size) {
+PrechiPartition *prechi_partition_create(
+    int size, float *weights, int *counts) {
   PrechiPartition *part = (PrechiPartition *)malloc(sizeof(PrechiPartition));
   part->size = size;
   part->weights = (float *)calloc(size, sizeof(float));
   part->counts = (int *)calloc(size, sizeof(int));
   part->spans = (int *)calloc(size, sizeof(int));
   part->sorted_offsets = (int *)calloc(size, sizeof(int));
+  for(int i = 0; i < part->size; ++i) {
+    part->weights[i] = weights[i];
+    part->counts[i] = counts[i];
+    part->spans[i] = 1;
+  }
   return part;
 }
 
@@ -21,10 +27,9 @@ PrechiPartition *prechi_partition_destroy(PrechiPartition *part) {
 }
 
 PrechiPartition *prechi_partition_copy(PrechiPartition *part) {
-  PrechiPartition *copy = prechi_partition_create(part->size);
+  PrechiPartition *copy = prechi_partition_create(part->size,
+    part->weights, part->counts);
   for(int i = 0; i < part->size; ++i) {
-    copy->weights[i] = part->weights[i];
-    copy->counts[i] = part->counts[i];
     copy->spans[i] = part->spans[i];
     copy->sorted_offsets[i] = part->sorted_offsets[i];
   }
