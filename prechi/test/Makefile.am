@@ -13,4 +13,5 @@ test_prechi_la_SOURCES = \
   test_partition.h \
   test_partition.c \
   test_partition_create.c \
-  test_partition_join.c
+  test_partition_join.c \
+  test_partition_sort.c
