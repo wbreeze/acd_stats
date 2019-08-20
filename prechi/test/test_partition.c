@@ -13,13 +13,14 @@ void test_partition_create(void) {
   set_array(part->weights, fv, n);
   set_array(part->counts, iv, n);
   set_array(part->spans, iv, n);
+  set_array(part->sorted_offsets, iv, n);
 
   assert_equal_array(fv, part->weights, n);
   assert_equal_array(iv, part->counts, n);
   assert_equal_array(iv, part->spans, n);
+  assert_equal_array(iv, part->sorted_offsets, n);
 
   cut_assert_equal_int(n, part->size);
-  cut_assert_equal_int(0, part->removed_count);
 
   part = prechi_partition_destroy(part);
   cut_assert_equal_pointer(NULL, part);
@@ -29,7 +30,6 @@ void test_partition_copy(void) {
   int n = 11;
   float fv = 0.625f;
   int iv = 1;
-  int rc = 2;
 
   PrechiPartition *part = prechi_partition_create(n);
   cut_assert_not_null(part);
@@ -37,7 +37,7 @@ void test_partition_copy(void) {
   set_array(part->weights, fv, n);
   set_array(part->counts, iv, n);
   set_array(part->spans, iv, n);
-  part->removed_count = rc;
+  set_array(part->sorted_offsets, iv, n);
 
   PrechiPartition *copy = prechi_partition_copy(part);
   cut_assert_equal_pointer(NULL, prechi_partition_destroy(part));
@@ -45,9 +45,9 @@ void test_partition_copy(void) {
   assert_equal_array(fv, copy->weights, n);
   assert_equal_array(iv, copy->counts, n);
   assert_equal_array(iv, copy->spans, n);
+  assert_equal_array(iv, part->sorted_offsets, n);
 
   cut_assert_equal_int(n, copy->size);
-  cut_assert_equal_int(rc, copy->removed_count);
 
   cut_assert_equal_pointer(NULL, prechi_partition_destroy(copy));
 }

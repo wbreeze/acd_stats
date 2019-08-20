@@ -7,11 +7,12 @@ PrechiPartition *prechi_partition_create(int size) {
   part->weights = (float *)calloc(size, sizeof(float));
   part->counts = (int *)calloc(size, sizeof(int));
   part->spans = (int *)calloc(size, sizeof(int));
-  part->removed_count = 0;
+  part->sorted_offsets = (int *)calloc(size, sizeof(int));
   return part;
 }
 
 PrechiPartition *prechi_partition_destroy(PrechiPartition *part) {
+  free(part->sorted_offsets);
   free(part->spans);
   free(part->counts);
   free(part->weights);
@@ -25,8 +26,8 @@ PrechiPartition *prechi_partition_copy(PrechiPartition *part) {
     copy->weights[i] = part->weights[i];
     copy->counts[i] = part->counts[i];
     copy->spans[i] = part->spans[i];
+    copy->sorted_offsets[i] = part->sorted_offsets[i];
   }
-  copy->removed_count = part->removed_count;
   return copy;
 }
 
@@ -51,4 +52,8 @@ void do_join(PrechiPartition *part, int offset) {
 
 void prechi_partition_join(PrechiPartition *part, int offset) {
   if (0 <= offset && offset < part->size) do_join(part, offset);
+}
+
+int prechi_partition_sorted_offset(PrechiPartition *part, int offset) {
+  return part->sorted_offsets[offset];
 }
