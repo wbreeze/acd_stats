@@ -17,6 +17,15 @@ int prechi_partition_value(PrechiPartition *part, int offset) {
 }
 
 /*
+ Return the smallest count of a partition.
+*/
+int prechi_partition_minimum_count(PrechiPartition *part) {
+  // values are the smaller count of neighbors at a boundary
+  // sorted_offset has boundary indexes in increasing order of value
+  return prechi_partition_value(part, prechi_partition_sorted_offset(part, 0));
+}
+
+/*
  Sort the partition offsets into sorted_offsets by increasing value.
  We use insertion sort to arrange the offsets based on the values.
 */
@@ -39,8 +48,9 @@ static void sort_partitions(PrechiPartition *part) {
 }
 
 /*
- Allocate and initialize a partition given
- weights and counts in the partitions.
+ Allocate and initialize a partition given weights and counts
+ in the partitions.
+ The function makes copies of the passed arrays.
 */
 PrechiPartition *prechi_partition_create(
     int size, float *weights, int *counts) {
@@ -138,4 +148,26 @@ int prechi_partition_sorted_offset(PrechiPartition *part, int offset) {
     sofs = part->sorted_offsets[offset];
   }
   return sofs;
+}
+
+/*
+ Return number of boundaries in the partition. It is the count of
+ groups minus one.
+*/
+int prechi_partition_boundary_count(PrechiPartition *part) {
+  return part->size - 1;
+}
+
+/*
+ Return array of partition counts
+*/
+const int *prechi_partition_counts(PrechiPartition *part) {
+  return part->counts;
+}
+
+/*
+ Return array of partition spans
+*/
+const int *prechi_partition_spans(PrechiPartition *part) {
+  return part->spans;
 }

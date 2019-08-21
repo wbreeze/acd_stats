@@ -26,9 +26,14 @@ void test_prechi_create(void) {
   cut_assert_not_null(prechi);
 
   cut_assert_equal_int(n, prechi->count);
-  cut_assert_equal_memory(td->weights, n, prechi->weights, n);
-  cut_assert_equal_memory(td->counts, n, prechi->counts, n);
+  int size = n * sizeof(int);
+  cut_assert_equal_memory(td->weights, size, prechi->weights, size);
+  cut_assert_equal_memory(td->counts, size, prechi->counts, size);
+  cut_assert_equal_int(0, prechi->solution_part_count);
+  assert_equal_array(0, prechi->solution_boundaries, n);
+  assert_equal_array(0, prechi->solution_spans, n);
+  assert_equal_array(0, prechi->solution_counts, n);
 
-  destroy_prechi_data(td);
   prechi_destroy(prechi);
+  destroy_prechi_data(td);
 }
