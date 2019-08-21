@@ -187,3 +187,20 @@ float prechi_partition_mean(PrechiPartition *part) {
 
   return(total_weight / total_count);
 }
+
+/*
+ Compute variance given mean
+*/
+float prechi_partition_variance(PrechiPartition *part, float mean) {
+  float total_variance = 0;
+  int total_count = 0;
+
+  for (int i = 0; i < part->size; ++i) {
+    float diff = (part->weights[i] - mean);
+    total_variance += part->counts[i] * diff * diff;
+    total_count += part->counts[i];
+  }
+  if (total_count < 1) total_count = 1;
+
+  return(total_variance / total_count);
+}

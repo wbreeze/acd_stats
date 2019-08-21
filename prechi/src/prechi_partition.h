@@ -23,5 +23,6 @@ int prechi_partition_minimum_count(PrechiPartition *part);
 const int *prechi_partition_counts(PrechiPartition *part);
 const int *prechi_partition_spans(PrechiPartition *part);
 float prechi_partition_mean(PrechiPartition *part);
+float prechi_partition_variance(PrechiPartition *part, float mean);
 
 #endif
