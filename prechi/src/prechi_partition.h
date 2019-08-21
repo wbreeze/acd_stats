@@ -22,5 +22,6 @@ int prechi_partition_boundary_count(PrechiPartition *part);
 int prechi_partition_minimum_count(PrechiPartition *part);
 const int *prechi_partition_counts(PrechiPartition *part);
 const int *prechi_partition_spans(PrechiPartition *part);
+float prechi_partition_mean(PrechiPartition *part);
 
 #endif

@@ -171,3 +171,19 @@ const int *prechi_partition_counts(PrechiPartition *part) {
 const int *prechi_partition_spans(PrechiPartition *part) {
   return part->spans;
 }
+
+/*
+ Compute weighted mean
+*/
+float prechi_partition_mean(PrechiPartition *part) {
+  float total_weight = 0;
+  int total_count = 0;
+
+  for (int i = 0; i < part->size; ++i) {
+    total_weight += part->counts[i] * part->weights[i];
+    total_count += part->counts[i];
+  }
+  if (total_count < 1) total_count = 1;
+
+  return(total_weight / total_count);
+}
