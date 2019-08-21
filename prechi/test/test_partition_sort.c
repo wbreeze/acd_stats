@@ -86,3 +86,18 @@ void test_partition_sort_join_4(void) {
   assert_sort_all_joins(td, n);
   destroy_test_data(td);
 }
+
+void test_partition_minimum_count(void) {
+  int n = 9;
+  int min = 4;
+  TestData *td = create_test_data(n);
+  int_array_init(td->counts, n,
+    min+4, min+3, min+2, min+1, min+4, min+5, min, min+7, min+5);
+
+  PrechiPartition *part = prechi_partition_create(n, td->weights, td->counts);
+  destroy_test_data(td);
+
+  cut_assert_equal_int(min, prechi_partition_minimum_count(part));
+
+  prechi_partition_destroy(part);
+}

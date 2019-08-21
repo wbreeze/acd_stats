@@ -48,7 +48,7 @@ static void record_solution(Prechi *prechi, PrechiPartition *solution,
 // Updates the solution if the one provided is "better"
 static void record_if_improved(Prechi *prechi, PrechiPartition *solution)
 {
-  int part_count = prechi_partition_boundary_count(solution) + 1;
+  int part_count = solution->size;
   float mean = prechi_partition_mean(solution);
   float variance = prechi_partition_variance(solution, mean);
   if (prechi->solution_part_count < part_count) {
@@ -83,7 +83,7 @@ static void advance_solution(Prechi *prechi, PrechiPartition *trial,
   if (min_count <= prechi_partition_minimum_count(trial)) {
     record_if_improved(prechi, trial);
   } else if (!bounded(prechi, reductions)) {
-    for (int i = 0; i < prechi_partition_boundary_count(trial); ++i) {
+    for (int i = 0; i < trial->size - 1; ++i) {
       PrechiPartition *next_trial = prechi_partition_copy(trial);
       prechi_partition_join(next_trial,
         prechi_partition_sorted_offset(next_trial, i));

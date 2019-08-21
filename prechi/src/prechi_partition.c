@@ -151,28 +151,6 @@ int prechi_partition_sorted_offset(PrechiPartition *part, int offset) {
 }
 
 /*
- Return number of boundaries in the partition. It is the count of
- groups minus one.
-*/
-int prechi_partition_boundary_count(PrechiPartition *part) {
-  return part->size - 1;
-}
-
-/*
- Return array of partition counts
-*/
-const int *prechi_partition_counts(PrechiPartition *part) {
-  return part->counts;
-}
-
-/*
- Return array of partition spans
-*/
-const int *prechi_partition_spans(PrechiPartition *part) {
-  return part->spans;
-}
-
-/*
  Compute weighted mean
 */
 float prechi_partition_mean(PrechiPartition *part) {
