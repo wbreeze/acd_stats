@@ -1,5 +1,4 @@
 #include <math.h>
-#include <stdio.h> //DEBUG
 #include <stdlib.h>
 #include <string.h>
 #include "prechi.h"
@@ -9,15 +8,16 @@ Prechi *prechi_create(int *weights, int *counts, int count) {
   Prechi *prechi = (Prechi*)malloc(sizeof(Prechi));
 
   prechi->count = count;
-  int size = count * sizeof(int);
   prechi->weights = (int *)calloc(count, sizeof(int));
-  memcpy(prechi->weights, weights, size);
   prechi->counts = (int *)calloc(count, sizeof(int));
-  memcpy(prechi->counts, counts, size);
   prechi->solution_part_count = 0;
   prechi->solution_counts = (int *)calloc(count, sizeof(int));
   prechi->solution_spans = (int *)calloc(count, sizeof(int));
   prechi->solution_boundaries = (float*)calloc(count, sizeof(float));
+  for (int i = 0; i < count; ++i) {
+    prechi->counts[i] = counts[i];
+    prechi->weights[i] = weights[i];
+  }
 
   return prechi;
 }
@@ -39,10 +39,10 @@ static void record_solution(Prechi *prechi, PrechiPartition *solution,
   prechi->solution_part_count = part_count;
   prechi->solution_mean = mean;
   prechi->solution_variance = variance;
-  memcpy(prechi->solution_counts,
-    prechi_partition_counts(solution), part_count);
-  memcpy(prechi->solution_spans,
-    prechi_partition_spans(solution), part_count);
+  for (int i = 0; i < part_count; ++i) {
+    prechi->solution_counts[i] = solution->counts[i];
+    prechi->solution_spans[i] = solution->spans[i];
+  }
 }
 
 // Updates the solution if the one provided is "better"
@@ -66,7 +66,11 @@ static void record_if_improved(Prechi *prechi, PrechiPartition *solution)
   }
 }
 
-// Returns 1 (true) to bound search, 0 (false) to continue
+/*
+ Returns 1 (true) to bound search, 0 (false) to continue
+ Any solution with less than three parts is not useful.
+ Any solution with fewer parts than one already found is not useful.
+*/
 static int bounded(Prechi *prechi, int reductions) {
   int part_count = prechi->count - reductions;
   return part_count <= 3 || part_count <= prechi->solution_part_count;
@@ -89,6 +93,16 @@ static void advance_solution(Prechi *prechi, PrechiPartition *trial,
   }
 }
 
+static void compute_solution_intervals(Prechi *prechi) {
+  int bin = 0;
+  for(int i = 0; i < prechi->solution_part_count - 1; ++i) {
+    bin += prechi->solution_spans[i];
+    prechi->solution_boundaries[i] =
+      prechi->weights[bin-1] +
+      (prechi->weights[bin] - prechi->weights[bin-1]) / 2.0f;
+  }
+}
+
 void prechi_solve(Prechi *prechi, int min_count) {
   float *weights = (float *)calloc(prechi->count, sizeof(float));
   for(int i = 0; i < prechi->count; ++i) {
@@ -104,6 +118,7 @@ void prechi_solve(Prechi *prechi, int min_count) {
   advance_solution(prechi, trial, min_count, 0);
 
   prechi_partition_destroy(trial);
+  compute_solution_intervals(prechi);
 }
 
 int prechi_partition_count(Prechi *prechi) {
