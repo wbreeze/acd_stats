@@ -103,6 +103,16 @@ static void compute_solution_intervals(Prechi *prechi) {
   }
 }
 
+/*
+ Solve the partitions problem.
+ After this, the following apply:
+ - solution_part_count has the number of parts in the partition
+ - solution_counts has the counts for each part in the partition
+ - solution_boundaries has the weights at the divisions between parts
+ - solution_mean has the weighted mean of the partitioned data
+ - solution_variance has the weighted variance of the partitioned data
+ - solution_spans has the number of classes combined for each part
+*/
 void prechi_solve(Prechi *prechi, int min_count) {
   float *weights = (float *)calloc(prechi->count, sizeof(float));
   for(int i = 0; i < prechi->count; ++i) {
@@ -119,8 +129,4 @@ void prechi_solve(Prechi *prechi, int min_count) {
 
   prechi_partition_destroy(trial);
   compute_solution_intervals(prechi);
-}
-
-int prechi_partition_count(Prechi *prechi) {
-  return prechi->solution_part_count;
 }

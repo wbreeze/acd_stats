@@ -11,7 +11,7 @@ void test_prechi_solve_1(void) {
 
   int expected_parts = 3;
   prechi_solve(prechi, 5);
-  cut_assert_equal_int(expected_parts, prechi_partition_count(prechi));
+  cut_assert_equal_int(expected_parts, prechi->solution_part_count);
 
   //re-use counts for span check
   int_array_init(td->counts, expected_parts, 2, 1, 2);
@@ -34,7 +34,7 @@ void test_prechi_solve_2(void) {
 
   int expected_parts = 3;
   prechi_solve(prechi, 5);
-  cut_assert_equal_int(expected_parts, prechi_partition_count(prechi));
+  cut_assert_equal_int(expected_parts, prechi->solution_part_count);
 
   //re-use counts for span check
   int_array_init(td->counts, expected_parts, 4, 1, 2);
@@ -57,7 +57,7 @@ void test_prechi_solve_3(void) {
 
   int expected_parts = 5;
   prechi_solve(prechi, 5);
-  cut_assert_equal_int(expected_parts, prechi_partition_count(prechi));
+  cut_assert_equal_int(expected_parts, prechi->solution_part_count);
 
   //re-use counts for span check
   int_array_init(td->counts, expected_parts, 1, 1, 5, 1, 1);
@@ -82,7 +82,7 @@ void test_prechi_solve_no_solution(void) {
   destroy_prechi_data(td);
 
   prechi_solve(prechi, 5);
-  cut_assert_equal_int(0, prechi_partition_count(prechi));
+  cut_assert_equal_int(0, prechi->solution_part_count);
 
   prechi_destroy(prechi);
 }
