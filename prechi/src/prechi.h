@@ -7,7 +7,11 @@ typedef struct Prechi {
   int count;
   int *weights;
   int *counts;
+  float target_mean;
+  float target_variance;
   int solution_part_count;
+  float solution_mean;
+  float solution_variance;
   int *solution_counts;
   int *solution_spans;
   float *solution_boundaries;

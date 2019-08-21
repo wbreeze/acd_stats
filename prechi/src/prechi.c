@@ -1,3 +1,5 @@
+#include <math.h>
+#include <stdio.h> //DEBUG
 #include <stdlib.h>
 #include <string.h>
 #include "prechi.h"
@@ -30,18 +32,41 @@ Prechi *prechi_destroy(Prechi *prechi) {
   return NULL;
 }
 
-// Updates the solution if the one provided is "better"
-static void record_solution(Prechi *prechi, PrechiPartition *solution)
+// Updates the solution
+static void record_solution(Prechi *prechi, PrechiPartition *solution,
+  int part_count, float mean, float variance)
 {
-  int part_count = prechi_partition_boundary_count(solution) + 1;
   prechi->solution_part_count = part_count;
+  prechi->solution_mean = mean;
+  prechi->solution_variance = variance;
   memcpy(prechi->solution_counts,
     prechi_partition_counts(solution), part_count);
   memcpy(prechi->solution_spans,
     prechi_partition_spans(solution), part_count);
 }
 
-// Returns 1 Ctrue) to bound search, 0 (false) to continue
+// Updates the solution if the one provided is "better"
+static void record_if_improved(Prechi *prechi, PrechiPartition *solution)
+{
+  int part_count = prechi_partition_boundary_count(solution) + 1;
+  float mean = prechi_partition_mean(solution);
+  float variance = prechi_partition_variance(solution, mean);
+  if (prechi->solution_part_count < part_count) {
+    record_solution(prechi, solution, part_count, mean, variance);
+  } else {
+    float mean_delta = fabsf(mean - prechi->target_mean);
+    float variance_delta = fabsf(variance - prechi->target_variance);
+    float best_mean_delta =
+      fabsf(prechi->target_mean - prechi->solution_mean);
+    float best_variance_delta =
+      fabsf(prechi->target_variance - prechi->solution_variance);
+    if (mean_delta + variance_delta < best_mean_delta + best_variance_delta) {
+      record_solution(prechi, solution, part_count, mean, variance);
+    }
+  }
+}
+
+// Returns 1 (true) to bound search, 0 (false) to continue
 static int bounded(Prechi *prechi, int reductions) {
   int part_count = prechi->count - reductions;
   return part_count <= 3 || part_count <= prechi->solution_part_count;
@@ -52,7 +77,7 @@ static void advance_solution(Prechi *prechi, PrechiPartition *trial,
   int min_count, int reductions)
 {
   if (min_count <= prechi_partition_minimum_count(trial)) {
-    record_solution(prechi, trial);
+    record_if_improved(prechi, trial);
   } else if (!bounded(prechi, reductions)) {
     for (int i = 0; i < prechi_partition_boundary_count(trial); ++i) {
       PrechiPartition *next_trial = prechi_partition_copy(trial);
@@ -72,6 +97,9 @@ void prechi_solve(Prechi *prechi, int min_count) {
   PrechiPartition *trial = prechi_partition_create(prechi->count,
     weights, prechi->counts);
   free(weights);
+  prechi->target_mean = prechi_partition_mean(trial);
+  prechi->target_variance =
+    prechi_partition_variance(trial, prechi->target_mean);
 
   advance_solution(prechi, trial, min_count, 0);
 
