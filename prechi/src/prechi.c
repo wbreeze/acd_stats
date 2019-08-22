@@ -4,11 +4,28 @@
 #include "prechi.h"
 #include "prechi_partition.h"
 
-Prechi *prechi_create(const int *weights, const int *counts, int count) {
+/*
+ Create the data structure for solving the cluster neighbors problem.
+ weights: of the "categories" They are grade values. The values should
+   be increasing, each greater than the prior, as in sorted.
+ counts: of occurrences of each category.
+ count: how many grade values are represented with counts
+
+ When taking weighted average, the weights are the values and the counts
+ are the weights.
+
+ R keeps double precision. So we accept double for the weights. Then
+ we downcast that to float, because that's good enough. Good enough because
+ in this application the weights are integral anyway. We need to represent
+ 1/2, 1/3, 1/4, 1/5, ... 1/n for small number of n as weights of joined
+ parts. This decision is sparing in use of memory where the amount of
+ memory isn't all that much to begin with. It could be revisited.
+*/
+Prechi *prechi_create(const double *weights, const int *counts, int count) {
   Prechi *prechi = (Prechi*)malloc(sizeof(Prechi));
 
   prechi->count = count;
-  prechi->weights = (int *)calloc(count, sizeof(int));
+  prechi->weights = (float *)calloc(count, sizeof(float));
   prechi->counts = (int *)calloc(count, sizeof(int));
   prechi->solution_part_count = 0;
   prechi->solution_counts = (int *)calloc(count, sizeof(int));
@@ -16,7 +33,7 @@ Prechi *prechi_create(const int *weights, const int *counts, int count) {
   prechi->solution_boundaries = (float*)calloc(count, sizeof(float));
   for (int i = 0; i < count; ++i) {
     prechi->counts[i] = counts[i];
-    prechi->weights[i] = weights[i];
+    prechi->weights[i] = (float)weights[i];
   }
 
   return prechi;

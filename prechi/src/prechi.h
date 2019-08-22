@@ -5,7 +5,7 @@
 
 typedef struct Prechi {
   int count;
-  int *weights;
+  float *weights;
   int *counts;
   float target_mean;
   float target_variance;
@@ -17,7 +17,7 @@ typedef struct Prechi {
   float *solution_boundaries;
 } Prechi;
 
-Prechi *prechi_create(const int *weights, const int *counts, int count);
+Prechi *prechi_create(const double *weights, const int *counts, int count);
 Prechi *prechi_destroy(Prechi *prechi);
 
 void prechi_solve(Prechi *prechi, int min_count);

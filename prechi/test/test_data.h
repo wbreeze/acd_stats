@@ -1,11 +1,10 @@
 #ifndef TEST_DATA_H
 #define TEST_DATA_H
 
-#include "../src/prechi_partition.h"
-
 typedef struct {
   float *weights;
   int *counts;
+  double *dweights;
 } TestData;
 
 TestData *create_test_data(int count);

@@ -2,6 +2,7 @@
 #include "array_init.h"
 #include "test_helper.h"
 #include "test_data.h"
+#include "../src/prechi_partition.h"
 
 void test_partition_join(void) {
   int n = 4;

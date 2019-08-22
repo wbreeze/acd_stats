@@ -2,6 +2,7 @@
 #include "array_init.h"
 #include "test_helper.h"
 #include "test_data.h"
+#include "../src/prechi_partition.h"
 
 void test_partition_mean_1(void) {
   int n = 3;
