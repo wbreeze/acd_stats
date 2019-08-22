@@ -5,4 +5,5 @@ nobase_include_HEADERS = \
 
 libprechi_la_SOURCES = \
   prechi_partiton.h, prechi_partition.c \
-  prechi.h prechi.c
+  prechi.h prechi.c \
+  r-prechi.c
