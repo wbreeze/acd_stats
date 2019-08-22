@@ -1,7 +1,10 @@
 Package: prechi
 Title: Prepare grade data for Chi-Square goodness of fit measurement
 Version: 0.0.1
-Authors@R: person("Douglas", "Lovell", email = "doug@wbreeze.com", role = c("aut", "cre"))
+Authors@R: c(person("Douglas", "Lovell",
+  email = "doug@wbreeze.com", role = c("aut", "cre", "cph")))
+Author: Douglas Lovell [aut, cre, cph]
+Maintainer: Douglas Lovell
 Description:
   The grades given by judges are discrete, however ordinal.
   When a judge awards a grade to fewer than five pilots, in order to do
@@ -13,5 +16,6 @@ Description:
 Depends: R (>= 3.3.2)
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
+NeedsCompilation: yes
 LazyData: true
 Suggests: testthat
