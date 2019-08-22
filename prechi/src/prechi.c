@@ -4,7 +4,7 @@
 #include "prechi.h"
 #include "prechi_partition.h"
 
-Prechi *prechi_create(int *weights, int *counts, int count) {
+Prechi *prechi_create(const int *weights, const int *counts, int count) {
   Prechi *prechi = (Prechi*)malloc(sizeof(Prechi));
 
   prechi->count = count;
