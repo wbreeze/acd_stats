@@ -1,5 +1,5 @@
-#ifndef TEST_PARTITION_H
-#define TEST_PARTITION_H
+#ifndef TEST_DATA_H
+#define TEST_DATA_H
 
 #include "../src/prechi_partition.h"
 

@@ -1,6 +1,6 @@
 #include <cutter.h>
 #include "test_helper.h"
-#include "test_partition.h"
+#include "test_data.h"
 
 void test_partition_create(void) {
   int n = 17;

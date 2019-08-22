@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "test_partition.h"
+#include "test_data.h"
 
 TestData *create_test_data(int count) {
   TestData *td = malloc(sizeof(TestData));

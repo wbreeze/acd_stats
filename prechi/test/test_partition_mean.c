@@ -1,7 +1,7 @@
 #include <cutter.h>
 #include "array_init.h"
 #include "test_helper.h"
-#include "test_partition.h"
+#include "test_data.h"
 
 void test_partition_mean_1(void) {
   int n = 3;
