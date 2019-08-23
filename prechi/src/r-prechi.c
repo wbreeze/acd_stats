@@ -1,5 +1,6 @@
 #include <R.h>
 #include <Rinternals.h>
+#include <math.h>
 #include "prechi.h"
 
 /*
@@ -49,10 +50,42 @@ SEXP pre_chi_cluster_neighbors(
   Rprintf("Solution Mean: %5.2f, Variance: %6.2f\n",
     prechi->solution_mean, prechi->solution_variance);
 
-  prechi_destroy(prechi);
+  int prct = 0;
 
-  // dummy return to see if this compiles
-  return allocVector(REALSXP, 1);
+  // Set-up the returned list
+  SEXP rv = PROTECT(allocVector(VECSXP, 3)); ++prct;
+  SEXP names = PROTECT(allocVector(STRSXP, 3)); ++prct;
+  SET_STRING_ELT(names, 0, mkChar("count"));
+  SET_STRING_ELT(names, 1, mkChar("boundaries"));
+  SET_STRING_ELT(names, 2, mkChar("counts"));
+  setAttrib(rv, R_NamesSymbol, names);
+
+  // Set count on returned list
+  SEXP count = PROTECT(allocVector(INTSXP, 1)); ++prct;
+  INTEGER(count)[0] = rct;
+  SET_VECTOR_ELT(rv, 0, count);
+
+  // Set boundaries on returned list
+  SEXP boundaries = PROTECT(allocVector(REALSXP, rct + 1)); ++prct;
+  double *pb = REAL(boundaries);
+  pb[0] = -INFINITY;
+  for(int i = 0; i < rct - 1; ++i) {
+    pb[i+1] = (double)prechi->solution_boundaries[i];
+  }
+  pb[rct] = INFINITY;
+  SET_VECTOR_ELT(rv, 1, boundaries);
+
+  // Set counts on returned list
+  SEXP solution_counts = PROTECT(allocVector(INTSXP, rct)); ++prct;
+  int *pc = INTEGER(solution_counts);
+  for(int i = 0; i < rct; ++i) {
+    pc[i] = prechi->solution_counts[i];
+  }
+  SET_VECTOR_ELT(rv, 2, solution_counts);
+
+  prechi_destroy(prechi);
+  UNPROTECT(prct);
+  return rv;
 }
 
 static const R_CallMethodDef PreChiEntries[] = {
