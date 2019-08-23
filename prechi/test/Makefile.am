@@ -1,10 +1,12 @@
 ACLOCAL_AMFLAGS = -I tools/m4
 
-TESTS = run_test.sh
+TESTS = ./run_test.sh
 
 noinst_LTLIBRARIES = libtest_prechi.la
 
 libtest_prechi_la_CPPFLAGS = $(CUTTER_CFLAGS)
+libtest_prechi_la_LDFLAGS = -module -rpath $(libdir) \
+  -avoid-version -no-undefined
 libtest_prechi_la_LIBADD = $(CUTTER_LIBS)
 
 SRC_FILES = \
