@@ -21,7 +21,8 @@ prechi.cluster_neighbors <- function(grades, counts, minimum_count = 5) {
   cl <- length(c)
   part_ct <- min(gl, cl)
   if (gl != cl) {
-    warning("Prechi: Unequal length arrays, only first ", l, " elements used")
+    warning("Prechi: Unequal length arrays, only first ", part_ct,
+      " elements used")
     g <- g[0:part_ct]
     c <- c[0:part_ct]
   }
