@@ -1,6 +1,14 @@
 compile
-config.h*
+config.*
 configure
 install-sh
 test-driver
 tools
+aclocal.m4
+ar-lib
+autom4te.cache/
+depcomp
+libtool
+ltmain.sh
+missing
+stamp-h1
