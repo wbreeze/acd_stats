@@ -35,3 +35,14 @@ SEXP pre_chi_cluster_neighbors(
   // dummy return to see if this compiles
   return allocVector(REALSXP, 1);
 }
+
+static const R_CallMethodDef PreChiEntries[] = {
+  {"pre_chi_cluster_neighbors", (DL_FUNC)&pre_chi_cluster_neighbors, 3},
+  {NULL, NULL, 0}
+};
+
+void R_init_prechi(DllInfo *dll) {
+  R_registerRoutines(dll, NULL, PreChiEntries, NULL, NULL);
+  R_useDynamicSymbols(dll, FALSE);
+  R_forceSymbols(dll, TRUE); // .Call(pre_chi_cluster_neighbors, ...)
+}
