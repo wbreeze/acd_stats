@@ -81,6 +81,8 @@ void test_prechi_solve_no_solution(void) {
 
   prechi_solve(prechi, 5);
   cut_assert_equal_int(0, prechi->solution_part_count);
+  assert_equal_float(0, prechi->solution_mean, 1);
+  assert_equal_float(0, prechi->solution_variance, 1);
 
   prechi_destroy(prechi);
 }

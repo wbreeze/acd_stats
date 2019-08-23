@@ -27,10 +27,15 @@ Prechi *prechi_create(const double *weights, const int *counts, int count) {
   prechi->count = count;
   prechi->weights = (float *)calloc(count, sizeof(float));
   prechi->counts = (int *)calloc(count, sizeof(int));
+  prechi->target_mean = 0.0f;
+  prechi->target_variance = 0.0f;
   prechi->solution_part_count = 0;
+  prechi->solution_mean = 0.0f;
+  prechi->solution_variance = 0.0f;
   prechi->solution_counts = (int *)calloc(count, sizeof(int));
   prechi->solution_spans = (int *)calloc(count, sizeof(int));
   prechi->solution_boundaries = (float*)calloc(count, sizeof(float));
+
   for (int i = 0; i < count; ++i) {
     prechi->counts[i] = counts[i];
     prechi->weights[i] = (float)weights[i];
