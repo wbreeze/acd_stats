@@ -1,6 +1,5 @@
 #ifndef PRECHI_PARTITION_H
 #define PRECHI_PARTITION_H
-#include "config.h"
 
 typedef struct PrechiPartition {
   int size;

@@ -1,8 +1,6 @@
 #ifndef PRECHI_H
 #define PRECHI_H
 
-#include "config.h"
-
 typedef struct Prechi {
   int count;
   float *weights;

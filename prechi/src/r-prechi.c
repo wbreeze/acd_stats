@@ -1,4 +1,3 @@
-#include "config.h"
 #include <stdio.h> //DEBUG
 #include <R.h>
 #include <Rinternals.h>

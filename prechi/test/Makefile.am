@@ -1,3 +1,5 @@
+ACLOCAL_AMFLAGS = -I m4
+
 TESTS = run_test.sh
 TESTS_ENVIRONMENT = NO_MAKE=yes CUTTER="$(CUTTER)"
 
