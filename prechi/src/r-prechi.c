@@ -17,20 +17,20 @@ SEXP pre_chi_cluster_neighbors(
   SEXP grade_values, SEXP grade_counts, SEXP min_size)
 {
   int n = length(grade_values);
-  printf("%d parts\n", n);
+  Rprintf("%d parts\n", n);
   const double *grades = REAL_RO(grade_values);
   const int *counts = INTEGER_RO(grade_counts);
   int minimum_count = INTEGER_RO(min_size)[0];
 
-  printf("\nCounts: ");
+  Rprintf("\nCounts: ");
   for(int i = 0; i < n; ++i) {
-    printf("%2d ", counts[i]);
+    Rprintf("%2d ", counts[i]);
   }
-  printf("\nGrades: ");
+  Rprintf("\nGrades: ");
   for(int i = 0; i < n; ++i) {
-    printf("%5.2f ", grades[i]);
+    Rprintf("%5.2f ", grades[i]);
   }
-  printf("\nMinimum count: %d\n", minimum_count);
+  Rprintf("\nMinimum count: %d\n", minimum_count);
 
   // dummy return to see if this compiles
   return allocVector(REALSXP, 1);
