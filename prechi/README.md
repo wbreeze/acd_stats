@@ -6,7 +6,7 @@ five" or "eight" or "eight point oh". We code those as 55, 80, 80.)
 With counts of how often a judge gives a grade, there are sometimes low
 numbers associated with a grade. The judge gave the grade not at all, or
 one or two times. To do the Chi-Squared analysis, we join those
-low-incidence clases with neighboring ones.
+low-incidence classes with neighboring ones.
 
 ## Installation
 
