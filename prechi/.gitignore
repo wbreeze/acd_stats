@@ -3,6 +3,7 @@ Makefile
 *.la
 *.lo
 *.o
+.libs
 .deps
 .dirstamp
 src/prechi.so
