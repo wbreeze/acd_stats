@@ -4,7 +4,7 @@ Version: 0.0.1
 Authors@R: c(person("Douglas", "Lovell",
   email = "doug@wbreeze.com", role = c("aut", "cre", "cph")))
 Author: Douglas Lovell [aut, cre, cph]
-Maintainer: Douglas Lovell
+Maintainer: Douglas Lovell <doug@wbreeze.com>
 Description:
   The grades given by judges are discrete, however ordinal.
   When a judge awards a grade to fewer than five pilots, in order to do
