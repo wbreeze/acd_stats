@@ -2,7 +2,7 @@
 # grades: vector of integer grade values, increasing
 # counts: vector of integer counts
 prechi.cluster_neighbors <- function(grades, counts, minimum_count = 5) {
-  min_ct <- min(as.integer(0), as.integer(minimum_count))
+  min_ct <- max(as.integer(2), as.integer(minimum_count))
   g <- as.numeric(grades)
   c <- as.integer(counts)
   gl <- length(g)

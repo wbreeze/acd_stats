@@ -1,4 +1,3 @@
-#include <stdio.h> //DEBUG
 #include <R.h>
 #include <Rinternals.h>
 #include "prechi.h"
@@ -17,12 +16,13 @@ SEXP pre_chi_cluster_neighbors(
   SEXP grade_values, SEXP grade_counts, SEXP min_size)
 {
   int n = length(grade_values);
-  Rprintf("%d parts\n", n);
+  Rprintf("Input has %d parts.\n", n);
   const double *grades = REAL_RO(grade_values);
   const int *counts = INTEGER_RO(grade_counts);
   int minimum_count = INTEGER_RO(min_size)[0];
 
-  Rprintf("\nCounts: ");
+  Rprintf("Minimum count: %d\n", minimum_count);
+  Rprintf("Counts: ");
   for(int i = 0; i < n; ++i) {
     Rprintf("%2d ", counts[i]);
   }
@@ -30,7 +30,26 @@ SEXP pre_chi_cluster_neighbors(
   for(int i = 0; i < n; ++i) {
     Rprintf("%5.2f ", grades[i]);
   }
-  Rprintf("\nMinimum count: %d\n", minimum_count);
+
+  Prechi *prechi = prechi_create(grades, counts, n);
+  prechi_solve(prechi, minimum_count);
+
+  int rct = prechi->solution_part_count;
+  Rprintf("\nRESULT has %d parts.\n", rct);
+  Rprintf("Boundaries: ");
+  for(int i = 0; i < rct - 1; ++i) {
+    Rprintf("%5.2f ", prechi->solution_boundaries[i]);
+  }
+  Rprintf("\nCounts: ");
+  for(int i = 0; i < rct; ++i) {
+    Rprintf("%d ", prechi->solution_counts[i]);
+  }
+  Rprintf("\nTarget Mean: %5.2f, Variance: %6.2f\n",
+    prechi->target_mean, prechi->target_variance);
+  Rprintf("Solution Mean: %5.2f, Variance: %6.2f\n",
+    prechi->solution_mean, prechi->solution_variance);
+
+  prechi_destroy(prechi);
 
   // dummy return to see if this compiles
   return allocVector(REALSXP, 1);
