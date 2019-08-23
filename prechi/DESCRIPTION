@@ -1,5 +1,6 @@
 Package: prechi
-Title: Prepare grade data for Chi-Square goodness of fit measurement
+Title: Prepare judge grade frequency data for
+  Chi-Square goodness of fit measurement
 Version: 0.0.1
 Authors@R: c(person("Douglas", "Lovell",
   email = "doug@wbreeze.com", role = c("aut", "cre", "cph")))
