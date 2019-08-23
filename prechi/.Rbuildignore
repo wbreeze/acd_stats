@@ -1,5 +1,10 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 \.DS_Store
+^.*\.la
+^.*\.lo
+^.*\.so
+^.*\.o
 \.libs
 \.deps
+src/.dirstamp

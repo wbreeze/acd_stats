@@ -2,9 +2,10 @@ Makefile.in
 Makefile
 *.la
 *.lo
+*.so
 *.o
 .libs
 .deps
 .dirstamp
-src/prechi.so
+*.tar.gz
 src/symbols.rds
