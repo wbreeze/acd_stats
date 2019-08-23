@@ -6,10 +6,10 @@ if test -z "${R_HOME}"; then
   exit 1
 fi
 
-AC_CONFIG_SRCDIR([src/prechi.c])
-AC_CONFIG_MACRO_DIRS([m4])
+AC_CONFIG_SRCDIR([test_helper.h])
+AC_CONFIG_MACRO_DIRS([tools/m4])
 AM_PROG_AR
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign no-dist subdir-objects])
 LT_INIT
 
 CC=`"${R_HOME}/bin/R" CMD config CC`
@@ -21,10 +21,8 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([stdlib.h])
 AC_FUNC_MALLOC
 
-AC_CONFIG_HEADERS([src/config.h])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
   Makefile
-  src/Makefile
-  test/Makefile
 ])
 AC_OUTPUT

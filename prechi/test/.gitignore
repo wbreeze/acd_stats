@@ -1,0 +1,6 @@
+compile
+config.h*
+configure
+install-sh
+test-driver
+tools

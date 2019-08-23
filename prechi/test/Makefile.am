@@ -1,17 +1,19 @@
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = -I tools/m4
 
 TESTS = run_test.sh
-TESTS_ENVIRONMENT = NO_MAKE=yes CUTTER="$(CUTTER)"
 
-noinst_LTLIBRARIES = test_prechi.la
+noinst_LTLIBRARIES = libtest_prechi.la
 
-test_prechi_la_CPPFLAGS = $(CUTTER_CFLAGS) -I $(top_srcdir)/src
+libtest_prechi_la_CPPFLAGS = $(CUTTER_CFLAGS)
+libtest_prechi_la_LIBADD = $(CUTTER_LIBS)
 
-test_prechi_la_LIBADD = $(CUTTER_LIBS) $(top_builddir)/src/libprechi.la
+SRC_FILES = \
+../src/prechi.h \
+../src/prechi.c \
+../src/prechi_partition.h \
+../src/prechi_partition.c
 
-AM_LDFLAGS = -module -rpath $(libdir) -avoid-version -no-undefined
-
-test_prechi_la_SOURCES = \
+libtest_prechi_la_SOURCES = $(SRC_FILES) \
   array_init.h array_init.c \
   test_data.h test_data.c \
   test_partition_create.c \
