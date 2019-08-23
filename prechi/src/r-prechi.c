@@ -17,71 +17,70 @@ SEXP pre_chi_cluster_neighbors(
   SEXP grade_values, SEXP grade_counts, SEXP min_size)
 {
   int n = length(grade_values);
-  Rprintf("Input has %d parts.\n", n);
   const double *grades = REAL_RO(grade_values);
   const int *counts = INTEGER_RO(grade_counts);
   int minimum_count = INTEGER_RO(min_size)[0];
 
-  Rprintf("Minimum count: %d\n", minimum_count);
-  Rprintf("Counts: ");
-  for(int i = 0; i < n; ++i) {
-    Rprintf("%2d ", counts[i]);
-  }
-  Rprintf("\nGrades: ");
-  for(int i = 0; i < n; ++i) {
-    Rprintf("%5.2f ", grades[i]);
-  }
-
   Prechi *prechi = prechi_create(grades, counts, n);
   prechi_solve(prechi, minimum_count);
 
-  int rct = prechi->solution_part_count;
-  Rprintf("\nRESULT has %d parts.\n", rct);
-  Rprintf("Boundaries: ");
-  for(int i = 0; i < rct - 1; ++i) {
-    Rprintf("%5.2f ", prechi->solution_boundaries[i]);
-  }
-  Rprintf("\nCounts: ");
-  for(int i = 0; i < rct; ++i) {
-    Rprintf("%d ", prechi->solution_counts[i]);
-  }
-  Rprintf("\nTarget Mean: %5.2f, Variance: %6.2f\n",
-    prechi->target_mean, prechi->target_variance);
-  Rprintf("Solution Mean: %5.2f, Variance: %6.2f\n",
-    prechi->solution_mean, prechi->solution_variance);
-
+  int part_ct = prechi->solution_part_count;
   int prct = 0;
 
   // Set-up the returned list
-  SEXP rv = PROTECT(allocVector(VECSXP, 3)); ++prct;
-  SEXP names = PROTECT(allocVector(STRSXP, 3)); ++prct;
+  SEXP rv = PROTECT(allocVector(VECSXP, 7)); ++prct;
+  SEXP names = PROTECT(allocVector(STRSXP, 7)); ++prct;
   SET_STRING_ELT(names, 0, mkChar("count"));
   SET_STRING_ELT(names, 1, mkChar("boundaries"));
   SET_STRING_ELT(names, 2, mkChar("counts"));
+  SET_STRING_ELT(names, 3, mkChar("target_mean"));
+  SET_STRING_ELT(names, 4, mkChar("target_variance"));
+  SET_STRING_ELT(names, 5, mkChar("solution_mean"));
+  SET_STRING_ELT(names, 6, mkChar("solution_variance"));
   setAttrib(rv, R_NamesSymbol, names);
 
   // Set count on returned list
   SEXP count = PROTECT(allocVector(INTSXP, 1)); ++prct;
-  INTEGER(count)[0] = rct;
+  INTEGER(count)[0] = part_ct;
   SET_VECTOR_ELT(rv, 0, count);
 
   // Set boundaries on returned list
-  SEXP boundaries = PROTECT(allocVector(REALSXP, rct + 1)); ++prct;
+  SEXP boundaries = PROTECT(allocVector(REALSXP, part_ct + 1)); ++prct;
   double *pb = REAL(boundaries);
   pb[0] = -INFINITY;
-  for(int i = 0; i < rct - 1; ++i) {
+  for(int i = 0; i < part_ct - 1; ++i) {
     pb[i+1] = (double)prechi->solution_boundaries[i];
   }
-  pb[rct] = INFINITY;
+  pb[part_ct] = INFINITY;
   SET_VECTOR_ELT(rv, 1, boundaries);
 
   // Set counts on returned list
-  SEXP solution_counts = PROTECT(allocVector(INTSXP, rct)); ++prct;
+  SEXP solution_counts = PROTECT(allocVector(INTSXP, part_ct)); ++prct;
   int *pc = INTEGER(solution_counts);
-  for(int i = 0; i < rct; ++i) {
+  for(int i = 0; i < part_ct; ++i) {
     pc[i] = prechi->solution_counts[i];
   }
   SET_VECTOR_ELT(rv, 2, solution_counts);
+
+  // Set target_mean on returned list
+  SEXP target_mean = PROTECT(allocVector(REALSXP, 1)); ++prct;
+  REAL(target_mean)[0] = prechi->target_mean;
+  SET_VECTOR_ELT(rv, 3, target_mean);
+
+  // Set target_variance on returned list
+  SEXP target_variance = PROTECT(allocVector(REALSXP, 1)); ++prct;
+  REAL(target_variance)[0] = prechi->target_variance;
+  SET_VECTOR_ELT(rv, 4, target_variance);
+
+  // Set solution_mean on returned list
+  SEXP solution_mean = PROTECT(allocVector(REALSXP, 1)); ++prct;
+  REAL(solution_mean)[0] = prechi->solution_mean;
+  SET_VECTOR_ELT(rv, 5, solution_mean);
+
+  // Set solution_variance on returned list
+  SEXP solution_variance = PROTECT(allocVector(REALSXP, 1)); ++prct;
+  REAL(solution_variance)[0] = prechi->solution_variance;
+  SET_VECTOR_ELT(rv, 6, solution_variance);
 
   prechi_destroy(prechi);
   UNPROTECT(prct);

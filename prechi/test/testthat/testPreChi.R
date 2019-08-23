@@ -5,10 +5,10 @@ test_that("computes clusters", {
   grades <- c(55, 60, 65, 70, 75, 80, 85)
   counts <- c( 2,  0,  5,  8, 12, 10,  4)
   clustered <- prechi.cluster_neighbors(grades, counts)
-  str(clustered)
   expect_false(is.null(clustered))
   expect_type(clustered, "list")
-  expect_named(clustered, c("count", "boundaries", "counts"))
+  expect_named(clustered, c("count", "boundaries", "counts",
+    "target_mean", "target_variance", "solution_mean", "solution_variance"))
   expect_length(clustered$count, 1)
   expect_equal(4, clustered$count)
   expect_length(clustered$counts, 4)
@@ -24,13 +24,22 @@ test_that("computes clusters", {
   expect_equal(Inf, clustered$boundaries[5])
 })
 
+test_that("computes parameters for normal distribution", {
+  grades <- c(55, 60, 65, 70, 75, 80)
+  counts <- c( 2,  0,  5,  8, 12, 10)
+  clustered <- prechi.cluster_neighbors(grades, counts)
+  expect_false(is.null(clustered))
+  expect_equal(7284, round(clustered$target_mean * 100))
+  expect_equal(4262, round(clustered$target_variance * 100))
+  expect_equal(7243, round(clustered$solution_mean * 100))
+  expect_equal(4814, round(clustered$solution_variance * 100))
+})
+
 test_that("too few grades", {
   grades <- c(55, 60, 65, 70, 75, 80)
   counts <- c( 2,  0,  5,  8, 12, 10,  4)
   expect_warning(clustered <- prechi.cluster_neighbors(grades, counts),
     "Prechi: Unequal length arrays")
-  str(clustered)
-  expect_false(is.null(clustered))
 })
 
 test_that("too few counts", {
@@ -38,15 +47,14 @@ test_that("too few counts", {
   counts <- c( 2,  0,  5,  8, 12, 10)
   expect_warning(clustered <- prechi.cluster_neighbors(grades, counts),
     "Prechi: Unequal length arrays")
-  str(clustered)
   expect_false(is.null(clustered))
 })
 
 test_that("grades and counts the same", {
   grades <- c(55, 60, 65, 70, 75, 80, 85)
   clustered <- prechi.cluster_neighbors(grades, grades)
-  str(clustered)
   expect_false(is.null(clustered))
+  expect_equal(grades, clustered$counts)
 })
 
 test_that("minimum too low", {
@@ -54,7 +62,6 @@ test_that("minimum too low", {
   counts <- c( 2,  0,  5,  8, 12, 10)
   expect_warning(clustered <- prechi.cluster_neighbors(grades, counts, 1),
     "Prechi: minimum count of 1 increased")
-  str(clustered)
   expect_false(is.null(clustered))
 })
 
@@ -65,14 +72,30 @@ test_that("more than one minimum", {
   expect_warning(
     clustered <- prechi.cluster_neighbors(grades, counts, minimum_count),
     "Prechi: 3 elements given for minimum count")
-  str(clustered)
   expect_false(is.null(clustered))
 })
 
+test_that("no solution", {
+  grades <- c(55, 60, 65, 70, 75, 80)
+  counts <- c( 5,  1,  1,  1,  1,  5)
+  minimum_count <- c(5)
+  expect_error(
+    clustered <- prechi.cluster_neighbors(grades, counts, minimum_count),
+    "Prechi: there is no solution with three or more parts")
+})
+
 test_that("too few parts", {
+  grades <- c(55, 60)
+  counts <- c( 7,  5)
+  expect_error(
+    clustered <- prechi.cluster_neighbors(grades, counts),
+    "Prechi: fewer than three parts provided")
+})
+
+test_that("zero parts", {
   grades <- c()
   counts <- c()
-  clustered <- prechi.cluster_neighbors(grades, grades)
-  str(clustered)
-  expect_false(is.null(clustered))
+  expect_error(
+    clustered <- prechi.cluster_neighbors(grades, counts),
+    "Prechi: fewer than three parts provided")
 })
