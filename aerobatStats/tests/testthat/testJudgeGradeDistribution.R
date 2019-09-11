@@ -27,6 +27,14 @@ describe("Process flight program", {
     expect_gt(nrow(subset(jgd$fp, jgd$fp == -10)), 0)
   })
 
+  test_that("counts zero frequency within the range", {
+    jgd <- setupJudgeGradeDistribution()
+    grades <- c(55, 60, 60, rep(70,4), NA, rep(75,6), 80, 80, 85)
+    t <- jgd$gradeCounts(grades)
+    expect_equal(t$range, seq(55,85,5))
+    expect_equal(t$counts, c(1, 2, 0, 4, 6, 2, 1))
+  })
+
   test_that("subsets rows for one figure", {
     jgd <- setupJudgeGradeDistribution()
     f1s <- jgd$figureGrades(1)
@@ -35,47 +43,44 @@ describe("Process flight program", {
     expect_equal(unique(f1s$FN), 1)
   })
 
-  test_that("provides normal distribution for set of grades", {
+  test_that("returns not valid when only three grade values", {
     jgd <- setupJudgeGradeDistribution()
-    grades <- jgd$figureGrades(2)$X49
-    expect_equal(min(grades), 75)
-    expect_equal(max(grades), 90)
-    dist <- jgd$normal_distribution(grades)
-    expect_equal(round(dist * 100), c(36, 35, 22, 7))
+    grades <- rep(c(55, 65, 80), 5)
+    csr <- jgd$chiSqP(grades)
+    expect_false(csr$valid)
   })
 
-  test_that("provides normal distribution with presence of NA", {
+  test_that("returns not valid when prechi.cluster fails", {
     jgd <- setupJudgeGradeDistribution()
-    grades <- jgd$fp$X49
-    nd <- round(jgd$normal_distribution(grades) * 1000)
-    expect_equal(nd, c(3, 18, 71, 177, 270, 253, 145, 64))
+    grades <- rep(c(55, 65, 80, 85), 3)
+    csr <- jgd$chiSqP(grades)
+    expect_false(csr$valid)
   })
 
-  test_that("normal distribution probabilities sum to one", {
+  test_that("provides chi-square fit to normal failure", {
     jgd <- setupJudgeGradeDistribution()
-    grades <- jgd$fp$X49
-    nd <- jgd$normal_distribution(grades)
-    expect_equal(sum(nd), 1.0)
+    gvs <- seq(55, 95, 5)
+    grades <- rep(gvs, c(20, 18, 12, 8, 5, 8, 12, 18, 20))
+    csr <- jgd$chiSqP(grades)
+    expect_true(csr$valid)
+    expect_lt(csr$pu, 0.05)
   })
 
-  test_that("provides chi-square fit to normal", {
+  test_that("provides chi-square fit to normal success", {
     jgd <- setupJudgeGradeDistribution()
-    grades <- jgd$figureGrades(2)$X49
-    expect_equal(round(jgd$chiSqP(grades) * 1000), 725)
+    gvs <- seq(55, 95, 5)
+    grades <- rep(gvs, c(6, 8, 12, 18, 20, 18, 12, 8, 6))
+    csr <- jgd$chiSqP(grades)
+    expect_true(csr$valid)
+    expect_gt(csr$pu, 0.05)
   })
 
   test_that("provides chi-square fit to normal with presence of NA", {
     jgd <- setupJudgeGradeDistribution()
-    grades <- jgd$fp$X49
-    pValue <- round(jgd$chiSqP(grades) * 1000)
-    expect_equal(pValue, 413)
-  })
-
-  test_that("counts zero frequency within the range", {
-    jgd <- setupJudgeGradeDistribution()
-    grades <- c(55, 60, 60, rep(70,4), NA, rep(75,6), 80, 80, 85)
-    t <- jgd$distribution(grades)
-    expect_equal(t$range, seq(55,85,5))
-    expect_equal(t$counts, c(1, 2, 0, 4, 6, 2, 1))
+    gvs <- c(seq(55, 95, 5), NA)
+    grades <- rep(gvs, c(6, 8, 12, 18, 20, 18, 12, 8, 6, 12))
+    csr <- jgd$chiSqP(grades)
+    expect_true(csr$valid)
+    expect_gt(csr$pu, 0.05)
   })
 })
