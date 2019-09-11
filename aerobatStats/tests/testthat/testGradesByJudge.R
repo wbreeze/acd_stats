@@ -1,14 +1,14 @@
 library(aerobatStats)
 context("Grades by judge")
 
-describe("Read and write grades", {
+describe("grade data", {
   setupGradesByJudge <- function() {
     return(GradesByJudge(grades_IAC_flight_10780))
   }
 
   it("Reads a grade", {
     gbj <- setupGradesByJudge()
-    grade <- getGrade(gbj, 'X2414', 1033, 9)
+    grade <- gbj$getGrade(gbj, 'X2414', 1033, 9)
     expect_equal(grade, 65)
   })
 
@@ -18,43 +18,28 @@ describe("Read and write grades", {
     pilot <- 46
     figure <- 1
     grade <- 0
-    gbj <- setGrade(gbj, judge, pilot, figure, grade)
-    expect_equal(getGrade(gbj, judge, pilot, figure), grade)
+    gbj <- gbj$setGrade(gbj, judge, pilot, figure, grade)
+    expect_equal(gbj$getGrade(gbj, judge, pilot, figure), grade)
+  })
+
+  it("returns the number of pilots", {
+    gbj <- setupGradesByJudge()
+    expect_equal(gbj$pilotCount(gbj), 10)
+  })
+
+  it("returns the list of judges", {
+    gbj <- setupGradesByJudge()
+    expect_equal(gbj$judgeList(gbj), c('X3045', 'X49', 'X2414', 'X1041', 'X36'))
+  })
+
+  it("returns the correct figure groupings", {
+    gbj <- setupGradesByJudge()
+    groups <- gbj$groups(gbj)
+    figures <- lapply(groups, function(group) {
+      sort(unique(gbj$grades$FN[group]))
+    })
+    expect_equal(figures, list(c(1,3),c(6,9),c(7,8),c(2,11),c(4,5,10)))
+    sizes <- lapply(groups, function(group) { length(group) })
+    expect_equal(sizes, list(20, 20, 20, 20, 30))
   })
 })
-
-describe("Zeros and averages", {
-  setupZerosAndAverages <- function() {
-    gbj <- GradesByJudge(grades_IAC_flight_10780)
-    gbj <- setGrade(gbj, 'X3045', 2448, 2, -10)
-    gbj <- setGrade(gbj, 'X49', 2448, 2, -20)
-    gbj <- setGrade(gbj, 'X2414', 2448, 2, -10)
-    gbj <- setGrade(gbj, 'X3045', 2448, 3, -30)
-    gbj <- setGrade(gbj, 'X49', 2448, 3, -30)
-    gbj <- setGrade(gbj, 'X2414', 2448, 3, 0)
-    gbj <- setGrade(gbj, 'X3045', 2448, 4, -30)
-    gbj <- setGrade(gbj, 'X49', 2448, 4, -30)
-    gbj <- setGrade(gbj, 'X3045', 2448, 5, -30)
-    gbj <- setGrade(gbj, 'X49', 2448, 5, -30)
-    gbj <- setGrade(gbj, 'X2414', 2448, 5, -30)
-    gbj <- setGrade(gbj, 'X3045', 2448, 6, -30)
-    gbj <- setGrade(gbj, 'X49', 2448, 6, -30)
-    gbj <- setGrade(gbj, 'X2414', 2448, 6, -10)
-    gbj <- setGrade(gbj, 'X3045', 2448, 7, -30)
-    gbj <- setGrade(gbj, 'X49', 2448, 7, -30)
-    gbj <- setGrade(gbj, 'X2414', 2448, 7, -20)
-    gbj <- resolveZerosAndAverages(gbj)
-    return(gbj)
-  }
-
-  it("properly resolves majority zeros", {
-    gbj <- setupZerosAndAverages()
-  })
-
-  it("properly resolves minority zeros", {
-  })
-
-  it("properly resolves averages", {
-  })
-})
-

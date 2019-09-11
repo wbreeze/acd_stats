@@ -35,14 +35,6 @@ describe("Process flight program", {
     expect_equal(t$counts, c(1, 2, 0, 4, 6, 2, 1))
   })
 
-  test_that("subsets rows for one figure", {
-    jgd <- setupJudgeGradeDistribution()
-    f1s <- jgd$figureGrades(1)
-    expect_false(is.null(f1s))
-    expect_length(f1s$PN, 10)
-    expect_equal(unique(f1s$FN), 1)
-  })
-
   test_that("returns not valid when only three grade values", {
     jgd <- setupJudgeGradeDistribution()
     grades <- rep(c(55, 65, 80), 5)

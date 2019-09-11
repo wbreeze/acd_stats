@@ -3,37 +3,50 @@
 GradesByJudge <- function(gradesByJudge) {
   gbj <- list()
   gbj$grades <- gradesByJudge
+
   gbj$column_for <- function(pilot, figure) {
     fcols <- (gbj$grades[["FN"]] == figure)
     pcols <- (gbj$grades[["PN"]] == pilot)
     return(which(fcols & pcols))
   }
+
+  # Subset the data into groups according to FPS 3.3
+  # Returns a list of groups, each being a list of row indices
+  #   for the rows in the group
+  gbj$groups <- function(gbj) {
+    kfps <- order(gbj$grades$K, gbj$grades$FN, gbj$grades$PN,
+      decreasing=c(TRUE, FALSE, FALSE))
+    chunk <- gbj$pilotCount(gbj)
+    chunk <- (11 %/% chunk + 1) * chunk
+    length <- length(kfps)
+    firsts <- seq(1, length - length %% chunk, chunk)
+    lasts <- c(seq(chunk, length - chunk, chunk), length)
+    mapply(function(from, to) {
+      kfps[seq(from,to)]
+    }, firsts, lasts)
+  }
+
+  gbj$pilotCount <- function(gbj) {
+    length(unique(gbj$grades$PN))
+  }
+
+  gbj$judgeList <- function(gbj) {
+    colns <- names(gbj$grades)
+    xCols <- vapply(colns, function(name) {
+      length(grep("X[[:digit:]]+", name)) != 0
+    }, c(TRUE))
+    colns[xCols]
+  }
+
+  gbj$getGrade <- function(gbj, judge, pilot, figure) {
+    return(gbj$grades[[judge]][gbj$column_for(pilot, figure)])
+  }
+
+  gbj$setGrade <- function(gbj, judge, pilot, figure, grade) {
+    gbj$grades[[judge]][gbj$column_for(pilot, figure)] <- grade
+    return(gbj)
+  }
+
   class(gbj) <- c("list", "GradesByJudge")
   return(gbj)
-}
-
-getGrade <- function(gbj, judge, pilot, figure) {
-  UseMethod("getGrade", gbj)
-}
-getGrade.GradesByJudge <- function(gbj, judge, pilot, figure) {
-  return(gbj$grades[[judge]][gbj$column_for(pilot, figure)])
-}
-
-setGrade <- function(gbj, judge, pilot, figure, grade) {
-  UseMethod("setGrade", gbj)
-}
-setGrade.GradesByJudge <- function(gbj, judge, pilot, figure, grade) {
-  gbj$grades[[judge]][gbj$column_for(pilot, figure)] <- grade
-  return(gbj)
-}
-
-resolveZerosAndAverages <- function(gbj) {
-  UseMethod("resolveZerosAndAverages", gbj)
-}
-resolveZerosAndAverages.GradesByJudge <- function(gbj) {
-  return(gbj)
-}
-
-print.GradesByJudge <- function(gbj) {
-  print(gbj$grades)
 }

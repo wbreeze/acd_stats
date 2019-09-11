@@ -29,19 +29,6 @@ JudgeGradeDistribution <- function(fp, zeroNA=TRUE) {
   }
   class(jgd) <- "JudgeGradeDistribution"
 
-  # Subset data for a given figure number
-  # TODO this moves to GradesByJudge, as grouping
-  jgd$figureGrades <- function(figure_number) {
-    subset(jgd$fp, jgd$fp$FN == figure_number)
-  }
-
-  # Subset the data into groups according to FPS 3.3
-  # Returns a list or vector of data frames that match the format of fp
-  # TODO this moves to GradesByJudge, as grouping
-  jgd$groups <- function() {
-    jgd$fp
-  }
-
   # Count number of occurrences within the range of grade values
   #   encompassed by the grades
   # This is something like, table(), but includes zero counts and
