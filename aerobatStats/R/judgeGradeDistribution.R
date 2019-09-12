@@ -1,8 +1,8 @@
 # Analyze judge grade distributions for each judge and each figure
 # id: flight identifier
 # class: flight competition class, e.g. glider 'G' or power 'P'
-# category: flight competition category, e.g. "Unlimited"
-# format: is the flight program format, e.g. "Known", "Unknown"
+# category: flight competition category, e.g. Unlimited 'U', Intermediate 'I'
+# format: is the flight program format, e.g. Known 'K', Unknown 'U'
 # fp: Flight Program data in form returned by
 #   CDBFlightProgram::gradesByJudge, like this:
 #
@@ -21,6 +21,11 @@
 #     PN: pilot id number
 #     X1695 X744 X657 X456: grades from four judges
 jgd.processFlight <- function(id, class, category, format, fp) {
+  data.frame(flight=id, class=class, category=category, format=format,
+    judge='X1695',
+    figure.ct=2, k.mean=14.5, grade.ct=20,
+    d.mean=3.14, d.sd=0.12, t.mean=3.21, t.sd=0.14,
+    chiSq.d.p=0.04, chiSq.d.valid=TRUE, chiSq.t.p=0.038, chiSq.t.valid=TRUE)
 }
 
 # Plot grade frequency histogram overlayed with the derived normal curve
