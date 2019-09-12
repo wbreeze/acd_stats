@@ -27,24 +27,6 @@ JudgeGradeDistribution <- function(fp, zeroNA=TRUE) {
   }
   class(jgd) <- "JudgeGradeDistribution"
 
-  # Count number of occurrences within the range of grade values
-  #   encompassed by the grades
-  # This is something like, table(), but includes zero counts and
-  #   also returns the range
-  # Returns a list with:
-  #   grades: non-NA grades,
-  #   range: all grade values in order, covering the range of grades
-  #   counts: number of occurrences of each grade value
-  jgd$gradeCounts <- function(grades) {
-    g <- grades[!is.na(grades)]
-    r <- seq(min(g), max(g), 5)
-    fct <- function(X, g) {
-      length(g[g==X])
-    }
-    ct <- sapply(r, fct, g)
-    list(range=r, counts=ct, grades=g)
-  }
-
   # Plot grade frequency histogram overlayed with the derived normal curve
   jgd$densityPlot <- function(grades) {
     g <- grades[!is.na(grades)]

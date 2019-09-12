@@ -26,12 +26,4 @@ describe("Process flight program", {
     expect_gt(nrow(subset(jgd$fp, jgd$fp == -30)), 0)
     expect_gt(nrow(subset(jgd$fp, jgd$fp == -10)), 0)
   })
-
-  test_that("counts zero frequency within the range", {
-    jgd <- setupJudgeGradeDistribution()
-    grades <- c(55, 60, 60, rep(70,4), NA, rep(75,6), 80, 80, 85)
-    t <- jgd$gradeCounts(grades)
-    expect_equal(t$range, seq(55,85,5))
-    expect_equal(t$counts, c(1, 2, 0, 4, 6, 2, 1))
-  })
 })
