@@ -1,9 +1,10 @@
 #include <math.h>
-#include <stdio.h> // DEBUG printf
 #include <stdlib.h>
 #include <string.h>
 #include "prechi.h"
 #include "prechi_partition.h"
+
+static const int PRECHI_MAX_TIME = 360; // seconds, one hour
 
 /*
  Create the data structure for solving the cluster neighbors problem.
@@ -36,6 +37,7 @@ Prechi *prechi_create(const double *weights, const int *counts, int count) {
   prechi->solution_counts = (int *)calloc(count, sizeof(int));
   prechi->solution_spans = (int *)calloc(count, sizeof(int));
   prechi->solution_boundaries = (float*)calloc(count, sizeof(float));
+  prechi->timeout = (clock_t)(-1);
 
   for (int i = 0; i < count; ++i) {
     prechi->counts[i] = counts[i];
@@ -65,9 +67,7 @@ static void record_solution(Prechi *prechi, PrechiPartition *solution,
   for (int i = 0; i < part_count; ++i) {
     prechi->solution_counts[i] = solution->counts[i];
     prechi->solution_spans[i] = solution->spans[i];
-    printf("%d, ", prechi->solution_counts[i]);
   }
-  printf("\n");
 }
 
 // Updates the solution if the one provided is "better"
@@ -98,7 +98,11 @@ static void record_if_improved(Prechi *prechi, PrechiPartition *solution)
 */
 static int bounded(Prechi *prechi, int reductions) {
   int part_count = prechi->count - reductions;
-  return part_count <= 3 || part_count <= prechi->solution_part_count;
+  return(
+    part_count <= 3 ||
+    part_count <= prechi->solution_part_count ||
+    (prechi->solution_part_count != 0 && prechi->timeout < clock())
+  );
 }
 
 /*
@@ -150,7 +154,7 @@ static void compute_solution_intervals(Prechi *prechi) {
  - solution_variance has the weighted variance of the partitioned data
  - solution_spans has the number of classes combined for each part
 */
-void prechi_solve(Prechi *prechi, int min_count) {
+void prechi_solve(Prechi *prechi, int min_count, int timeout_seconds) {
   float *weights = (float *)calloc(prechi->count, sizeof(float));
   for(int i = 0; i < prechi->count; ++i) {
     weights[i] = prechi->weights[i];
@@ -162,6 +166,10 @@ void prechi_solve(Prechi *prechi, int min_count) {
   prechi->target_variance =
     prechi_partition_variance(trial, prechi->target_mean);
 
+  if (0 == timeout_seconds || PRECHI_MAX_TIME < timeout_seconds) {
+    timeout_seconds = PRECHI_MAX_TIME;
+  }
+  prechi->timeout = clock() + CLOCKS_PER_SEC * timeout_seconds;
   advance_solution(prechi, trial, min_count, 0);
 
   prechi_partition_destroy(trial);

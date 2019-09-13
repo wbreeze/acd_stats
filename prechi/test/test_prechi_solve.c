@@ -11,7 +11,7 @@ void test_prechi_solve_1(void) {
   Prechi *prechi = prechi_create(td->dweights, td->counts, n);
 
   int expected_parts = 3;
-  prechi_solve(prechi, 5);
+  prechi_solve(prechi, 5, 5);
   cut_assert_equal_int(expected_parts, prechi->solution_part_count);
 
   //re-use counts for span check
@@ -33,7 +33,7 @@ void test_prechi_solve_2(void) {
   Prechi *prechi = prechi_create(td->dweights, td->counts, n);
 
   int expected_parts = 3;
-  prechi_solve(prechi, 5);
+  prechi_solve(prechi, 5, 5);
   cut_assert_equal_int(expected_parts, prechi->solution_part_count);
 
   //re-use counts for span check
@@ -55,7 +55,7 @@ void test_prechi_solve_3(void) {
   Prechi *prechi = prechi_create(td->dweights, td->counts, n);
 
   int expected_parts = 5;
-  prechi_solve(prechi, 5);
+  prechi_solve(prechi, 5, 5);
   cut_assert_equal_int(expected_parts, prechi->solution_part_count);
 
   //re-use counts for span check
@@ -73,25 +73,19 @@ void test_prechi_solve_3(void) {
 }
 
 void test_prechi_solve_long(void) {
-  cut_pend("timing test");
   int n = 15;
   TestData *td = create_test_data(n);
   int_array_init(td->counts, n, 2, 0, 0, 0, 3, 0, 0, 0, 2, 3, 5, 1, 4, 2, 8);
   Prechi *prechi = prechi_create(td->dweights, td->counts, n);
 
   int expected_parts = 5;
-  prechi_solve(prechi, 5);
+  prechi_solve(prechi, 5, 5);
   cut_assert_equal_int(expected_parts, prechi->solution_part_count);
 
-  //re-use counts for span check
-  int_array_init(td->counts, expected_parts, 5, 5, 5, 7, 8);
+  //re-use counts for solution count check
+  int_array_init(td->counts, expected_parts, 5, 5, 6, 6, 8);
   assert_equal_int_arrays(
-    td->counts, prechi->solution_spans, expected_parts);
-
-  assert_equal_float(td->weights[4] + 2.5, prechi->solution_boundaries[0], 2);
-  assert_equal_float(td->weights[9] + 2.5, prechi->solution_boundaries[1], 2);
-  assert_equal_float(td->weights[10] + 2.5, prechi->solution_boundaries[2], 2);
-  assert_equal_float(td->weights[13] + 2.5, prechi->solution_boundaries[3], 2);
+    td->counts, prechi->solution_counts, expected_parts);
 
   prechi_destroy(prechi);
   destroy_test_data(td);
@@ -104,7 +98,7 @@ void test_prechi_solve_no_solution(void) {
   Prechi *prechi = prechi_create(td->dweights, td->counts, n);
   destroy_test_data(td);
 
-  prechi_solve(prechi, 5);
+  prechi_solve(prechi, 5, 5);
   cut_assert_equal_int(0, prechi->solution_part_count);
   assert_equal_float(0, prechi->solution_mean, 1);
   assert_equal_float(0, prechi->solution_variance, 1);
