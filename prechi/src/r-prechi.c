@@ -9,20 +9,24 @@
  grade_counts is a same size vector of integer counts
  min_size is the minimum number of counts needed for any given grade,
    usually 5.
+ max_seconds is a timeout in seconds. Sending zero will result in a
+   one hour timeout. The algorithm returns the current result at the
+   timeout, or the first result found after the timeout.
  The return is a list with:
    grade_counts: vector of clustered, integer counts
    boundaries: vector of real number partition boundaries
 */
 SEXP pre_chi_cluster_neighbors(
-  SEXP grade_values, SEXP grade_counts, SEXP min_size)
+  SEXP grade_values, SEXP grade_counts, SEXP min_size, SEXP max_seconds)
 {
   int n = length(grade_values);
   const double *grades = REAL_RO(grade_values);
   const int *counts = INTEGER_RO(grade_counts);
   int minimum_count = INTEGER_RO(min_size)[0];
+  int maximum_seconds = INTEGER_RO(max_seconds)[0];
 
   Prechi *prechi = prechi_create(grades, counts, n);
-  prechi_solve(prechi, minimum_count);
+  prechi_solve(prechi, minimum_count, maximum_seconds);
 
   int part_ct = prechi->solution_part_count;
   int prct = 0;
@@ -88,7 +92,7 @@ SEXP pre_chi_cluster_neighbors(
 }
 
 static const R_CallMethodDef PreChiEntries[] = {
-  {"pre_chi_cluster_neighbors", (DL_FUNC)&pre_chi_cluster_neighbors, 3},
+  {"pre_chi_cluster_neighbors", (DL_FUNC)&pre_chi_cluster_neighbors, 4},
   {NULL, NULL, 0}
 };
 

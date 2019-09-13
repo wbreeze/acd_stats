@@ -2,7 +2,12 @@
 # grades: vector of numeric grade values, increasing
 # counts: vector of integer counts
 # minimum_count: integer minimum size of a cluster, defaults to five
-prechi.cluster_neighbors <- function(grades, counts, minimum_count = 5) {
+# timout:  a timeout in seconds. Sending zero will result in a
+#   one hour timeout. The algorithm returns the current result at the
+#   timeout, or the first result found after the timeout.
+prechi.cluster_neighbors <- function(grades, counts,
+  minimum_count = 5, timeout = 0)
+{
   n <- as.integer(minimum_count)
   ln <- length(n)
   if (1 < ln) {
@@ -26,11 +31,12 @@ prechi.cluster_neighbors <- function(grades, counts, minimum_count = 5) {
     g <- g[0:part_ct]
     c <- c[0:part_ct]
   }
+  maxt <- as.integer(timeout)
 
   if (part_ct < 3) {
     stop("Prechi: fewer than three parts provided")
   }
-  clustered <- .Call(pre_chi_cluster_neighbors, g, c, n)
+  clustered <- .Call(pre_chi_cluster_neighbors, g, c, n, maxt)
   if (clustered$count < 3) {
     stop("Prechi: there is no solution with three or more parts")
   }

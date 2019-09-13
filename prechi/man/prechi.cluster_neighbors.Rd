@@ -14,7 +14,7 @@
   and bounded by largest possible number of groupings.
 }
 \usage{
-prechi.cluster_neighbors(grades, counts, minimum_count = 5)
+prechi.cluster_neighbors(grades, counts, minimum_count = 5, timeout = 0)
 }
 \arguments{
   \item{grades}{
@@ -30,6 +30,12 @@ prechi.cluster_neighbors(grades, counts, minimum_count = 5)
   Minimum count needed for any grade or combination of grades.
   This defaults to five.
 }
+  \item{timeout}{
+  Maximum time in seconds. Defaults to one hour.
+  Sending zero (the default) will result in a
+  one hour timeout. The algorithm returns the current result at the
+  timeout, or the first result found after the timeout.
+  }
 }
 \details{
   When a grade has a count less than the minimum, this combines counts
