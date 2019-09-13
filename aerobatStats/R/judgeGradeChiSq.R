@@ -23,7 +23,8 @@ jgd.chiSqP <- function(gradeCounts) {
   set_invalid_error <- function(w) {
     rv$valid <<- F
   }
-  clust <- tryCatch(prechi.cluster_neighbors(gradeCounts$range, gradeCounts$counts),
+  clust <- tryCatch(
+      prechi.cluster_neighbors(gradeCounts$range, gradeCounts$counts, 5, 5),
       error=set_invalid_error, warning = set_invalid_error)
   if (rv$valid) {
     rv$df <- clust$count - 3
