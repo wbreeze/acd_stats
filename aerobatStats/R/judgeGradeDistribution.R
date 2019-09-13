@@ -1,3 +1,5 @@
+require('purrr')
+
 # Analyze judge grade distributions for each judge and each figure
 # id: flight identifier
 # class: flight competition class, e.g. glider 'G' or power 'P'
@@ -21,11 +23,38 @@
 #     PN: pilot id number
 #     X1695 X744 X657 X456: grades from four judges
 jgd.processFlight <- function(id, class, category, format, fp) {
-  data.frame(flight=id, class=class, category=category, format=format,
-    judge='X1695',
-    figure.ct=2, k.mean=14.5, grade.ct=20,
-    d.mean=3.14, d.sd=0.12, t.mean=3.21, t.sd=0.14,
-    chiSq.d.p=0.04, chiSq.d.valid=TRUE, chiSq.t.p=0.038, chiSq.t.valid=TRUE)
+  judges <- fp$judgeList(fp)
+  reduce(lapply(judges, jgd.processJudge, id, class, category, format, fp),
+    rbind)
+}
+
+jgd.processJudge <- function(judge, id, class, category, format, fp) {
+  groups <- fp$groups(fp)
+  reduce(lapply(groups, jgd.processJudgeGroup,
+    judge, id, class, category, format, fp), rbind)
+}
+
+jgd.processJudgeGroup <- function(
+  group, judge, id, class, category, format, fp)
+{
+  print("JUDGE GROUP")
+  str(judge)
+  ks <- fp$grades$K[group]
+  figs <- fp$grades$FN[group]
+  grades <- fp$grades[[judge]][group]
+  counts <- jgd.gradeCounts(grades)
+  print("COUNTS")
+  print(counts)
+  chisq <- jgd.chiSqP(counts)
+  print("CHISQ")
+  str(chisq)
+  data.frame(flight=id, class=class,
+    category=category, format=format,
+    judge=judge,
+    figure.ct=length(figs), k.mean=mean(ks), grade.ct=length(counts$grades),
+    d.mean=3.14, d.sd=3.14, t.mean=3.14, t.sd=3.14,
+    chiSq.df=chisq$df, chiSq.d.p=chisq$pc, chiSq.t.p=chisq$pu,
+    chiSq.valid=chisq$valid)
 }
 
 # Plot grade frequency histogram overlayed with the derived normal curve
