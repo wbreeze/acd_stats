@@ -30,11 +30,11 @@ int prechi_partition_minimum(PrechiPartition *part, int offset) {
 /*
  Return the smallest count of a partition.
 */
-int prechi_partition_minimum_count(PrechiPartition *part) {
+int prechi_partition_minimum_count(PrechiPartition *part, int offset) {
   // minimums are the smaller count of neighbors at a boundary
   // sorted_offset has boundary indexes in increasing order of minimum
   return prechi_partition_minimum(
-    part, prechi_partition_sorted_offset(part, 0));
+    part, prechi_partition_sorted_offset(part, offset));
 }
 
 /*

@@ -72,7 +72,8 @@ void test_prechi_solve_3(void) {
   destroy_test_data(td);
 }
 
-void test_prechi_solve_4(void) {
+void test_prechi_solve_long(void) {
+  cut_pend("timing test");
   int n = 15;
   TestData *td = create_test_data(n);
   int_array_init(td->counts, n, 2, 0, 0, 0, 3, 0, 0, 0, 2, 3, 5, 1, 4, 2, 8);

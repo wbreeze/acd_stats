@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdio.h> // DEBUG printf
 #include <stdlib.h>
 #include <string.h>
 #include "prechi.h"
@@ -64,7 +65,9 @@ static void record_solution(Prechi *prechi, PrechiPartition *solution,
   for (int i = 0; i < part_count; ++i) {
     prechi->solution_counts[i] = solution->counts[i];
     prechi->solution_spans[i] = solution->spans[i];
+    printf("%d, ", prechi->solution_counts[i]);
   }
+  printf("\n");
 }
 
 // Updates the solution if the one provided is "better"
@@ -98,14 +101,26 @@ static int bounded(Prechi *prechi, int reductions) {
   return part_count <= 3 || part_count <= prechi->solution_part_count;
 }
 
+/*
+ Returns 1 (true) to bound trials, 0 (false) to continue
+ We don't try partitions beyond the limit, nor those which have
+ elements on both sides at or exceeding the minimum count required.
+*/
+static int trial_bound(PrechiPartition *trial, int offset, int min_count) {
+  return(
+    trial->size - 1 <= offset ||
+    min_count <= prechi_partition_minimum_count(trial, offset)
+  );
+}
+
 // Check the trial solution and record it, or advance after bound
 static void advance_solution(Prechi *prechi, PrechiPartition *trial,
   int min_count, int reductions)
 {
-  if (min_count <= prechi_partition_minimum_count(trial)) {
+  if (min_count <= prechi_partition_minimum_count(trial, 0)) {
     record_if_improved(prechi, trial);
   } else if (!bounded(prechi, reductions)) {
-    for (int i = 0; i < trial->size - 1; ++i) {
+    for (int i = 0; !trial_bound(trial, i, min_count); ++i) {
       PrechiPartition *next_trial = prechi_partition_copy(trial);
       prechi_partition_join(next_trial,
         prechi_partition_sorted_offset(next_trial, i));

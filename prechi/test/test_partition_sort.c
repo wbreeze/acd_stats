@@ -117,9 +117,12 @@ void test_partition_minimum_count(void) {
     min+4, min+3, min+2, min+1, min+4, min+5, min, min+7, min+5);
 
   PrechiPartition *part = prechi_partition_create(n, td->weights, td->counts);
+
+  cut_assert_equal_int(min, prechi_partition_minimum_count(part, 0));
+  cut_assert_equal_int(min, prechi_partition_minimum_count(part, 1));
+  cut_assert_equal_int(min+1, prechi_partition_minimum_count(part, 2));
+  cut_assert_equal_int(min+1, prechi_partition_minimum_count(part, 3));
+
   destroy_test_data(td);
-
-  cut_assert_equal_int(min, prechi_partition_minimum_count(part));
-
   prechi_partition_destroy(part);
 }
