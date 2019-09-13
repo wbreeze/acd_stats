@@ -2,34 +2,52 @@
 #include "prechi_partition.h"
 
 /*
- Return "value" given the partition at a given offset.
+ Return value given the partition at a given offset.
  The value is used to sort the partitions by in order of interest.
- We favor removing ones in which the bins on either side have smaller counts.
+ We favor removing ones with lower sum, after first favoring for elements
+ with smaller count.
 */
 int prechi_partition_value(PrechiPartition *part, int offset) {
-  int value;
+  return part->counts[offset] + part->counts[offset + 1];
+}
+
+/*
+ Return minimum element on either side of the partition at a given offset.
+ The minimum is used to sort the partitions by in order of interest.
+ We favor removing ones in which one of the bin on either side has
+ smaller count.
+*/
+int prechi_partition_minimum(PrechiPartition *part, int offset) {
+  int minimum;
   if (part->counts[offset] < part->counts[offset + 1]) {
-    value = part->counts[offset];
+    minimum = part->counts[offset];
   } else {
-    value = part->counts[offset + 1];
+    minimum = part->counts[offset + 1];
   }
-  return value;
+  return minimum;
 }
 
 /*
  Return the smallest count of a partition.
 */
 int prechi_partition_minimum_count(PrechiPartition *part) {
-  // values are the smaller count of neighbors at a boundary
-  // sorted_offset has boundary indexes in increasing order of value
-  return prechi_partition_value(part, prechi_partition_sorted_offset(part, 0));
+  // minimums are the smaller count of neighbors at a boundary
+  // sorted_offset has boundary indexes in increasing order of minimum
+  return prechi_partition_minimum(
+    part, prechi_partition_sorted_offset(part, 0));
 }
 
 /*
- Sort the partition offsets into sorted_offsets by increasing value.
+ Sort the partition offsets into sorted_offsets by increasing minimum,
+ then increasing value.
  We use insertion sort to arrange the offsets based on the values.
 */
 static void sort_partitions(PrechiPartition *part) {
+  int *minimums = (int *)calloc(part->size, sizeof(int));
+  for(int ofs = 0; ofs < part->size - 1; ++ofs) {
+    minimums[ofs] = prechi_partition_minimum(part, ofs);
+  }
+
   int *values = (int *)calloc(part->size, sizeof(int));
   for(int ofs = 0; ofs < part->size - 1; ++ofs) {
     values[ofs] = prechi_partition_value(part, ofs);
@@ -38,13 +56,23 @@ static void sort_partitions(PrechiPartition *part) {
   int *sofs = part->sorted_offsets;
   for(int i = 0; i < part->size - 1; ++i) {
     int j;
-    for(j = i; 0 < j && values[i] < values[sofs[j-1]]; --j) {
+    for(j = i;
+      0 < j &&
+      (
+        minimums[i] < minimums[sofs[j-1]] || (
+          minimums[i] == minimums[sofs[j-1]] &&
+          values[i] < values[sofs[j-1]]
+        )
+      );
+      --j
+    ) {
       sofs[j] = sofs[j-1];
     }
     sofs[j] = i;
   }
 
   free(values);
+  free(minimums);
 }
 
 /*

@@ -4,7 +4,7 @@
 #include "test_data.h"
 #include "../src/prechi_partition.h"
 
-void test_partition_sort_value(void) {
+void test_partition_sort_minimum(void) {
   int n = 3;
   TestData *td = create_test_data(n);
   int min = 1;
@@ -12,21 +12,42 @@ void test_partition_sort_value(void) {
 
   PrechiPartition *part = prechi_partition_create(n, td->weights, td->counts);
 
-  cut_assert_equal_int(min, prechi_partition_value(part, 0));
-  cut_assert_equal_int(min, prechi_partition_value(part, 1));
+  cut_assert_equal_int(min, prechi_partition_minimum(part, 0));
+  cut_assert_equal_int(min, prechi_partition_minimum(part, 1));
 
   prechi_partition_destroy(part);
   destroy_test_data(td);
 }
 
-// see that values at sorted_offsets increase
+void test_partition_sort_value(void) {
+  int n = 3;
+  TestData *td = create_test_data(n);
+  int min = 1;
+  int_array_init(td->counts, n, min, min + 1, min + 2);
+
+  PrechiPartition *part = prechi_partition_create(n, td->weights, td->counts);
+
+  cut_assert_equal_int(2 * min + 1, prechi_partition_value(part, 0));
+  cut_assert_equal_int(2 * min + 3, prechi_partition_value(part, 1));
+
+  prechi_partition_destroy(part);
+  destroy_test_data(td);
+}
+
+// see that minimums and values at sorted_offsets increase
 static void assert_sorted_offsets(PrechiPartition *part) {
   int ofs = prechi_partition_sorted_offset(part, 0);
+  int prior_minimum = prechi_partition_minimum(part, ofs);
   int prior_value = prechi_partition_value(part, ofs);
   for (int i = 1; i < part->size - 1; ++i) {
     ofs = prechi_partition_sorted_offset(part, i);
+    int minimum = prechi_partition_minimum(part, ofs);
     int value = prechi_partition_value(part, ofs);
-    cut_assert_operator_int(prior_value, <=, value);
+    cut_assert_operator_int(prior_minimum, <=, minimum);
+    if (prior_minimum == minimum) {
+      cut_assert_operator_int(prior_value, <=, value);
+    }
+    prior_minimum = minimum;
     prior_value = value;
   }
 }
