@@ -10,7 +10,8 @@ void test_prechi_join_zeros(void) {
   int_array_init(td->counts, n, 5, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5);
   Prechi *prechi = prechi_create(td->dweights, td->counts, n);
 
-  prechi_solve(prechi, 5, 1);
+  prechi_set_timeout_seconds(prechi, 1);
+  prechi_solve(prechi);
 
   cut_assert_false(prechi->did_timeout);
   cut_assert_equal_int(4, prechi->solution_part_count);

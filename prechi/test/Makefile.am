@@ -22,4 +22,5 @@ libtest_prechi_la_SOURCES = $(SRC_FILES) \
   test_partition_sort.c \
   test_prechi.h test_prechi.c \
   test_prechi_collapse_zero.c \
+  test_prechi_no_solution.c \
   test_prechi_solve.c

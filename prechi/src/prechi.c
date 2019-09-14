@@ -5,6 +5,8 @@
 #include "prechi_partition.h"
 
 static const int PRECHI_MAX_TIME = 360; // seconds, one hour
+static const int PRECHI_MIN_COUNT = 5;
+static const int PRECHI_MIN_PARTS = 3;
 
 /*
  Create the data structure for solving the cluster neighbors problem.
@@ -39,6 +41,9 @@ Prechi *prechi_create(const double *weights, const int *counts, int count) {
   prechi->solution_boundaries = (float*)calloc(count, sizeof(float));
   prechi->timeout = (clock_t)(-1);
   prechi->did_timeout = 0;
+  prechi->timeout_seconds = PRECHI_MAX_TIME;
+  prechi->min_solution_part_count = PRECHI_MIN_PARTS;
+  prechi->min_count = PRECHI_MIN_COUNT;
 
   for (int i = 0; i < count; ++i) {
     prechi->counts[i] = counts[i];
@@ -56,6 +61,33 @@ Prechi *prechi_destroy(Prechi *prechi) {
   free(prechi->weights);
   free(prechi);
   return NULL;
+}
+
+/*
+ * Sets the minimum number of partitions in a solution.
+ */
+void prechi_set_minimum_partition_count(Prechi *prechi, int min_count) {
+  prechi->min_solution_part_count =
+    (min_count < PRECHI_MIN_PARTS) ? PRECHI_MIN_PARTS : min_count;
+}
+
+/*
+ * Sets the minimum count of occurrences within a partition.
+ */
+void prechi_set_minimum_count(Prechi *prechi, int min_count) {
+  prechi->min_count =
+    (min_count < PRECHI_MIN_COUNT) ? PRECHI_MIN_COUNT : min_count;
+}
+
+/*
+ * Sets the timeout in seconds
+ */
+void prechi_set_timeout_seconds(Prechi *prechi, float seconds) {
+  if (0 == seconds || PRECHI_MAX_TIME < seconds) {
+    prechi->timeout_seconds = PRECHI_MAX_TIME;
+  } else {
+    prechi->timeout_seconds = seconds;
+  }
 }
 
 // Updates the solution
@@ -100,8 +132,8 @@ static void record_if_improved(Prechi *prechi, PrechiPartition *solution)
 static int bounded(Prechi *prechi, PrechiPartition *trial) {
   prechi->did_timeout = prechi->timeout < clock();
   return(
-    trial->size <= 3 ||
     trial->size <= prechi->solution_part_count ||
+    trial->size <= prechi->min_solution_part_count ||
     (prechi->solution_part_count != 0 && prechi->did_timeout)
   );
 }
@@ -119,17 +151,15 @@ static int trial_bound(PrechiPartition *trial, int offset, int min_count) {
 }
 
 // Check the trial solution and record it, or advance after bound
-static void advance_solution(Prechi *prechi, PrechiPartition *trial,
-  int min_count)
-{
-  if (min_count <= prechi_partition_minimum_count(trial, 0)) {
+static void advance_solution(Prechi *prechi, PrechiPartition *trial) {
+  if (prechi->min_count <= prechi_partition_minimum_count(trial, 0)) {
     record_if_improved(prechi, trial);
   } else if (!bounded(prechi, trial)) {
-    for (int i = 0; !trial_bound(trial, i, min_count); ++i) {
+    for (int i = 0; !trial_bound(trial, i, prechi->min_count); ++i) {
       PrechiPartition *next_trial = prechi_partition_copy(trial);
       prechi_partition_join(next_trial,
         prechi_partition_sorted_offset(next_trial, i));
-      advance_solution(prechi, next_trial, min_count);
+      advance_solution(prechi, next_trial);
       next_trial = prechi_partition_destroy(next_trial);
     }
   }
@@ -167,7 +197,7 @@ static void preprocess_zeros(PrechiPartition *trial) {
  - did_timeout has true (non-zero) if the timeout was reached before the
      solution space was fully explored
 */
-void prechi_solve(Prechi *prechi, int min_count, int timeout_seconds) {
+void prechi_solve(Prechi *prechi) {
   float *weights = (float *)calloc(prechi->count, sizeof(float));
   for(int i = 0; i < prechi->count; ++i) {
     weights[i] = prechi->weights[i];
@@ -183,11 +213,8 @@ void prechi_solve(Prechi *prechi, int min_count, int timeout_seconds) {
   // do this after retrieving the initial mean and variance
   preprocess_zeros(trial);
 
-  if (0 == timeout_seconds || PRECHI_MAX_TIME < timeout_seconds) {
-    timeout_seconds = PRECHI_MAX_TIME;
-  }
-  prechi->timeout = clock() + CLOCKS_PER_SEC * timeout_seconds;
-  advance_solution(prechi, trial, min_count);
+  prechi->timeout = clock() + CLOCKS_PER_SEC * prechi->timeout_seconds;
+  advance_solution(prechi, trial);
 
   prechi_partition_destroy(trial);
   compute_solution_intervals(prechi);
