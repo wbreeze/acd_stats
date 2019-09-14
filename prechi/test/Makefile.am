@@ -10,10 +10,8 @@ libtest_prechi_la_LDFLAGS = -module -rpath $(libdir) \
 libtest_prechi_la_LIBADD = $(CUTTER_LIBS)
 
 SRC_FILES = \
-../src/prechi.h \
-../src/prechi.c \
-../src/prechi_partition.h \
-../src/prechi_partition.c
+../src/prechi.h ../src/prechi.c \
+../src/prechi_partition.h ../src/prechi_partition.c
 
 libtest_prechi_la_SOURCES = $(SRC_FILES) \
   array_init.h array_init.c \
@@ -23,4 +21,5 @@ libtest_prechi_la_SOURCES = $(SRC_FILES) \
   test_partition_mean.c \
   test_partition_sort.c \
   test_prechi.h test_prechi.c \
+  test_prechi_collapse_zero.c \
   test_prechi_solve.c

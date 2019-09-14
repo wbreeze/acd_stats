@@ -38,6 +38,7 @@ Prechi *prechi_create(const double *weights, const int *counts, int count) {
   prechi->solution_spans = (int *)calloc(count, sizeof(int));
   prechi->solution_boundaries = (float*)calloc(count, sizeof(float));
   prechi->timeout = (clock_t)(-1);
+  prechi->did_timeout = 0;
 
   for (int i = 0; i < count; ++i) {
     prechi->counts[i] = counts[i];
@@ -96,12 +97,12 @@ static void record_if_improved(Prechi *prechi, PrechiPartition *solution)
  Any solution with less than three parts is not useful.
  Any solution with fewer parts than one already found is not useful.
 */
-static int bounded(Prechi *prechi, int reductions) {
-  int part_count = prechi->count - reductions;
+static int bounded(Prechi *prechi, PrechiPartition *trial) {
+  prechi->did_timeout = prechi->timeout < clock();
   return(
-    part_count <= 3 ||
-    part_count <= prechi->solution_part_count ||
-    (prechi->solution_part_count != 0 && prechi->timeout < clock())
+    trial->size <= 3 ||
+    trial->size <= prechi->solution_part_count ||
+    (prechi->solution_part_count != 0 && prechi->did_timeout)
   );
 }
 
@@ -119,16 +120,16 @@ static int trial_bound(PrechiPartition *trial, int offset, int min_count) {
 
 // Check the trial solution and record it, or advance after bound
 static void advance_solution(Prechi *prechi, PrechiPartition *trial,
-  int min_count, int reductions)
+  int min_count)
 {
   if (min_count <= prechi_partition_minimum_count(trial, 0)) {
     record_if_improved(prechi, trial);
-  } else if (!bounded(prechi, reductions)) {
+  } else if (!bounded(prechi, trial)) {
     for (int i = 0; !trial_bound(trial, i, min_count); ++i) {
       PrechiPartition *next_trial = prechi_partition_copy(trial);
       prechi_partition_join(next_trial,
         prechi_partition_sorted_offset(next_trial, i));
-      advance_solution(prechi, next_trial, min_count, reductions + 1);
+      advance_solution(prechi, next_trial, min_count);
       next_trial = prechi_partition_destroy(next_trial);
     }
   }
@@ -145,6 +146,16 @@ static void compute_solution_intervals(Prechi *prechi) {
 }
 
 /*
+ * This makes a side-effect on trial, joining all of the partitions
+ *   that have zero count on one or both sides
+*/
+static void preprocess_zeros(PrechiPartition *trial) {
+  while(prechi_partition_minimum_count(trial, 0) == 0) {
+    prechi_partition_join(trial, prechi_partition_sorted_offset(trial, 0));
+  }
+}
+
+/*
  Solve the partitions problem.
  After this, the following apply:
  - solution_part_count has the number of parts in the partition
@@ -153,6 +164,8 @@ static void compute_solution_intervals(Prechi *prechi) {
  - solution_mean has the weighted mean of the partitioned data
  - solution_variance has the weighted variance of the partitioned data
  - solution_spans has the number of classes combined for each part
+ - did_timeout has true (non-zero) if the timeout was reached before the
+     solution space was fully explored
 */
 void prechi_solve(Prechi *prechi, int min_count, int timeout_seconds) {
   float *weights = (float *)calloc(prechi->count, sizeof(float));
@@ -162,15 +175,19 @@ void prechi_solve(Prechi *prechi, int min_count, int timeout_seconds) {
   PrechiPartition *trial = prechi_partition_create(prechi->count,
     weights, prechi->counts);
   free(weights);
+
   prechi->target_mean = prechi_partition_mean(trial);
   prechi->target_variance =
     prechi_partition_variance(trial, prechi->target_mean);
+
+  // do this after retrieving the initial mean and variance
+  preprocess_zeros(trial);
 
   if (0 == timeout_seconds || PRECHI_MAX_TIME < timeout_seconds) {
     timeout_seconds = PRECHI_MAX_TIME;
   }
   prechi->timeout = clock() + CLOCKS_PER_SEC * timeout_seconds;
-  advance_solution(prechi, trial, min_count, 0);
+  advance_solution(prechi, trial, min_count);
 
   prechi_partition_destroy(trial);
   compute_solution_intervals(prechi);

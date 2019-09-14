@@ -16,6 +16,7 @@ typedef struct Prechi {
   int *solution_spans;
   float *solution_boundaries;
   clock_t timeout;
+  int did_timeout;
 } Prechi;
 
 Prechi *prechi_create(const double *weights, const int *counts, int count);
