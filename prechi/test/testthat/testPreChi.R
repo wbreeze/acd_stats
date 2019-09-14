@@ -8,7 +8,8 @@ test_that("computes clusters", {
   expect_false(is.null(clustered))
   expect_type(clustered, "list")
   expect_named(clustered, c("count", "boundaries", "counts",
-    "target_mean", "target_variance", "solution_mean", "solution_variance"))
+    "target_mean", "target_variance", "solution_mean", "solution_variance",
+    "did_timeout"))
   expect_length(clustered$count, 1)
   expect_equal(4, clustered$count)
   expect_length(clustered$counts, 4)
@@ -22,6 +23,7 @@ test_that("computes clusters", {
   expect_gt(clustered$boundaries[4], 75)
   expect_lt(clustered$boundaries[4], 80)
   expect_equal(Inf, clustered$boundaries[5])
+  expect_false(clustered$did_timeout)
 })
 
 test_that("computes parameters for normal distribution", {

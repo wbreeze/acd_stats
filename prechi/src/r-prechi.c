@@ -32,8 +32,8 @@ SEXP pre_chi_cluster_neighbors(
   int prct = 0;
 
   // Set-up the returned list
-  SEXP rv = PROTECT(allocVector(VECSXP, 7)); ++prct;
-  SEXP names = PROTECT(allocVector(STRSXP, 7)); ++prct;
+  SEXP rv = PROTECT(allocVector(VECSXP, 8)); ++prct;
+  SEXP names = PROTECT(allocVector(STRSXP, 8)); ++prct;
   SET_STRING_ELT(names, 0, mkChar("count"));
   SET_STRING_ELT(names, 1, mkChar("boundaries"));
   SET_STRING_ELT(names, 2, mkChar("counts"));
@@ -41,6 +41,7 @@ SEXP pre_chi_cluster_neighbors(
   SET_STRING_ELT(names, 4, mkChar("target_variance"));
   SET_STRING_ELT(names, 5, mkChar("solution_mean"));
   SET_STRING_ELT(names, 6, mkChar("solution_variance"));
+  SET_STRING_ELT(names, 7, mkChar("did_timeout"));
   setAttrib(rv, R_NamesSymbol, names);
 
   // Set count on returned list
@@ -85,6 +86,11 @@ SEXP pre_chi_cluster_neighbors(
   SEXP solution_variance = PROTECT(allocVector(REALSXP, 1)); ++prct;
   REAL(solution_variance)[0] = prechi->solution_variance;
   SET_VECTOR_ELT(rv, 6, solution_variance);
+
+  // Set timeout indicator on returned list
+  SEXP timeout = PROTECT(allocVector(LGLSXP, 1)); ++prct;
+  LOGICAL(timeout)[0] = prechi->did_timeout != 0;
+  SET_VECTOR_ELT(rv, 7, timeout);
 
   prechi_destroy(prechi);
   UNPROTECT(prct);
