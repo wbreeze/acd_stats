@@ -16,7 +16,7 @@ describe("Process flight program", {
     expect_equal(names(f), c("flight", "class", "category", "format",
       "judge", "figure.ct", "k.mean", "grade.ct",
       "d.mean", "d.sd", "t.mean", "t.sd",
-      "chiSq.df", "chiSq.d.p", "chiSq.t.p", "chiSq.valid"
+      "chiSq.df", "chiSq.d.p", "chiSq.t.p", "chiSq.valid", "valid.reason"
     ))
   })
 
@@ -36,6 +36,6 @@ describe("Process flight program", {
 
   it("produces records for each figure group", {
     f <- processFlight10780()
-    expect_equal(unique(f$figure.ct), c(20,30))
+    expect_equal(unique(f$figure.ct), c(2,3))
   })
 })

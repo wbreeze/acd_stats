@@ -37,24 +37,20 @@ jgd.processJudge <- function(judge, id, class, category, format, fp) {
 jgd.processJudgeGroup <- function(
   group, judge, id, class, category, format, fp)
 {
-  print("JUDGE GROUP")
-  str(judge)
   ks <- fp$grades$K[group]
   figs <- fp$grades$FN[group]
   grades <- fp$grades[[judge]][group]
   counts <- jgd.gradeCounts(grades)
-  print("COUNTS")
-  print(counts)
-  chisq <- jgd.chiSqP(counts)
-  print("CHISQ")
-  str(chisq)
+  chiSq <- jgd.chiSqP(counts)
   data.frame(flight=id, class=class,
     category=category, format=format,
     judge=judge,
-    figure.ct=length(figs), k.mean=mean(ks), grade.ct=length(counts$grades),
-    d.mean=3.14, d.sd=3.14, t.mean=3.14, t.sd=3.14,
-    chiSq.df=chisq$df, chiSq.d.p=chisq$pc, chiSq.t.p=chisq$pu,
-    chiSq.valid=chisq$valid)
+    figure.ct=length(unique(figs)), k.mean=mean(ks),
+    grade.ct=length(counts$grades),
+    d.mean=chiSq$solution_mean, d.sd=sqrt(chiSq$solution_variance),
+    t.mean=chiSq$target_mean, t.sd=sqrt(chiSq$target_variance),
+    chiSq.df=chiSq$df, chiSq.d.p=chiSq$pc, chiSq.t.p=chiSq$pu,
+    chiSq.valid=chiSq$valid, valid.reason=chiSq$reason)
 }
 
 # Plot grade frequency histogram overlayed with the derived normal curve

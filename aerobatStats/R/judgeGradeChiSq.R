@@ -5,7 +5,12 @@ require('prechi')
 #   pu: ChiSq p-value against normal derived from unclustered data
 #   pc: ChiSq p-value against normal derived from clustered data
 #   df: Degrees of freedom
+#   target_mean: mean of count data
+#   target_variance: variance of count data
+#   solution_mean: mean of clustered count data
+#   solution_variance: variance of clustered count data
 #   valid: whether the test was valid, true or false
+#   reason: message if not valid, else "Okay"
 # The test is not valid if the grade clustering produces fewer than four
 #   intervals, or if there are fewer than four different grades given
 #   to begin with. A judge who limits themselves to grades from
@@ -15,19 +20,27 @@ require('prechi')
 #   Of course, not valid means you can't reject, and that the p-values
 #   are meaningless
 jgd.chiSqP <- function(gradeCounts) {
-  rv <- list(valid=T, df=NaN, pu=NaN, pc=NaN)
+  rv <- list(valid=T, reason="Okay", df=NA, pu=NA, pc=NA,
+    target_mean=NA, target_variance=NA,
+    solution_mean=NA, solution_variance=NA)
   set_invalid_warn <- function(w) {
     rv$valid <<- F
+    rv$reason <<- w$message
     invokeRestart("muffleWarning")
   }
-  set_invalid_error <- function(w) {
+  set_invalid_error <- function(e) {
     rv$valid <<- F
+    rv$reason <<- e$message
   }
   clust <- tryCatch(
-      prechi.cluster_neighbors(gradeCounts$range, gradeCounts$counts, 5, 5),
+      prechi.cluster_neighbors(gradeCounts$range, gradeCounts$counts, 6, 5),
       error=set_invalid_error, warning = set_invalid_error)
   if (rv$valid) {
     rv$df <- clust$count - 3
+    rv$target_mean <- clust$target_mean
+    rv$target_variance <- clust$target_variance
+    rv$solution_mean <- clust$solution_mean
+    rv$solution_variance <- clust$solution_variance
     dist <- diff(pnorm(clust$boundaries, clust$target_mean,
       sqrt(clust$target_variance)))
     rv$pu <- withCallingHandlers(
