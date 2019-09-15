@@ -83,7 +83,17 @@ test_that("no solution", {
   minimum_count <- c(5)
   expect_error(
     clustered <- prechi.cluster_neighbors(grades, counts, minimum_count),
-    "Prechi: there is no solution with three or more parts")
+    "Prechi: there is no solution with 3 or more parts")
+})
+
+test_that("no bigger solution", {
+  grades <- c(55, 60, 65, 70, 75, 80)
+  counts <- c( 6,  1,  6,  6,  1,  6)
+  minimum_count <- c(6)
+  expect_error(
+    clustered <- prechi.cluster_neighbors(grades, counts, minimum_count,
+      minimum_partition_count = 5),
+    "Prechi: there is no solution with 5 or more parts")
 })
 
 test_that("too few parts", {
@@ -91,7 +101,16 @@ test_that("too few parts", {
   counts <- c( 7,  5)
   expect_error(
     clustered <- prechi.cluster_neighbors(grades, counts),
-    "Prechi: fewer than three parts provided")
+    "Prechi: fewer than 3 parts provided")
+})
+
+test_that("too few of more parts", {
+  grades <- c(55, 60, 65, 70)
+  counts <- c( 7,  5,  8,  8)
+  expect_error(
+    clustered <- prechi.cluster_neighbors(grades, counts,
+      minimum_partition_count = 5),
+    "Prechi: fewer than 5 parts provided")
 })
 
 test_that("zero parts", {
@@ -99,5 +118,5 @@ test_that("zero parts", {
   counts <- c()
   expect_error(
     clustered <- prechi.cluster_neighbors(grades, counts),
-    "Prechi: fewer than three parts provided")
+    "Prechi: fewer than 3 parts provided")
 })

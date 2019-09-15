@@ -14,35 +14,40 @@
   and bounded by largest possible number of groupings.
 }
 \usage{
-prechi.cluster_neighbors(grades, counts, minimum_count = 5, timeout = 0)
+prechi.cluster_neighbors(grades, counts, minimum_count = 5, timeout = 0,
+  minimum_partition_count = 3)
 }
 \arguments{
   \item{grades}{
   A vector of grade values, increasing. It should include all of
   the grade values within the domain of grades from the least
   grade given to the greatest.
-}
+  }
   \item{counts}{
   A vector of integer counts, one per grade. The counts are the
   number of times the grade was given.
-}
+  }
   \item{minimum_count}{
   Minimum count needed for any grade or combination of grades.
   This defaults to five.
-}
+  }
   \item{timeout}{
   Maximum time in seconds. Defaults to one hour.
   Sending zero (the default) will result in a
   one hour timeout. The algorithm returns the current result at the
   timeout, or the first result found after the timeout.
   }
+  \item{minimum_partition_count}{
+  Minimum number of partitions in the solution.
+  This defaults to three.
+  }
 }
 \details{
   When a grade has a count less than the minimum, this combines counts
   with that of a neighboring grade. The process repeats
   until there are no grades that have fewer than the
-  minimum count. With a solution or minimum of three clusters, it
-  backtracks to seach all other solutions.
+  minimum count. With a solution or minimum of minimum_partition_count
+  clusters, it backtracks to seach all other solutions.
 
   The search uses the heuristic of choosing to first try joining grades
   with the smallest counts. It bounds the search using number of joins.

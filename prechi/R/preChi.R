@@ -6,7 +6,7 @@
 #   one hour timeout. The algorithm returns the current result at the
 #   timeout, or the first result found after the timeout.
 prechi.cluster_neighbors <- function(grades, counts,
-  minimum_count = 5, timeout = 0)
+  minimum_count = 5, timeout = 0, minimum_partition_count = 3)
 {
   n <- as.integer(minimum_count)
   ln <- length(n)
@@ -32,13 +32,14 @@ prechi.cluster_neighbors <- function(grades, counts,
     c <- c[0:part_ct]
   }
   maxt <- as.integer(timeout)
+  min_parts <- max(as.integer(3), as.integer(minimum_partition_count))
 
-  if (part_ct < 3) {
-    stop("Prechi: fewer than three parts provided")
+  if (part_ct < min_parts) {
+    stop("Prechi: fewer than ", min_parts, " parts provided")
   }
-  clustered <- .Call(pre_chi_cluster_neighbors, g, c, n, maxt)
-  if (clustered$count < 3) {
-    stop("Prechi: there is no solution with three or more parts")
+  clustered <- .Call(pre_chi_cluster_neighbors, g, c, n, maxt, min_parts)
+  if (clustered$count < min_parts) {
+    stop("Prechi: there is no solution with ", min_parts, " or more parts")
   }
   clustered
 }

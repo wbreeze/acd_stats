@@ -12,21 +12,27 @@
  max_seconds is a timeout in seconds. Sending zero will result in a
    one hour timeout. The algorithm returns the current result at the
    timeout, or the first result found after the timeout.
+ min_parts_count is the minimum number of partitions required for the solution
  The return is a list with:
    grade_counts: vector of clustered, integer counts
    boundaries: vector of real number partition boundaries
 */
 SEXP pre_chi_cluster_neighbors(
-  SEXP grade_values, SEXP grade_counts, SEXP min_size, SEXP max_seconds)
+  SEXP grade_values, SEXP grade_counts, SEXP min_size, SEXP max_seconds,
+  SEXP min_parts_count)
 {
   int n = length(grade_values);
   const double *grades = REAL_RO(grade_values);
   const int *counts = INTEGER_RO(grade_counts);
   int minimum_count = INTEGER_RO(min_size)[0];
   int maximum_seconds = INTEGER_RO(max_seconds)[0];
+  int minimum_parts = INTEGER_RO(min_parts_count)[0];
 
   Prechi *prechi = prechi_create(grades, counts, n);
-  prechi_solve(prechi, minimum_count, maximum_seconds);
+  prechi_set_minimum_partition_count(prechi, minimum_parts);
+  prechi_set_minimum_count(prechi, minimum_count);
+  prechi_set_timeout_seconds(prechi, maximum_seconds);
+  prechi_solve(prechi);
 
   int part_ct = prechi->solution_part_count;
   int prct = 0;
@@ -98,7 +104,7 @@ SEXP pre_chi_cluster_neighbors(
 }
 
 static const R_CallMethodDef PreChiEntries[] = {
-  {"pre_chi_cluster_neighbors", (DL_FUNC)&pre_chi_cluster_neighbors, 4},
+  {"pre_chi_cluster_neighbors", (DL_FUNC)&pre_chi_cluster_neighbors, 5},
   {NULL, NULL, 0}
 };
 
