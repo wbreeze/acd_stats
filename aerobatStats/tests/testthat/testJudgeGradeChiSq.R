@@ -1,14 +1,14 @@
 context("Judge grade ChiSq test")
 
 describe("ChiSq test on grade distribution", {
-  test_that("returns not valid when only three grade values", {
-    grades <- rep(c(55, 65, 80), 5)
+  test_that("returns not valid when only four grade values", {
+    grades <- rep(c(55, 65, 80, 85), 5)
     csr <- jgd.chiSqP(jgd.gradeCounts(grades))
     expect_false(csr$valid)
   })
 
   test_that("returns not valid when prechi.cluster fails", {
-    grades <- rep(c(55, 65, 80, 85), 3)
+    grades <- rep(c(55, 65, 80, 85, 90), 3)
     csr <- jgd.chiSqP(jgd.gradeCounts(grades))
     expect_false(csr$valid)
   })
