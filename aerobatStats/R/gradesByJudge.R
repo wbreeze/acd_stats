@@ -13,17 +13,22 @@ GradesByJudge <- function(gradesByJudge) {
   # Subset the data into groups according to FPS 3.3
   # Returns a list of groups, each being a list of row indices
   #   for the rows in the group
-  gbj$groups <- function(gbj) {
+  # FPS 3.3 uses a minimum group size of 11, the default for group_size
+  # The function may be used to make larger sized groups
+  gbj$groups <- function(gbj, group_size=11) {
     kfps <- order(gbj$grades$K, gbj$grades$FN, gbj$grades$PN,
       decreasing=c(TRUE, FALSE, FALSE))
     chunk <- gbj$pilotCount(gbj)
-    chunk <- (11 %/% chunk + 1) * chunk
+    chunk <- (group_size %/% chunk + 1) * chunk
     length <- length(kfps)
-    firsts <- seq(1, length - length %% chunk, chunk)
-    lasts <- c(seq(chunk, length - chunk, chunk), length)
-    mapply(function(from, to) {
-      kfps[seq(from,to)]
-    }, firsts, lasts)
+    chunk_count <- length %/% chunk
+    if (1 < chunk_count) {
+      firsts <- seq(1, length - length %% chunk, chunk)
+      lasts <- c(seq(chunk, length - chunk, chunk), length)
+      mapply(function(from, to) {
+        kfps[seq(from,to)]
+      }, firsts, lasts)
+    } else list(kfps)
   }
 
   gbj$pilotCount <- function(gbj) {

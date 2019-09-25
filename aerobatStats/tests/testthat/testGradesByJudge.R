@@ -42,4 +42,11 @@ describe("grade data", {
     sizes <- lapply(groups, function(group) { length(group) })
     expect_equal(sizes, list(20, 20, 20, 20, 30))
   })
+
+  it("returns one figure group when length less than chunk size", {
+    gbj <- setupGradesByJudge()
+    groups <- gbj$groups(gbj, length(gbj$grades$K) + 1)
+    expect_equal(length(groups), 1)
+    expect_equal(length(groups[[1]]), length(gbj$grades$K))
+  })
 })
