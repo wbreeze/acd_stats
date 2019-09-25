@@ -29,9 +29,18 @@ jgd.processFlight <- function(id, class, category, format, fp) {
 }
 
 jgd.processJudge <- function(judge, id, class, category, format, fp) {
-  groups <- fp$groups(fp, 60)
-  reduce(lapply(groups, jgd.processJudgeGroup,
+  groups <- fp$groups(fp)
+  ngroups <- reduce(lapply(groups, jgd.processJudgeGroup,
     judge, id, class, category, format, fp), rbind)
+  groups <- fp$groups(fp, 60)
+  lgroups <- reduce(lapply(groups, jgd.processJudgeGroup,
+    judge, id, class, category, format, fp), rbind)
+  if (1 < length(groups$counts)) {  # more than one group of ~60
+    groups <- fp$groups(fp, length(fp$grades$K))
+    agroups <- reduce(lapply(groups, jgd.processJudgeGroup,
+      judge, id, class, category, format, fp), rbind)
+    rbind(ngroups, lgroups, agroups)
+  } else rbind(ngroups, lgroups)
 }
 
 jgd.processJudgeGroup <- function(
@@ -42,6 +51,7 @@ jgd.processJudgeGroup <- function(
   grades <- fp$grades[[judge]][group]
   counts <- jgd.gradeCounts(grades)
   chiSq <- jgd.chiSqP(counts)
+  swilks <- jgd.shapiro(counts)
   data.frame(flight=id, class=class,
     category=category, format=format,
     judge=judge,
@@ -52,7 +62,10 @@ jgd.processJudgeGroup <- function(
     chiSq.df=chiSq$df,
     chiSq.t.p=chiSq$pu,
     chiSq.d.p=chiSq$pc,
-    chiSq.valid=chiSq$valid, valid.reason=chiSq$reason)
+    chiSq.valid=chiSq$valid,
+    valid.reason=chiSq$reason,
+    sw.p.value=swilks$p.value
+  )
 }
 
 # Plot grade frequency histogram overlayed with the derived normal curve
