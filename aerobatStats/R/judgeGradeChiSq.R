@@ -11,8 +11,8 @@ require('prechi')
 #   solution_variance: variance of clustered count data
 #   valid: whether the test was valid, true or false
 #   reason: message if not valid, else "Okay"
-# The test is not valid if the grade clustering produces fewer than four
-#   intervals, or if there are fewer than four different grades given
+# The test is not valid if the grade clustering produces fewer than six
+#   intervals, or if there are fewer than six different grades given
 #   to begin with. A judge who limits themselves to grades from
 #   7.0 to 8.0, or to 6.0, 7.5, and 9.0 defeats this test.
 # We also mark the test invalid if the chisq.test function produces a warning
@@ -34,7 +34,7 @@ jgd.chiSqP <- function(gradeCounts) {
   }
   clust <- tryCatch(
       prechi.cluster_neighbors(gradeCounts$range, gradeCounts$counts,
-        minimum_count = 6, timeout = 5, minimum_partition_count = 5),
+        minimum_count = 6, timeout = 5, minimum_partition_count = 6),
       error=set_invalid_error, warning = set_invalid_error)
   if (rv$valid) {
     rv$df <- clust$count - 3
