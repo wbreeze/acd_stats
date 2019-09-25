@@ -47,9 +47,11 @@ jgd.processJudgeGroup <- function(
     judge=judge,
     figure.ct=length(unique(figs)), k.mean=mean(ks),
     grade.ct=length(counts$grades),
-    d.mean=chiSq$solution_mean, d.sd=sqrt(chiSq$solution_variance),
     t.mean=mean(grades), t.sd=sd(grades),
-    chiSq.df=chiSq$df, chiSq.d.p=chiSq$pc, chiSq.t.p=chiSq$pu,
+    d.mean=chiSq$solution_mean, d.sd=sqrt(chiSq$solution_variance),
+    chiSq.df=chiSq$df,
+    chiSq.t.p=chiSq$pu,
+    chiSq.d.p=chiSq$pc,
     chiSq.valid=chiSq$valid, valid.reason=chiSq$reason)
 }
 

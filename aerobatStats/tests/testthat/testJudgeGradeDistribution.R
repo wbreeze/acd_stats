@@ -15,8 +15,8 @@ describe("Process flight program", {
     expect_equal(class(f), "data.frame")
     expect_equal(names(f), c("flight", "class", "category", "format",
       "judge", "figure.ct", "k.mean", "grade.ct",
-      "d.mean", "d.sd", "t.mean", "t.sd",
-      "chiSq.df", "chiSq.d.p", "chiSq.t.p", "chiSq.valid", "valid.reason"
+      "t.mean", "t.sd", "d.mean", "d.sd",
+      "chiSq.df", "chiSq.t.p", "chiSq.d.p", "chiSq.valid", "valid.reason"
     ))
   })
 
