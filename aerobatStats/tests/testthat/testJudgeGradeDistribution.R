@@ -33,9 +33,4 @@ describe("Process flight program", {
     gbj <- GradesByJudge(grades_IAC_flight_10780)
     expect_equal(sort(levels(f$judge)), sort(gbj$judgeList(gbj)))
   })
-
-  it("produces records for each figure group", {
-    f <- processFlight10780()
-    expect_equal(unique(f$figure.ct), c(2,3))
-  })
 })

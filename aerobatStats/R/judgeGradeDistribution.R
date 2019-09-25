@@ -29,7 +29,7 @@ jgd.processFlight <- function(id, class, category, format, fp) {
 }
 
 jgd.processJudge <- function(judge, id, class, category, format, fp) {
-  groups <- fp$groups(fp)
+  groups <- fp$groups(fp, 60)
   reduce(lapply(groups, jgd.processJudgeGroup,
     judge, id, class, category, format, fp), rbind)
 }
