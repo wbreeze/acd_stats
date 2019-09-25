@@ -48,7 +48,7 @@ jgd.processJudgeGroup <- function(
     figure.ct=length(unique(figs)), k.mean=mean(ks),
     grade.ct=length(counts$grades),
     d.mean=chiSq$solution_mean, d.sd=sqrt(chiSq$solution_variance),
-    t.mean=chiSq$target_mean, t.sd=sqrt(chiSq$target_variance),
+    t.mean=mean(grades), t.sd=sd(grades),
     chiSq.df=chiSq$df, chiSq.d.p=chiSq$pc, chiSq.t.p=chiSq$pu,
     chiSq.valid=chiSq$valid, valid.reason=chiSq$reason)
 }
@@ -57,7 +57,7 @@ jgd.processJudgeGroup <- function(
 jgd.densityPlot <- function(gradeCounts) {
   g <- gradeCounts.grades
   cutp <- seq(min(g)-2.5, max(g)+2.5, 5)
-  x <- rep(gradeCounts$range, times=gradeCounts$counts)
+  x <- rep(gradeCounts$grades, times=gradeCounts$counts)
   hist(x, prob=T, br=cutp, col="skyblue2",
     xlim=c(0,100), ylim=c(0,.06))
     curve(dnorm(x, mean(g), sd(g)), add=T, lwd=2, col="red")
