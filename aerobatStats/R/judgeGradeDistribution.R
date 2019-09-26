@@ -1,4 +1,5 @@
 require('purrr')
+require('nortest') # for lillie.test
 
 # Analyze judge grade distributions for each judge and each figure
 # id: flight identifier
@@ -52,6 +53,7 @@ jgd.processJudgeGroup <- function(
   counts <- jgd.gradeCounts(grades)
   chiSq <- jgd.chiSqP(counts)
   swilks <- jgd.shapiro(counts)
+  lillie <- lillie.test(counts$grades)
   data.frame(flight=id, class=class,
     category=category, format=format,
     judge=judge,
@@ -64,7 +66,8 @@ jgd.processJudgeGroup <- function(
     chiSq.d.p=chiSq$pc,
     chiSq.valid=chiSq$valid,
     valid.reason=chiSq$reason,
-    sw.p.value=swilks$p.value
+    sw.p.value=swilks$p.value,
+    lf.p.value=lillie$p.value
   )
 }
 
