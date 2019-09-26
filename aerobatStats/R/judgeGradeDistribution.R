@@ -1,5 +1,6 @@
 require('purrr')
 require('nortest') # for lillie.test and ad.test
+require('moments') # for agostino.test
 
 # Analyze judge grade distributions for each judge and each figure
 # id: flight identifier
@@ -56,13 +57,14 @@ jgd.processJudgeGroup <- function(
   lillie <- lillie.test(counts$grades)
   ad <- ad.test(counts$grades)
   cvm <- cvm.test(counts$grades)
+  das <- agostino.test(counts$grades)
   data.frame(flight=id, class=class,
     category=category, format=format,
     judge=judge,
     figure.ct=length(unique(figs)), k.mean=mean(ks),
     grade.ct=length(counts$grades),
-    t.mean=mean(grades), t.sd=sd(grades),
-    d.mean=chiSq$solution_mean, d.sd=sqrt(chiSq$solution_variance),
+    grades.mean=mean(grades), grades.sd=sd(grades),
+    cluster.mean=chiSq$solution_mean, cluster.sd=sqrt(chiSq$solution_variance),
     chiSq.df=chiSq$df,
     chiSq.t.p=chiSq$pu,
     chiSq.d.p=chiSq$pc,
@@ -71,7 +73,11 @@ jgd.processJudgeGroup <- function(
     sw.p.value=swilks$p.value,
     lf.p.value=lillie$p.value,
     ad.p.value=ad$p.value,
-    cvm.p.value=cvm$p.value
+    cvm.p.value=cvm$p.value,
+    da.skew=unname(das$statistic['skew']),
+    da.z=unname(das$statistic['z']),
+    da.p.value=das$p.value,
+    da.alt=das$alternative
   )
 }
 
