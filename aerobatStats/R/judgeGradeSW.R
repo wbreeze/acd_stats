@@ -19,6 +19,7 @@ jgd.shapiro <- function(gradeCounts) {
     rv$reason <<- e$message
   }
   grades <- jgd.distributeGrades(gradeCounts)
+  #qqnorm(grades); qqline(grades)
   rv$p.value <- withCallingHandlers(
     tryCatch(shapiro.test(grades)$p.value,
       error=set_invalid_error),

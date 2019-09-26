@@ -29,13 +29,13 @@ We chose to use for standard deviation a value that approximates the
 distribution of Bates \reference{Bates}. The Bates distribution has the
 advantage of being distributed along a fixed interval around a mean, with
 decreasing probability for values further from the mean.
-A variance of $1/12n * 0.25$, where n is the number of instances of the
-grade, when used
+A mean of zero and variance of $1/12n * 5$,
+where n is the number of instances of the grade, when used
 with the normal distribution, approximates the distribution of Bates between
 -2.5 and 2.5.
 
 We perturbed the grades using random values chosen from a normal distribution
-with mean equal to zero and standard deviation equal to $\sqrt{1/12n * 0.25}$.
+with mean equal to zero and standard deviation equal to $\sqrt{5/12n}$.
 Choosing a standard deviation dependent on the number of instances
 of the grade causes the perturbations to remain closer to zero when there
 are more instances of a grade and within the -2.5 to 2.5 range.

@@ -11,7 +11,7 @@ jgd.distributeGrades <- function(counts) {
 jgd.distributeVCt <- function(value, count) {
   if (0 < count) {
     values <- rep(value, count)
-    sigma <- 1 / sqrt(count * 12)
+    sigma <- sqrt(5 / (count * 12))
     values + rnorm(count, 0, sigma)
   } else c()
 }
