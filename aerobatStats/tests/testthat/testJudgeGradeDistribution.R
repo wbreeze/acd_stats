@@ -17,7 +17,7 @@ describe("Process flight program", {
       "judge", "figure.ct", "k.mean", "grade.ct",
       "t.mean", "t.sd", "d.mean", "d.sd",
       "chiSq.df", "chiSq.t.p", "chiSq.d.p", "chiSq.valid", "valid.reason",
-      "sw.p.value", "lf.p.value"
+      "sw.p.value", "lf.p.value", "ad.p.value", "cvm.p.value"
     ))
   })
 
