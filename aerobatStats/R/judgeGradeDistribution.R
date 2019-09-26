@@ -24,29 +24,29 @@ require('moments') # for agostino.test
 #     FN: figure number
 #     PN: pilot id number
 #     X1695 X744 X657 X456: grades from four judges
-jgd.processFlight <- function(id, class, category, format, fp) {
+jgd.processFlight <- function(id, class, category, format, year, fp) {
   judges <- fp$judgeList(fp)
-  reduce(lapply(judges, jgd.processJudge, id, class, category, format, fp),
-    rbind)
+  reduce(lapply(
+    judges, jgd.processJudge, id, class, category, format, year, fp
+  ), rbind)
 }
 
-jgd.processJudge <- function(judge, id, class, category, format, fp) {
+jgd.processJudge <- function(judge, id, class, category, format, year, fp) {
   groups <- fp$groups(fp)
-  ngroups <- reduce(lapply(groups, jgd.processJudgeGroup,
-    judge, id, class, category, format, fp), rbind)
-  groups <- fp$groups(fp, 60)
-  lgroups <- reduce(lapply(groups, jgd.processJudgeGroup,
-    judge, id, class, category, format, fp), rbind)
-  if (1 < length(groups$counts)) {  # more than one group of ~60
+  type <- if (length(groups) == 1) 'all' else 'fps'
+  results <- reduce(lapply(groups, jgd.processJudgeGroup,
+    judge, id, class, category, format, year, type, fp), rbind)
+  if (1 < length(groups)) {  # more than one group
     groups <- fp$groups(fp, length(fp$grades$K))
-    agroups <- reduce(lapply(groups, jgd.processJudgeGroup,
-      judge, id, class, category, format, fp), rbind)
-    rbind(ngroups, lgroups, agroups)
-  } else rbind(ngroups, lgroups)
+    a <- reduce(lapply(groups, jgd.processJudgeGroup,
+      judge, id, class, category, format, year, 'all', fp), rbind)
+    results <- rbind(results, a)
+  }
+  results
 }
 
 jgd.processJudgeGroup <- function(
-  group, judge, id, class, category, format, fp)
+  group, judge, id, class, category, format, year, group.type, fp)
 {
   ks <- fp$grades$K[group]
   figs <- fp$grades$FN[group]
@@ -59,9 +59,11 @@ jgd.processJudgeGroup <- function(
   cvm <- cvm.test(counts$grades)
   das <- agostino.test(counts$grades)
   data.frame(flight=id, class=class,
-    category=category, format=format,
-    judge=judge,
-    figure.ct=length(unique(figs)), k.mean=mean(ks),
+    category=category, format=format, year=year,
+    judge=judge, pilot.ct=length(unique(fp$grades$PN)),
+    figure.ct=length(unique(figs)),
+    group.type=group.type,
+    k.mean=mean(ks),
     grade.ct=length(counts$grades),
     grades.mean=mean(grades), grades.sd=sd(grades),
     cluster.mean=chiSq$solution_mean, cluster.sd=sqrt(chiSq$solution_variance),

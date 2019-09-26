@@ -6,7 +6,8 @@ describe("Process flight program", {
     class <- 'Power'
     category <- 'Intermediate'
     format <- 'Known'
-    f <- jgd.processFlight(id, class, category, format,
+    year <- 2018
+    f <- jgd.processFlight(id, class, category, format, year,
       GradesByJudge(grades_IAC_flight_10780))
   }
 
@@ -14,7 +15,8 @@ describe("Process flight program", {
     f <- processFlight10780()
     expect_equal(class(f), "data.frame")
     expect_equal(names(f), c("flight", "class", "category", "format",
-      "judge", "figure.ct", "k.mean", "grade.ct",
+      "year", "judge", "pilot.ct", "figure.ct", "group.type",
+      "k.mean", "grade.ct",
       "grades.mean", "grades.sd", "cluster.mean", "cluster.sd",
       "chiSq.df", "chiSq.t.p", "chiSq.d.p", "chiSq.valid", "valid.reason",
       "sw.p.value", "lf.p.value", "ad.p.value", "cvm.p.value",
