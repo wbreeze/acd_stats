@@ -1,0 +1,43 @@
+\section{Shapiro-Wilk}
+
+The Shapiro-Wilk test for goodness of fit requires that all of the values
+are unique. In order to use the Shapiro-Wilk test, we
+cannot use the grades without perturbing them in order to make them unique.
+In one view, the grades given by the judges are severely rounded to increments
+of 0.5 from a continuum of performances by the pilots.
+
+Two methods to perturb the grades are
+\begin{itemize}
+\item add values selected from a random uniform distribution between -2.5 and
+2.5
+\item add values selected from a random normal distribution.
+\end{itemize}
+
+The advantage of using a uniform distribution is that we can uniformly and
+reliably be perturbed within the range. The disadvantage is that the mean
+of the perturbed values can end-up anywhere between -2.5 and 2.5 added to
+the actual grade.
+
+Using the random normal distribution ensures that the mean of the perturbed
+values will remain close to the actual grade value. The disadvantage is that
+we must choose a standard deviation for the random normal distribution.
+The standard deviation must be such that the resulting perturbations are
+extremely rarely, with very low probability, outside of the range -2.5 to
+2.5.
+
+We chose to use for standard deviation a value that approximates the
+distribution of Bates \reference{Bates}. The Bates distribution has the
+advantage of being distributed along a fixed interval around a mean, with
+decreasing probability for values further from the mean.
+A variance of $1/12n * 0.25$, where n is the number of instances of the
+grade, when used
+with the normal distribution, approximates the distribution of Bates between
+-2.5 and 2.5.
+
+We perturbed the grades using random values chosen from a normal distribution
+with mean equal to zero and standard deviation equal to $\sqrt{1/12n * 0.25}$.
+Choosing a standard deviation dependent on the number of instances
+of the grade causes the perturbations to remain closer to zero when there
+are more instances of a grade and within the -2.5 to 2.5 range.
+We report the p-value for the Shapiro-Wilk normality test after perturbing
+the grades.
