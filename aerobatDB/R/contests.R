@@ -20,5 +20,19 @@ CDBContests <- function(url) {
     }), rbind)
   }
 
+  extractCategoryFlights <- function(categoryRow, year) {
+    cbind(categoryRow$flights, year=c(year), level=c(categoryRow$level),
+      aircat=c(categoryRow$aircat))
+  }
+
+  # url is the contest url from the url column of a row from #allContests
+  cdbc$contestFlights <- function(url) {
+    cdata <- fromJSON(url)
+    reduce(
+      apply(cdata$category_results, 1, extractCategoryFlights, cdata$year),
+      rbind
+    )
+  }
+
   return(cdbc)
 }

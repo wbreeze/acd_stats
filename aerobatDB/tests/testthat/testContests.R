@@ -26,6 +26,7 @@ describe("retrieval", {
   })
 
   test_that("retrieves contests", {
+    skip("long running test")
     cl <- setupCDBContests()
     contests <- cl$allContests()
     expect_is(contests, "data.frame")
@@ -35,5 +36,21 @@ describe("retrieval", {
     expect_true(all(!is.na(match(expected_ids, contests$id))))
     expected_years <- c(2019, 2018, 2017, 2009, 2006)
     expect_true(all(!is.na(match(expected_years, contests$year))))
+  })
+
+  test_that("retrieves contest flights", {
+    cl <- setupCDBContests()
+    url <- "https://iaccdb.iac.org/contests/678.json"
+    flights <- cl$contestFlights(url)
+    expect_is(flights, "data.frame")
+    expect_equal(c("id", "sequence", "name", "url", "year", "level", "aircat"),
+      names(flights))
+    expect_equal(20, nrow(flights))
+    expected_names <- c("Known", "Free", "Unknown")
+    expect_true(all(!is.na(match(expected_names, flights$name))))
+    expected_levels <- c("primary", "sportsman", "intermediate", "advanced",
+      "unlimited", "four minute")
+    expect_true(all(!is.na(match(expected_levels, flights$level))))
+    expect_equal(2019, unique(flights$year))
   })
 })
