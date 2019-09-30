@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: person("Douglas", "Lovell", email = "doug@wbreeze.com", role = c("aut", "cre"))
 Description:
   First off we'll compute raw data rankings of the pilots in a flight from each judge
-Depends: R (>= 3.3.2), aerobatDB, purrr, nortest
+Depends: R (>= 3.3.2), aerobatDB, purrr, nortest, moments
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
