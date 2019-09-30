@@ -1,4 +1,3 @@
-library(aerobatStats)
 context("Flight judge ranks")
 
 test_that("computes raw score from each judge", {

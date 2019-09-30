@@ -1,4 +1,3 @@
-library(aerobatStats)
 context("Grades by judge")
 
 describe("grade data", {
