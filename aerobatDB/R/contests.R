@@ -22,4 +22,3 @@ CDBContests <- function(url) {
 
   return(cdbc)
 }
-

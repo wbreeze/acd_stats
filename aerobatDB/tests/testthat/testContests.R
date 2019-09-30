@@ -30,7 +30,7 @@ describe("retrieval", {
     contests <- cl$allContests()
     expect_is(contests, "data.frame")
     expect_equal(c("id", "name", "city", "state", "start", "chapter",
-      "director", "region", "url", "year"), names(contests))
+      "director", "region", "has_results", "url", "year"), names(contests))
     expected_ids <- c(678, 588, 545, 503, 355, 310, 247, 4, 49, 1)
     expect_true(all(!is.na(match(expected_ids, contests$id))))
     expected_years <- c(2019, 2018, 2017, 2009, 2006)
