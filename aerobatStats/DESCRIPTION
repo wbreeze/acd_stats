@@ -1,9 +1,10 @@
 Package: aerobatStats
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
+Title: Analyze judge grading patterns
+Version: 0.0.1.9000
 Authors@R: person("Douglas", "Lovell", email = "doug@wbreeze.com", role = c("aut", "cre"))
 Description:
-  First off we'll compute raw data rankings of the pilots in a flight from each judge
+  Execute a systematic analysis of judge grading patterns, in particular,
+  investigate the null hypothesis that they fit a normal distribution
 Depends: R (>= 3.3.2), aerobatDB, purrr, nortest, moments
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
