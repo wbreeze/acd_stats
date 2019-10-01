@@ -1,4 +1,5 @@
 library(jsonlite)
+library(purrr)
 
 # url is the CDB REST base url
 CDBContests <- function(url) {

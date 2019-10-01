@@ -9,6 +9,7 @@ Maintainer: Douglas Lovell <doug@wbreeze.com>
 Description: A collection of classes and functions for retrieving
     and manipulating data frames from an aerobatic contest database (CDB).
 License: GPL-3 | file LICENSE
-Imports: jsonlite, testthat
+Imports: jsonlite, purrr
+Suggests: testthat
 URL: https://github.com/wbreeze/acd_stats/tree/master/aerobatDB
 BugReports: https://github.com/wbreeze/acd_stats/issues

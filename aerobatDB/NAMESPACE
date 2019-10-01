@@ -1,2 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-import(jsonlite, testthat)
+import(jsonlite, purrr)
