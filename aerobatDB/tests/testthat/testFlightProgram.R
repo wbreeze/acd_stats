@@ -1,8 +1,7 @@
-library(aerobatDB)
 context("flight program")
 
 test_that("constructor retrieves a flight program", {
-  fp <- CDBFlightProgram("https://iaccdb.iac.org/flights/9014.json")
+  fp <- CDBFlightProgram(IAC_flight_9014)
   expect_is(fp, "CDBFlightProgram")
   fpl <- fp$raw
   expect_is(fpl, "list")
@@ -12,7 +11,7 @@ test_that("constructor retrieves a flight program", {
 })
 
 test_that("flight program retrieves grades from all judges", {
-  fp <- CDBFlightProgram("https://iaccdb.iac.org/flights/9014.json")
+  fp <- CDBFlightProgram(IAC_flight_9014)
   gbj <- fp$gradesByJudge()
   expect_is(gbj$K, "integer")
   expect_equal(10, gbj$K[1])
@@ -35,4 +34,3 @@ test_that("flight program retrieves grades from all judges", {
   expect_equal(0, gbj$X657[12])
   expect_equal(75, gbj$X456[5])
 })
-

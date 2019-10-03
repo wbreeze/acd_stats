@@ -1,14 +1,13 @@
-library(jsonlite)
-
-# url is the CDB REST url for a Flight
+# fpData is the interpreted CDB REST JSON data for a Flight, e.g. from
+#   https://iaccdb.iac.org/flights/9014.json
 # We call it a "Flight Program" to distinguish it from one pilot's performance.
 # It is about a collection of pilot competitors performing once each
 # in a category before a panel of judges.
-CDBFlightProgram <- function(url) {
+CDBFlightProgram <- function(fpData) {
   cfp <- list()
   cfp$url <- url
   class(cfp) <- "CDBFlightProgram"
-  cfp$raw <- fromJSON(url)
+  cfp$raw <- fpData
 
   # Gather all of the judges' grades for all of the pilots in the flight program.
   # A grade of -30 encodes HZ: Hard Zero
@@ -57,4 +56,3 @@ CDBFlightProgram <- function(url) {
 
   return(cfp)
 }
-
