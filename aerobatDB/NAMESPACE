@@ -1,2 +1,2 @@
-export(CDBContests, CDBFlightProgram)
+export(CDBContests, CDBFlightProgram, cdb.retrieveData)
 import(jsonlite, purrr)
