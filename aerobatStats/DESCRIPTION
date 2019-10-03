@@ -8,5 +8,6 @@ Description:
 Depends: R (>= 3.3.2), aerobatDB, purrr, nortest, moments
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
-LazyData: true
+Imports: aerobatDB, jsonlite, purrr
 Suggests: testthat
+LazyData: true
