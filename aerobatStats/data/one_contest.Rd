@@ -3,23 +3,23 @@
 \title{List with content of one contest record}
 \description{
   Retrieved by:
-    one_contest <- contest_selection[contest_selection$has_results == TRUE,][3,,drop=TRUE]
-    usethis::use_data(one_contest)
-  Contains contest record for James K. Polk Open, 2019-09-17 in form
-    of a list
+    one_contest <- cdb.retrieveData(
+      "https://iaccdb.iac.org/contests/686.json")$data
+    usethis::use_data(one_contest, overwrite=TRUE)
+  Contains contest record for James K. Polk Open, 2019-09-17
 }
 \format{
   A list with elements:
-    $id [1] 686
-    $name [1] "JAMES K POLK OPEN INVITATIONAL"
-    $city [1] "Warrenton"
-    $state [1] "VA"
-    $start [1] "2019-09-07"
-    $chapter [1] 11
-    $director [1] "Adam Cope"
-    $region [1] "NorthEast"
-    $has_results [1] TRUE
-    $url [1] "https://iaccdb.iac.org/contests/686.json"
-    $year [1] 2019
+  List of 10
+      id              : int 686
+      start           : chr "2019-09-07"
+      name            : chr "JAMES K POLK OPEN INVITATIONAL"
+      year            : int 2019
+      region          : chr "NorthEast"
+      city            : chr "Warrenton"
+      state           : chr "VA"
+      chapter         : int 11
+      director        : chr "Adam Cope"
+      category_results:'data.frame':	4 obs. of  7 variables:
 }
 \keyword{datasets}
