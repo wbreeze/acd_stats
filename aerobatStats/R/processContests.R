@@ -5,7 +5,7 @@ require(purrr)
 ProcessContests <- function(ctsts,
   processedFileName="pc_processed.rds",
   errorsFileName="pc_errors.rds",
-  contestProcessor=NA
+  contestProcessor=ProcessOneContest
 ) {
   # Process contests from contest list, appending results to file
   pc <- list()
