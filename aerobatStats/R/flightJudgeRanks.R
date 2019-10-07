@@ -6,7 +6,7 @@ FlightJudgeRanks <- function(fp) {
   # Compute a raw score total from each judge
   fjr$rawScoresByJudge <- function() {
     grades <- fp$gradesByJudge()
-    grades <- fjr$processZerosAndAverages(grades)
+    grades <- fjr$processZerosAndAverages(grades$data)
     return(grades)
   }
 
