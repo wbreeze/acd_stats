@@ -1,5 +1,5 @@
 # Expects a data frame of the form returned by
-# aerobatDB::CDBFlightProgram$gradesByJudge
+# aerobatStats::CDBFlightProgram$gradesByJudge
 GradesByJudge <- function(gradesByJudge) {
   gbj <- list()
   gbj$grades <- gradesByJudge

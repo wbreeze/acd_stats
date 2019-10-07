@@ -1,5 +1,3 @@
-library(aerobatDB)
-
 FlightJudgeRanks <- function(fp) {
   fjr <- list()
   fjr$fp <- fp

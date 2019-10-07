@@ -19,7 +19,7 @@
  [1] "id"          "name"        "city"        "state"       "start"
  [6] "chapter"     "director"    "region"      "has_results" "url"
 [11] "year"
-  See aerobatDB::CBDContests$allContests
+  See aerobatStats::CBDContests$allContests
 }
 \source{ https://iaccdb.iac.org/contests.json }
 \keyword{datasets}

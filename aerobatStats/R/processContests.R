@@ -1,7 +1,6 @@
 require(purrr)
 
-# Expects a data frame of the form returned by
-#   aerobatDB::CDBContests$allContests
+# Expects a data frame of the form returned by CDBContests$allContests
 ProcessContests <- function(ctsts,
   processedFileName="pc_processed.rds",
   errorsFileName="pc_errors.rds",

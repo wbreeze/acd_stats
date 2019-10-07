@@ -13,7 +13,7 @@
 \format{
   A data.frame with columns: K, FN, PN, X3045, X49, X2414, X1041, X36.
   The X columns represent judges and contain grades.
-  See aerobatDB::CBDFlightProgram$gradesByJudge
+  See aerobatStats::CBDFlightProgram$gradesByJudge
 }
 \source{ https://iaccdb.iac.org/flights/10780.json }
 \keyword{datasets}

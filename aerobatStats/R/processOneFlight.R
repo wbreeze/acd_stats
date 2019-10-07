@@ -1,5 +1,3 @@
-require(aerobatDB)
-
 ProcessOneFlight <- function(flight) {
   cp <- list()
   cp$flight = flight
