@@ -14,7 +14,6 @@ describe("one flight", {
   it("Processes the flight", {
     pof <- ProcessOneFlight(flightRecord)
     sed <- pof$process()
-    print("SED"); str(sed)
     expect_true(sed$success)
   })
 })
