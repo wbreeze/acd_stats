@@ -1,3 +1,5 @@
+require("purrr")
+
 # fpData is the interpreted CDB REST JSON data for a Flight, e.g. from
 #   https://iaccdb.iac.org/flights/9014.json
 # We call it a "Flight Program" to distinguish it from one pilot's performance.
@@ -28,7 +30,17 @@ CDBFlightProgram <- function(fpData) {
     judgeId <- judges$judge$id
     pfrs <- cfp$raw$flight$pilot_results
     pfUrls <- pfrs$url
-    pfds <- lapply(pfUrls, function(url) fromJSON(url)[[1]])
+    pfds.sed <- reduce(
+      lapply(pfUrls, cdb.retrieveData),
+      function(accum, sed) {
+        list(
+          success = accum$success && sed$success,
+          errors = c(accum$errors, sed$errors),
+          data = c(accum$data, sed$data)
+        )
+      }
+    )
+    pfds <- pfds.sed$data
     judgePilotGrades <- lapply(judgeId, function(jid) {
       vector(mode='integer', length=0)
     })
@@ -50,8 +62,13 @@ CDBFlightProgram <- function(fpData) {
           judgePilotGrades[[jid]], jg$values)
       }
     }
-    return(data.frame(K=kValues, FN=figureNumbers, PN=pilotIds,
-      judgePilotGrades))
+    list(
+      success = pfds.sed$success,
+      errors = pfds.sed$errors,
+      data = data.frame(
+        K=kValues, FN=figureNumbers, PN=pilotIds, judgePilotGrades
+      )
+    )
   }
 
   return(cfp)

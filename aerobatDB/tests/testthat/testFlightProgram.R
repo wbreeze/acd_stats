@@ -12,7 +12,11 @@ test_that("constructor retrieves a flight program", {
 
 test_that("flight program retrieves grades from all judges", {
   fp <- CDBFlightProgram(IAC_flight_9014)
-  gbj <- fp$gradesByJudge()
+  gbj.sed <- fp$gradesByJudge()
+  expect_is(gbj.sed, "list")
+  expect_true(gbj.sed$success)
+  gbj = gbj.sed$data
+  expect_is(gbj, "data.frame")
   expect_is(gbj$K, "integer")
   expect_equal(10, gbj$K[1])
   expect_equal(14, gbj$K[2])
