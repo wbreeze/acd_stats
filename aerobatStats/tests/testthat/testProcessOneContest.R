@@ -1,11 +1,14 @@
 context("Process")
 
 describe("one contest", {
-  flightProcessReturn <- list(success=TRUE)
+  flightProcessReturn <- list(success=TRUE, errors=c(), data=c())
+  ctFlightsProcessed <- 0
   flightProcessor <- function(flight) {
     cp <- list()
     cp$flight = flight
     cp$process <- function() {
+      ct <- ctFlightsProcessed
+      ctFlightsProcessed <<- ct + 1
       return(flightProcessReturn)
     }
     cp
@@ -37,23 +40,16 @@ describe("one contest", {
 
   it("Processes the contest", {
     pc <- setupProcessOneContest()
-    v <- pc$process()
-    expect_equal(length(v), 12)
-  })
-
-  it("Processes flights not in processed results", {
-    skip("later")
-    pc <- setupProcessOneContest()
-    pc$process()
-    expect_true(FALSE, "pend")
+    c.sed <-  pc$process()
+    expect_equal(ctFlightsProcessed, 12)
   })
 
   it("Returns error when a flight fails", {
-    skip("later")
     pc <- setupProcessOneContest()
     errorList <- c("Failed to read the flight")
     flightProcessReturn <<- list(success=FALSE, errors=errorList)
-    pc$process()
-    expect_true(FALSE, "pend")
+    c.sed <- pc$process()
+    expect_false(c.sed$success)
+    expect_equal(errorList[1], c.sed$errors[1])
   })
 })

@@ -24,14 +24,27 @@ ProcessOneContest <- function(contest,
     )
   }
 
+  flightsReducer <- function(accum, flight.sed) {
+    list(
+      success = accum$success && flight.sed$success,
+      errors = c(accum$errors, flight.sed$errors),
+      data = c(accum$data, flight.sed$data)
+    )
+  }
+
   # Process the contest, processing all of its flights
   pc$process <- function() {
     crv <- pc$contestRetriever(pc$contest$url)
-    if (!crv$success) {
-      list(success=FALSE, results=c(), errors=crv$errors)
-    } else {
+    if (crv$success) {
       flights <- contestFlights(crv$data)
-      map(apply(flights, 1, pc$flightProcessor), function(pc) pc$process())
+      reduce(
+        map(
+          apply(flights, 1, pc$flightProcessor),
+          function(fproc) fproc$process()
+        ),
+      flightsReducer)
+    } else {
+      list(success=FALSE, results=c(), errors=crv$errors)
     }
   }
 
