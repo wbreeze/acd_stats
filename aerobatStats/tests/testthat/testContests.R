@@ -16,6 +16,7 @@ describe("retrieval", {
   })
 
   test_that("retrieves contest year urls", {
+    skip("long running test")
     cl <- setupCDBContests()
     years <- cl$contestYears()
     expect_is(years, "character")
@@ -39,6 +40,7 @@ describe("retrieval", {
   })
 
   test_that("retrieves contest flights", {
+    skip("long running test")
     cl <- setupCDBContests()
     url <- "https://iaccdb.iac.org/contests/678.json"
     flights <- cl$contestFlights(url)
