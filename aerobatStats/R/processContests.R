@@ -1,22 +1,26 @@
 require(purrr)
 
+# Process contests from contest list, appending results to file
 # Expects a data frame of the form returned by CDBContests$allContests
 ProcessContests <- function(ctsts,
   processedFileName="pc_processed.rds",
   errorsFileName="pc_errors.rds",
+  dataFileName="pc_data.rds",
   contestProcessor=ProcessOneContest
 ) {
-  # Process contests from contest list, appending results to file
   pc <- list()
   pc$ctsts <- ctsts
-  pc$processedRecordsFileName <- processedFileName
-  pc$errorsFileName <- errorsFileName
-  pc$contestProcessor = contestProcessor
 
   # processedRecords is just a vector of contest id's
   # We store the vector so that we don't process a contest that we've
   #   already processed on a prior run
-  # This loads the stored vector, or initializes it empty
+  pc$processedRecordsFileName <- processedFileName
+
+  pc$errorsFileName <- errorsFileName
+  pc$dataFileName <- dataFileName
+  pc$contestProcessor = contestProcessor
+
+  # load the named file with recovery and a message on error
   loadFile <- function(fileName, fileDescription, errorMessage) {
     onError <- function(w) {
       print(
@@ -27,7 +31,7 @@ ProcessContests <- function(ctsts,
       return(c())
     }
     tryCatch(
-      readRDS(pc$processedRecordsFileName),
+      readRDS(fileName),
       error=onError, warning=onError
     )
   }
@@ -44,6 +48,12 @@ ProcessContests <- function(ctsts,
   processContestAndRecord <- function(trackingList, cid) {
     result = processContestId(cid)
     if (result$success) {
+      trackingList$data <- if (is.null(trackingList$data)) {
+        result$data
+      } else {
+        rbind(trackingList$data, result$data)
+      }
+      saveRDS(trackingList$data, file=pc$dataFileName)
       trackingList$done <- c(trackingList$done, cid)
       saveRDS(trackingList$done, file=pc$processedRecordsFileName)
     } else {
@@ -69,15 +79,16 @@ ProcessContests <- function(ctsts,
   pc$process <- function(max_count=1000) {
     processedRecords <- loadFile(pc$processedRecordsFileName,
       "Processed records", "NOTE: Processing all contests.")
-    processErrors <- loadFile(pc$errorsFileName,
-      "Errors", "Will start one.")
+    processErrors <- loadFile(pc$errorsFileName, "Errors", "Will start one.")
+    processedData <- loadFile(pc$dataFileName, "Data", "Starting data file.")
     toProcess <- pc$ctsts$id[pc$ctsts$has_results]
     toProcess <- unique(toProcess[!(toProcess %in% processedRecords)])
     if (max_count < length(toProcess)) {
       toProcess <- toProcess[seq(1, max_count)]
     }
     reduce(toProcess, processContestAndRecord,
-      .init=list(done=processedRecords, errors=processErrors))
+      .init=list(done=processedRecords, errors=processErrors,
+        data=processedData))
   }
 
   pc
