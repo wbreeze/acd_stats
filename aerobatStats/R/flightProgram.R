@@ -7,7 +7,6 @@ require("purrr")
 # in a category before a panel of judges.
 CDBFlightProgram <- function(fpData) {
   cfp <- list()
-  cfp$url <- url
   class(cfp) <- "CDBFlightProgram"
   cfp$raw <- fpData
 
