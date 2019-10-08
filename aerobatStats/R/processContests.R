@@ -42,7 +42,9 @@ ProcessContests <- function(ctsts,
       contest <- record[1,,drop=TRUE]
       p <- pc$contestProcessor(contest)
       p$process()
-    } else { list(success=TRUE) }
+    } else {
+      list(success=FALSE, errors=c('Contest record not found'))
+    }
   }
 
   processContestAndRecord <- function(trackingList, cid) {
