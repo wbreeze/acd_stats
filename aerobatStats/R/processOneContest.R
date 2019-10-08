@@ -4,7 +4,7 @@ require(purrr)
 #   returned by CDBContests$allContests
 ProcessOneContest <- function(contest,
   contestRetriever=cdb.retrieveData,
-  flightProcessor=NULL
+  flightProcessor=ProcessOneFlight
 ) {
   pc <- list()
   pc$contest <- contest
@@ -27,7 +27,11 @@ ProcessOneContest <- function(contest,
     list(
       success = accum$success && flight.sed$success,
       errors = c(accum$errors, flight.sed$errors),
-      data = c(accum$data, flight.sed$data)
+      data = if (is.null(accum$data)) {
+        flight.sed$data
+      } else {
+        rbind(accum$data, flight.sed$data)
+      }
     )
   }
 
