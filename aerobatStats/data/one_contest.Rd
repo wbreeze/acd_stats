@@ -3,7 +3,7 @@
 \title{List with content of one contest record}
 \description{
   Retrieved by:
-    one_contest <- cdb.retrieveData(
+    one_contest <- sed.retrieveData(
       "https://iaccdb.iac.org/contests/686.json")$data
     usethis::use_data(one_contest, overwrite=TRUE)
   Contains contest record for James K. Polk Open, 2019-09-17

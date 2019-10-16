@@ -3,7 +3,7 @@ require(purrr)
 # Expects a list of one contest data values, one record from the data.frame
 #   returned by CDBContests$allContests
 ProcessOneContest <- function(contest,
-  contestRetriever=cdb.retrieveData,
+  contestRetriever=sed.retrieveData,
   flightProcessor=ProcessOneFlight
 ) {
   pc <- list()

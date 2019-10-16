@@ -30,7 +30,7 @@ CDBFlightProgram <- function(fpData) {
     pfrs <- cfp$raw$flight$pilot_results
     pfUrls <- pfrs$url
     pfds.sed <- reduce(
-      lapply(pfUrls, cdb.retrieveData),
+      lapply(pfUrls, sed.retrieveData),
       function(accum, sed) {
         list(
           success = accum$success && sed$success,

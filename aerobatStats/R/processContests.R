@@ -28,7 +28,7 @@ ProcessContests <- function(ctsts,
         fileDescription, fileName, w$message, errorMessage),
         quote=FALSE
       )
-      return(c())
+      NULL
     }
     tryCatch(
       readRDS(fileName),
