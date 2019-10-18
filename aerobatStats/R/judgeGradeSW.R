@@ -8,22 +8,8 @@
 #   Of course, not valid means you can't reject, and that the p-value
 #   is meaningless
 jgd.shapiro <- function(gradeCounts) {
-  rv <- list(valid=T, reason="Okay", p.value=NA)
-  set_invalid_warn <- function(w) {
-    rv$valid <<- F
-    rv$reason <<- w$message
-    invokeRestart("muffleWarning")
-  }
-  set_invalid_error <- function(e) {
-    rv$valid <<- F
-    rv$reason <<- e$message
-  }
   grades <- jgd.distributeGrades(gradeCounts)
   #qqnorm(grades); qqline(grades)
-  rv$p.value <- withCallingHandlers(
-    tryCatch(shapiro.test(grades)$p.value,
-      error=set_invalid_error),
-    warning = set_invalid_warn
-  )
-  rv
+  sw <- sed.catchToList(shapiro.test, "Shapiro test")
+  sw(grades)
 }
