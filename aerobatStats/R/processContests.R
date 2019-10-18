@@ -17,23 +17,16 @@ ProcessContests <- function(ctsts,
   pc$processedRecordsFileName <- processedFileName
 
   pc$errorsFileName <- errorsFileName
+
   pc$dataFileName <- dataFileName
+
   pc$contestProcessor = contestProcessor
 
   # load the named file with recovery and a message on error
   loadFile <- function(fileName, fileDescription, errorMessage) {
-    onError <- function(w) {
-      print(
-        sprintf("%s file, \"%s\" retrieval error: \"%s\". %s",
-        fileDescription, fileName, w$message, errorMessage),
-        quote=FALSE
-      )
-      NULL
-    }
-    tryCatch(
-      readRDS(fileName),
-      error=onError, warning=onError
-    )
+    msg <- sprintf("%s file, \"%s\" retrieval %s:",
+        fileDescription, fileName, errorMessage)
+    sed.catchToList(readRDS, msg)(fileName)
   }
 
   processContestId <- function(cid) {
@@ -79,10 +72,15 @@ ProcessContests <- function(ctsts,
   # Processes up to max_count records, where max_count defaults to
   #   a large number, 1000
   pc$process <- function(max_count=1000) {
-    processedRecords <- loadFile(pc$processedRecordsFileName,
+    sed <- loadFile(pc$errorsFileName, "Errors", "Will start one.")
+    processErrors <- if (sed$success) sed$data else sed$errors
+    sed <- loadFile(pc$processedRecordsFileName,
       "Processed records", "NOTE: Processing all contests.")
-    processErrors <- loadFile(pc$errorsFileName, "Errors", "Will start one.")
-    processedData <- loadFile(pc$dataFileName, "Data", "Starting data file.")
+    processErrors <- c(processErrors, sed$errors)
+    processedRecords <- sed$data
+    sed <- loadFile(pc$dataFileName, "Data", "Starting data file.")
+    processErrors <- c(processErrors, sed$errors)
+    processedData <- sed$data
     toProcess <- pc$ctsts$id[pc$ctsts$has_results]
     toProcess <- unique(toProcess[!(toProcess %in% processedRecords)])
     if (max_count < length(toProcess)) {

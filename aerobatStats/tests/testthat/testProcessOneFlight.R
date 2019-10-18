@@ -1,14 +1,23 @@
 context("Process")
 
 describe("one flight", {
-  flightRecord <- list(
-    id = "11337",
-    sequence = "3",
-    name = "Unknown",
-    url = "https://iaccdb.iac.org/flights/11337.json",
-    year = "2019",
-    level = "unlimited",
-    aircat = "P"
+  flightRecord <- c(
+    "11337",
+    "3",
+    "Unknown",
+    "https://iaccdb.iac.org/flights/11337.json",
+    "2019",
+    "unlimited",
+    "P"
+  )
+  names(flightRecord) <- c(
+    "id",
+    "sequence",
+    "name",
+    "url",
+    "year",
+    "level",
+    "aircat"
   )
 
   it("Processes the flight", {

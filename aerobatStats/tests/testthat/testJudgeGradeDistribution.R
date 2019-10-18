@@ -18,8 +18,10 @@ describe("Process flight program", {
       "year", "judge", "pilot.ct", "figure.ct", "group.type",
       "k.mean", "grade.ct",
       "grades.mean", "grades.sd", "cluster.mean", "cluster.sd",
-      "chiSq.df", "chiSq.t.p", "chiSq.d.p", "chiSq.valid", "valid.reason",
-      "sw.p.value", "lf.p.value", "ad.p.value", "cvm.p.value",
+      "chiSq.df", "chiSq.t.p", "chiSq.d.p",
+      "chiSq.valid", "valid.reason",
+      "sw.p.value", "sw.valid", "sw.valid.reason",
+      "lf.p.value", "ad.p.value", "cvm.p.value",
       "da.skew", "da.z", "da.p.value", "da.alt"
     ))
   })

@@ -53,7 +53,8 @@ jgd.processJudgeGroup <- function(
   grades <- fp$grades[[judge]][group]
   counts <- jgd.gradeCounts(grades)
   chiSq <- jgd.chiSqP(counts)
-  swilks <- jgd.shapiro(counts)
+  dGrades <- jgd.distributeGrades(counts)
+  swilks <- sed.catchToList(shapiro.test, "Shapiro")(dGrades)
   lillie <- lillie.test(counts$grades)
   ad <- ad.test(counts$grades)
   cvm <- cvm.test(counts$grades)
@@ -72,7 +73,9 @@ jgd.processJudgeGroup <- function(
     chiSq.d.p=chiSq$pc,
     chiSq.valid=chiSq$valid,
     valid.reason=chiSq$reason,
-    sw.p.value=swilks$p.value,
+    sw.p.value=if(is.null(swilks$data)) NA else swilks$data$p.value,
+    sw.valid=swilks$success,
+    sw.valid.reason=if(is.null(swilks$errors)) NA else swilks$errors,
     lf.p.value=lillie$p.value,
     ad.p.value=ad$p.value,
     cvm.p.value=cvm$p.value,

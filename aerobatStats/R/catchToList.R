@@ -34,7 +34,7 @@ sed.catchToList <- function(fun, ctxt) {
 #    errors: Vector of strings
 #    data: returned by fromJSON given the URL
 sed.retrieveData <- function(url) {
-  ctxt <- sprintf("fromJSON \"%s\"", url)
+  ctxt <- sprintf("fromJSON(%s)", url)
   sed <- sed.catchToList(fromJSON, ctxt)(url)
   sed$url <- url
   sed
