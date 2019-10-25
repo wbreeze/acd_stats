@@ -19,10 +19,13 @@ describe("Process flight program", {
       "k.mean", "grade.ct",
       "grades.mean", "grades.sd", "cluster.mean", "cluster.sd",
       "chiSq.df", "chiSq.t.p", "chiSq.d.p",
-      "chiSq.valid", "valid.reason",
+      "chiSq.valid", "chiSq.valid.reason",
       "sw.p.value", "sw.valid", "sw.valid.reason",
-      "lf.p.value", "ad.p.value", "cvm.p.value",
-      "da.skew", "da.z", "da.p.value", "da.alt"
+      "lf.p.value", "lf.valid", "lf.valid.reason",
+      "ad.p.value", "ad.valid", "ad.valid.reason",
+      "cvm.p.value", "cvm.valid", "cvm.valid.reason",
+      "da.skew", "da.z", "da.p.value", "da.alt",
+      "da.valid", "da.valid.reason"
     ))
   })
 

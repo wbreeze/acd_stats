@@ -52,38 +52,62 @@ jgd.processJudgeGroup <- function(
   figs <- fp$grades$FN[group]
   grades <- fp$grades[[judge]][group]
   counts <- jgd.gradeCounts(grades)
-  chiSq <- jgd.chiSqP(counts)
-  dGrades <- jgd.distributeGrades(counts)
-  swilks <- sed.catchToList(shapiro.test, "Shapiro")(dGrades)
-  lillie <- lillie.test(counts$grades)
-  ad <- ad.test(counts$grades)
-  cvm <- cvm.test(counts$grades)
-  das <- agostino.test(counts$grades)
-  data.frame(flight=id, class=class,
-    category=category, format=format, year=year,
-    judge=judge, pilot.ct=length(unique(fp$grades$PN)),
+  p <- data.frame(
+    flight=id, class=class, category=category, format=format, year=year,
+    judge=judge,
+    pilot.ct=length(unique(fp$grades$PN)),
     figure.ct=length(unique(figs)),
     group.type=group.type,
     k.mean=mean(ks),
     grade.ct=length(counts$grades),
-    grades.mean=mean(grades), grades.sd=sd(grades),
-    cluster.mean=chiSq$solution_mean, cluster.sd=sqrt(chiSq$solution_variance),
+    grades.mean=mean(grades),
+    grades.sd=sd(grades)
+  )
+  chiSq <- jgd.chiSqP(counts)
+  p <- cbind(p, list(
+    cluster.mean=chiSq$solution_mean,
+    cluster.sd=sqrt(chiSq$solution_variance),
     chiSq.df=chiSq$df,
     chiSq.t.p=chiSq$pu,
     chiSq.d.p=chiSq$pc,
     chiSq.valid=chiSq$valid,
-    valid.reason=chiSq$reason,
+    chiSq.valid.reason=if(is.null(chiSq$reason)) NA else chiSq$reason
+  ))
+  dGrades <- jgd.distributeGrades(counts)
+  swilks <- sed.catchToList(shapiro.test, "Shapiro")(dGrades)
+  p <- cbind(p, list(
     sw.p.value=if(is.null(swilks$data)) NA else swilks$data$p.value,
     sw.valid=swilks$success,
-    sw.valid.reason=if(is.null(swilks$errors)) NA else swilks$errors,
-    lf.p.value=lillie$p.value,
-    ad.p.value=ad$p.value,
-    cvm.p.value=cvm$p.value,
-    da.skew=unname(das$statistic['skew']),
-    da.z=unname(das$statistic['z']),
-    da.p.value=das$p.value,
-    da.alt=das$alternative
-  )
+    sw.valid.reason=if(is.null(swilks$errors)) NA else swilks$errors
+  ))
+  lillie <- sed.catchToList(lillie.test, "Lillie")(counts$grades)
+  p <- cbind(p, list(
+    lf.p.value=if(is.null(lillie$data)) NA else lillie$data$p.value,
+    lf.valid = lillie$success,
+    lf.valid.reason=if(is.null(lillie$errors)) NA else lillie$errors
+  ))
+  ad <- sed.catchToList(ad.test, "Anderson-Darling")(counts$grades)
+  p <- cbind(p, list(
+    ad.p.value=if(is.null(ad$data)) NA else ad$data$p.value,
+    ad.valid = ad$success,
+    ad.valid.reason=if(is.null(ad$errors)) NA else ad$errors
+  ))
+  cvm <- sed.catchToList(cvm.test, "Cramer-von Mises")(counts$grades)
+  p <- cbind(p, list(
+    cvm.p.value=if(is.null(cvm$data)) NA else cvm$data$p.value,
+    cvm.valid=cvm$success,
+    cvm.valid.reason=if(is.null(cvm$errors)) NA else cvm$errors
+  ))
+  das <- sed.catchToList(agostino.test, "D'Agostino")(counts$grades)
+  p <- cbind(p, list(
+    da.skew=if(is.null(das$data)) NA else unname(das$data$statistic['skew']),
+    da.z=if(is.null(das$data)) NA else unname(das$data$statistic['z']),
+    da.p.value=if(is.null(das$data)) NA else das$data$p.value,
+    da.alt=if(is.null(das$data)) NA else das$data$alternative,
+    da.valid=das$success,
+    da.valid.reason=if(is.null(das$errors)) NA else das$errors
+  ))
+  p
 }
 
 # Plot grade frequency histogram overlayed with the derived normal curve

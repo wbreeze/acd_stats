@@ -20,42 +20,44 @@ require('prechi')
 #   Of course, not valid means you can't reject, and that the p-values
 #   are meaningless
 jgd.chiSqP <- function(gradeCounts) {
-  rv <- list(valid=T, reason="Okay", df=NA, pu=NA, pc=NA,
-    target_mean=NA, target_variance=NA,
-    solution_mean=NA, solution_variance=NA)
-  set_invalid_warn <- function(w) {
-    rv$valid <<- F
-    rv$reason <<- w$message
-    invokeRestart("muffleWarning")
-  }
-  set_invalid_error <- function(e) {
-    rv$valid <<- F
-    rv$reason <<- e$message
-  }
-  clust <- tryCatch(
-      prechi.cluster_neighbors(gradeCounts$range, gradeCounts$counts,
-        minimum_count = 6, timeout = 5, minimum_partition_count = 6),
-      error=set_invalid_error, warning = set_invalid_error)
-  if (rv$valid) {
-    rv$df <- clust$count - 3
-    rv$target_mean <- clust$target_mean
-    rv$target_variance <- clust$target_variance
-    rv$solution_mean <- clust$solution_mean
-    rv$solution_variance <- clust$solution_variance
-    dist <- diff(pnorm(clust$boundaries, clust$target_mean,
-      sqrt(clust$target_variance)))
-    rv$pu <- withCallingHandlers(
-      tryCatch(chisq.test(clust$counts, p=dist)$p.value,
-        error=set_invalid_error),
-      warning = set_invalid_warn
-    )
-    dist <- diff(pnorm(clust$boundaries, clust$solution_mean,
-      sqrt(clust$solution_variance)))
-    rv$pc <- withCallingHandlers(
-      tryCatch(chisq.test(clust$counts, p=dist)$p.value,
-        error=set_invalid_error),
-      warning = set_invalid_warn
-    )
+  clust_fn <- sed.catchToList(prechi.cluster_neighbors, "PreChi")
+  clust <- clust_fn(gradeCounts$range, gradeCounts$counts,
+    minimum_count = 6, timeout = 5, minimum_partition_count = 6)
+  rv <- list(
+    valid=FALSE,
+    reason=clust$errors,
+    df=NA,
+    target_mean=NA,
+    target_variance=NA,
+    solution_mean=NA,
+    solution_variance=NA,
+    pu=NA,
+    pc=NA)
+  if (clust$success) {
+    cres <- clust$data
+    rv$df <- cres$count - 3
+    rv$target_mean <- cres$target_mean
+    rv$target_variance <- cres$target_variance
+    rv$solution_mean <- cres$solution_mean
+    rv$solution_variance <- cres$solution_variance
+    dist <- diff(pnorm(cres$boundaries, cres$target_mean,
+      sqrt(cres$target_variance)))
+    pu_fit_fn <- sed.catchToList(chisq.test, "ChiSq TgtDistParms")
+    pu_fit <- pu_fit_fn(cres$counts, p=dist)
+    if (pu_fit$success) {
+      rv$pu <- pu_fit$data$p.value
+    }
+    dist <- diff(pnorm(cres$boundaries, cres$solution_mean,
+      sqrt(cres$solution_variance)))
+    pc_fit_fn <- sed.catchToList(chisq.test, "ChiSq ClustDistParms")
+    pc_fit <- pc_fit_fn(cres$counts, p=dist)
+    if (pc_fit$success) {
+      rv$pc <- pc_fit$data$p.value
+    }
+    rv$valid <- pu_fit$success && pc_fit$success
+    if(!rv$valid) {
+      rv$reason <- c(pu_fit$errors, pc_fit$errors)
+    }
   }
   rv
 }
