@@ -19,7 +19,8 @@ CDBFlightProgram <- function(fpData) {
           errors = c(accum$errors, sed$errors),
           data = c(accum$data, sed$data)
         )
-      }
+      },
+      .init=list(success=TRUE, errors=c(), data=c())
     )
   }
 

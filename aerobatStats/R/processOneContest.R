@@ -47,7 +47,7 @@ ProcessOneContest <- function(contest,
         ),
       flightsReducer)
     } else {
-      list(success=FALSE, results=c(), errors=crv$errors)
+      list(success=FALSE, data=c(), errors=crv$errors)
     }
   }
 
