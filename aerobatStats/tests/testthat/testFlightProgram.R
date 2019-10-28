@@ -1,4 +1,4 @@
-context("flight program")
+context("FlightProgram")
 
 test_that("constructor retrieves a flight program", {
   fp <- CDBFlightProgram(IAC_flight_9014)

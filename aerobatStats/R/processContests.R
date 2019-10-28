@@ -41,6 +41,7 @@ ProcessContests <- function(ctsts,
   }
 
   processContestAndRecord <- function(trackingList, cid) {
+    print(sprintf("Contest %d", cid))
     result = processContestId(cid)
     if (result$success) {
       trackingList$data <- if (is.null(trackingList$data)) {
