@@ -8,11 +8,11 @@ ProcessOneFlight <- function(flight) {
       cfp <- CDBFlightProgram(fp.sed$data)
       cfp.sed <- cfp$gradesByJudge()
       if (cfp.sed$success) {
-        fdf <- jgd.processFlight(flight["id"], flight["aircat"],
+        prcf <- sed.catchToList(jgd.processFlight, "ProcessFlight")
+        prcf(flight["id"], flight["aircat"],
           flight["level"], flight["name"], flight["year"],
           GradesByJudge(cfp.sed$data)
         )
-        list(success=TRUE, errors=c(), data=fdf)
       } else {
         cfp.sed
       }

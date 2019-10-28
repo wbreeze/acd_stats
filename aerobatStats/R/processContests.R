@@ -48,6 +48,7 @@ ProcessContests <- function(ctsts,
       } else {
         rbind(trackingList$data, result$data)
       }
+      print(sprintf("%d data points measured", nrow(trackingList$data)))
       saveRDS(trackingList$data, file=pc$dataFileName)
       trackingList$done <- c(trackingList$done, cid)
       saveRDS(trackingList$done, file=pc$processedRecordsFileName)
@@ -57,6 +58,7 @@ ProcessContests <- function(ctsts,
         sprintf("There was trouble with contest Id %d", cid),
         result$errors
       )
+      print(sprintf("%d errors encountered", nrow(trackingList$errors)))
       saveRDS(trackingList$errors, file=pc$errorsFileName)
     }
     trackingList
