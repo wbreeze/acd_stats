@@ -58,7 +58,7 @@ ProcessContests <- function(ctsts,
         sprintf("There was trouble with contest Id %d", cid),
         result$errors
       )
-      print(sprintf("%d errors encountered", nrow(trackingList$errors)))
+      print(sprintf("%d errors encountered", length(trackingList$errors)))
       saveRDS(trackingList$errors, file=pc$errorsFileName)
     }
     trackingList
