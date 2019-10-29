@@ -73,7 +73,7 @@ CDBFlightProgram <- function(fpData) {
       captfn <- sed.catchToList(captureGrades, "grades by judge")
       captfn(pfds.sed$data, judgeId)
     } else {
-      pdfs.sed
+      pfds.sed
     }
   }
 

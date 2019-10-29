@@ -29,12 +29,12 @@ ProcessContests <- function(ctsts,
     sed.catchToList(readRDS, msg)(fileName)
   }
 
-  processContestId <- function(cid) {
+  processContestId <- function(cid, processedFlights) {
     record <- pc$ctsts[pc$ctsts$id == cid,]
     if (0 < nrow(record)) {
       contest <- record[1,,drop=TRUE]
       p <- pc$contestProcessor(contest)
-      p$process()
+      p$process(processedFlights)
     } else {
       list(success=FALSE, errors=c('Contest record not found'))
     }
@@ -42,7 +42,12 @@ ProcessContests <- function(ctsts,
 
   processContestAndRecord <- function(trackingList, cid) {
     print(sprintf("Contest %d", cid))
-    result = processContestId(cid)
+    processedFlights <- if(is.null(trackingList$data)) {
+      c()
+    } else {
+      unique(trackingList$data$flight)
+    }
+    result = processContestId(cid, processedFlights)
     if (result$success) {
       trackingList$data <- if (is.null(trackingList$data)) {
         result$data

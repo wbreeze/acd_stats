@@ -35,11 +35,12 @@ ProcessOneContest <- function(contest,
     )
   }
 
-  # Process the contest, processing all of its flights
-  pc$process <- function() {
+  # Process the contest, processing flights not in processedFlights
+  pc$process <- function(processedFlights) {
     crv <- pc$contestRetriever(pc$contest$url)
     if (crv$success) {
       flights <- contestFlights(crv$data)
+      flights <- flights[!(flights["id"] %in% processedFlights)]
       reduce(
         map(
           apply(flights, 1, pc$flightProcessor),
@@ -47,7 +48,7 @@ ProcessOneContest <- function(contest,
         ),
       flightsReducer)
     } else {
-      list(success=FALSE, data=c(), errors=crv$errors)
+      crv
     }
   }
 
