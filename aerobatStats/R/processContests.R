@@ -48,14 +48,14 @@ ProcessContests <- function(ctsts,
       unique(trackingList$data$flight)
     }
     result = processContestId(cid, processedFlights)
+    trackingList$data <- if (is.null(trackingList$data)) {
+      result$data
+    } else {
+      rbind(trackingList$data, result$data)
+    }
+    print(sprintf("%d data points measured", nrow(trackingList$data)))
+    saveRDS(trackingList$data, file=pc$dataFileName)
     if (result$success) {
-      trackingList$data <- if (is.null(trackingList$data)) {
-        result$data
-      } else {
-        rbind(trackingList$data, result$data)
-      }
-      print(sprintf("%d data points measured", nrow(trackingList$data)))
-      saveRDS(trackingList$data, file=pc$dataFileName)
       trackingList$done <- c(trackingList$done, cid)
       saveRDS(trackingList$done, file=pc$processedRecordsFileName)
     } else {
