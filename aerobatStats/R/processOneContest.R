@@ -40,7 +40,7 @@ ProcessOneContest <- function(contest,
     crv <- pc$contestRetriever(pc$contest$url)
     if (crv$success) {
       flights <- contestFlights(crv$data)
-      flights <- flights[!(flights["id"] %in% processedFlights)]
+      flights <- flights[!(flights[["id"]] %in% processedFlights),]
       reduce(
         map(
           apply(flights, 1, pc$flightProcessor),
