@@ -26,19 +26,22 @@ require('moments') # for agostino.test
 #     X1695 X744 X657 X456: grades from four judges
 jgd.processFlight <- function(id, class, category, format, year, fp) {
   judges <- fp$judgeList(fp)
+  groups <- fp$groups(fp)
+  type <- if (length(groups) == 1) 'all' else 'fps'
   reduce(lapply(
-    judges, jgd.processJudge, id, class, category, format, year, fp
+    judges, jgd.processJudge,
+    groups, type, id, class, category, format, year, fp
   ), rbind)
 }
 
-jgd.processJudge <- function(judge, id, class, category, format, year, fp) {
-  groups <- fp$groups(fp)
-  type <- if (length(groups) == 1) 'all' else 'fps'
+jgd.processJudge <- function(
+  judge, groups, type, id, class, category, format, year, fp
+) {
   results <- reduce(lapply(groups, jgd.processJudgeGroup,
     judge, id, class, category, format, year, type, fp), rbind)
   if (1 < length(groups)) {  # more than one group
-    groups <- fp$groups(fp, length(fp$grades$K))
-    a <- reduce(lapply(groups, jgd.processJudgeGroup,
+    all <- fp$groups(fp, length(fp$grades$K))
+    a <- reduce(lapply(all, jgd.processJudgeGroup,
       judge, id, class, category, format, year, 'all', fp), rbind)
     results <- rbind(results, a)
   }
