@@ -27,7 +27,7 @@ GradesByJudge <- function(gradesByJudge) {
       lasts <- c(seq(chunk, length - chunk, chunk), length)
       mapply(function(from, to) {
         kfps[seq(from,to)]
-      }, firsts, lasts)
+      }, firsts, lasts, SIMPLIFY=FALSE)
     } else list(kfps)
   }
 
