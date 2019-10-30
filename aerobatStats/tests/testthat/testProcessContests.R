@@ -1,11 +1,12 @@
-context("Contests")
+context("ProcessContests")
 
 describe("process contests", {
   contestProcessReturn <- list(success=TRUE)
   contestProcessor <- function(contest) {
     cp <- list()
-    cp$contest = contest
-    cp$process <- function() {
+    cp$contest <- contest
+    cp$process <- function(pfs) {
+      cp$pfs <<- pfs
       return(contestProcessReturn)
     }
     cp

@@ -40,7 +40,7 @@ describe("one contest", {
 
   it("Processes the contest", {
     pc <- setupProcessOneContest()
-    c.sed <-  pc$process()
+    c.sed <-  pc$process(c())
     expect_equal(ctFlightsProcessed, 12)
   })
 
@@ -48,7 +48,7 @@ describe("one contest", {
     pc <- setupProcessOneContest()
     errorList <- c("Failed to read the flight")
     flightProcessReturn <<- list(success=FALSE, errors=errorList)
-    c.sed <- pc$process()
+    c.sed <- pc$process(c())
     expect_false(c.sed$success)
     expect_equal(errorList[1], c.sed$errors[1])
   })
