@@ -134,7 +134,7 @@ static int bounded(Prechi *prechi, PrechiPartition *trial) {
   return(
     trial->size <= prechi->solution_part_count ||
     trial->size <= prechi->min_solution_part_count ||
-    (prechi->solution_part_count != 0 && prechi->did_timeout)
+    prechi->did_timeout
   );
 }
 
