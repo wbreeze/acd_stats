@@ -19,7 +19,7 @@ int prechi_partition_value(PrechiPartition *part, int offset) {
 */
 int prechi_partition_minimum(PrechiPartition *part, int offset) {
   int minimum;
-  if (part->counts[offset] < part->counts[offset + 1]) {
+  if (part->size < 2 || part->counts[offset] < part->counts[offset + 1]) {
     minimum = part->counts[offset];
   } else {
     minimum = part->counts[offset + 1];

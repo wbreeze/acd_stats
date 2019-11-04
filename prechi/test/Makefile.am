@@ -19,6 +19,7 @@ libtest_prechi_la_SOURCES = $(SRC_FILES) \
   test_partition_create.c \
   test_partition_join.c \
   test_partition_mean.c \
+  test_partition_minimum.c \
   test_partition_sort.c \
   test_prechi.h test_prechi.c \
   test_prechi_collapse_zero.c \
