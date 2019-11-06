@@ -115,9 +115,9 @@ jgd.processJudgeGroup <- function(
 
 # Plot grade frequency histogram overlayed with the derived normal curve
 jgd.densityPlot <- function(gradeCounts) {
-  g <- gradeCounts.grades
+  g <- gradeCounts$grades
   cutp <- seq(min(g)-2.5, max(g)+2.5, 5)
-  x <- rep(gradeCounts$grades, times=gradeCounts$counts)
+  x <- rep(gradeCounts$range, times=gradeCounts$counts)
   hist(x, prob=T, br=cutp, col="skyblue2",
     xlim=c(0,100), ylim=c(0,.06))
     curve(dnorm(x, mean(g), sd(g)), add=T, lwd=2, col="red")
