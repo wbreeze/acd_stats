@@ -5,7 +5,7 @@ Authors@R: person("Douglas", "Lovell", email = "doug@wbreeze.com", role = c("aut
 Description:
   Execute a systematic analysis of judge grading patterns, in particular,
   investigate the null hypothesis that they fit a normal distribution
-Depends: R (>= 3.3.2), purrr, nortest, moments
+Depends: R (>= 3.3.2), prechi (>= 0.0.4), purrr, nortest, moments
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 Imports: jsonlite
