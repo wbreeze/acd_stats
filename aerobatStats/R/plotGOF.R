@@ -78,14 +78,15 @@ PlotGOF <- function(base.url) {
     }
   }
 
-  retrieveGradesAndPlot <- function(quart, flight, judge, k.mean) {
+  retrieveGradesAndPlot <- function(key, quart, flight, judge, k.mean) {
     print(sprintf("Retrieve and plot Q: %s, F: %s, J: %s, K: %5.2f",
       quart, flight, judge, k.mean))
     path <- file.path(pgf$url, "flights", sprintf("%s.json", flight))
     fp.sed <- sed.retrieveData(path)
     if (fp.sed$success) {
       cfp <- CDBFlightProgram(fp.sed$data)
-      fnm <- sprintf("plot_f%s_j%s_%5.2f_%%02d.svg", flight, judge, k.mean)
+      fnm <- sprintf("%s_%s_f%s_j%s_%5.2f_%%02d.svg",
+        key, substr(quart, 1, 3), flight, judge, k.mean)
       print(paste("Plotting to ", fnm))
       svg(filename=fnm)
       plotJGD(quart, flight, judge, cfp, k.mean)
@@ -95,7 +96,7 @@ PlotGOF <- function(base.url) {
     }
   }
 
-  determineFlightJudgeAndPlot <- function(quart, vad, d) {
+  determineFlightJudgeAndPlot <- function(quart, vad, d, key) {
     r1 <- d[
       d$ad.p.value >= vad[quart],
       c("ad.p.value", "flight", "judge", "grade.ct", "k.mean")
@@ -103,14 +104,14 @@ PlotGOF <- function(base.url) {
     r1 <- r1[
       order(c(r1$ad.p.value, r1$grade.ct), decreasing=c(FALSE, TRUE)),
     ]
-    retrieveGradesAndPlot(quart, r1$flight[1], r1$judge[1], r1$k.mean[1])
+    retrieveGradesAndPlot(key, quart, r1$flight[1], r1$judge[1], r1$k.mean[1])
   }
 
-  pgf$doPlots <- function(d) {
+  pgf$doPlots <- function(d, key="jgd") {
     d <- d[d$ad.valid,]
     vad <- summary(d$ad.p.value)
     n <- names(vad)
-    lapply(n[n != "Mean"], determineFlightJudgeAndPlot, vad, d)
+    lapply(n[n != "Mean"], determineFlightJudgeAndPlot, vad, d, key)
     c()
   }
 
