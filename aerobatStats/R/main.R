@@ -44,63 +44,6 @@ correlateJGF <- function(d) {
   cor(cg)
 }
 
-plotGroup <- function(group, gbj, quart, value, flight, judge) {
-  print(sprintf("PLOT GROUP Q: %s, V: %e, F: %s, J: %s",
-    quart, value, flight, judge))
-  grades <- gbj$grades[[as.character(judge)]][group]
-  counts <- jgd.gradeCounts(grades)
-  jgd.densityPlot(counts)
-}
-
-plotJGD <- function(quart, value, flight, judge, cfp) {
-  print(sprintf("PLOT JGD Q: %s, V: %e, F: %s, J: %s",
-    quart, value, flight, judge))
-  cfp.sed <- cfp$gradesByJudge()
-  if (cfp.sed$success) {
-    gbj <- GradesByJudge(cfp.sed$data)
-    groups <- gbj$groups(gbj)
-    lapply(groups, plotGroup, gbj, quart, value, flight, judge)
-    grades <- gbj$grades[[as.character(judge)]]
-    counts <- jgd.gradeCounts(grades)
-    saveRDS(counts, "counts.rds")
-    jgd.densityPlot(counts)
-  } else {
-    print(sprintf("Trouble retrieving grades for flight %s", flight))
-  }
-}
-
-retrieveGradesAndPlot <- function(url, quart, value, flight, judge) {
-  print(sprintf("RETRIEVE AND PLOT Q: %s, V: %e, F: %s, J: %s",
-    quart, value, flight, judge))
-  path <- file.path(url, "flights", sprintf("%s.json", flight))
-  fp.sed <- sed.retrieveData(path)
-  if (fp.sed$success) {
-    cfp <- CDBFlightProgram(fp.sed$data)
-    plotJGD(quart, value, flight, judge, cfp)
-  } else {
-    print(sprintf("Trouble with flight %s, path %s", flight, path))
-  }
-}
-
-determineFlightJudgeAndPlot <- function(quart, vad, d, url) {
-  r1 <- d[
-    d$ad.p.value >= vad[quart],
-    c("ad.p.value", "flight", "judge", "grade.ct")
-  ]
-  r1 <- r1[
-    order(c(r1$ad.p.value, r1$grade.ct), decreasing=c(FALSE, TRUE)),
-  ]
-  retrieveGradesAndPlot(url, quart,
-    r1$ad.p.value[1], r1$flight[1], r1$judge[1])
-}
-
-doPlots <- function(url, d) {
-  d <- d[d$ad.valid,]
-  vad <- summary(d$ad.p.value)
-  n <- names(vad)
-  lapply(n[n != "Mean"], determineFlightJudgeAndPlot, vad, d, url)
-}
-
 knownK <- function(d) {
   d[d$format %in% c(
     "Known", "Unknown", "Unknown II", "Flight 1", "Flight 2", "Flight 3"
