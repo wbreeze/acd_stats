@@ -46,6 +46,7 @@ PlotGOF <- function(base.url) {
     counts <- jgd.gradeCounts(grades)
     ad.sed <- sed.catchToList(ad.test, "Anderson-Darling")(grades)
     if (ad.sed$success) {
+      par(mfrow=c(1,2))
       pgf$densityPlot(counts, flight=flight, judge=judge,
         p.value=ad.sed$data$p.value,
         k.mean=k.mean, pilot.ct=gbj$pilotCount(gbj))
@@ -88,7 +89,7 @@ PlotGOF <- function(base.url) {
       fnm <- sprintf("%s_%s_f%s_j%s_%5.2f_%%02d.svg",
         key, substr(quart, 1, 3), flight, judge, k.mean)
       print(paste("Plotting to ", fnm))
-      svg(filename=fnm)
+      svg(filename=fnm, width=14, height=7)
       plotJGD(quart, flight, judge, cfp, k.mean)
       dev.off()
     } else {
