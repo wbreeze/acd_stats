@@ -44,7 +44,7 @@ PlotGOF <- function(base.url) {
   plotGroup <- function(group, gbj, quart, flight, judge, k.mean) {
     grades <- gbj$grades[[as.character(judge)]][group]
     counts <- jgd.gradeCounts(grades)
-    ad.sed <- sed.catchToList(ad.test, "Anderson-Darling")(grades)
+    ad.sed <- sed.catchToList(ad.test, "Anderson-Darling")(counts$grades)
     if (ad.sed$success) {
       par(mfrow=c(1,2))
       pgf$densityPlot(counts, flight=flight, judge=judge,
