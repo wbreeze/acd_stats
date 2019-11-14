@@ -9,29 +9,38 @@ To do so, we select for the flight format, taking only Known, Unknown, second
 unknown, second and third known flights. The distribution of flight formats is
 as follows:
 
+\begin{table}[h!]
+\centering
 \begin{tabular}{r r r r r r}
 Known & Unknown & Unknown II  &  Flight 1  & Flight 2 & Flight 3  \\
 1488  & 1160 & 27  & 19  & 78 & 78  \\
 \end{tabular}
+\end{table}
 
 In all, we look at 2,615 powered flights and 235 glider flights. The flights
 breakdown by category is as follows:
 
+\begin{table}[h!]
+\centering
 \begin{tabular}{r r r r r}
 primary  & sportsman & intermediate  &  advanced  & unlimited  \\
     229  &      1264 &          854  &       444  &        59  \\
 \end{tabular}
+\end{table}
 
 Pilot count is the number of pilots who participated in a flight.
 Grade count is the number of pilots times the number of figures, equals
 the number of grades given by a judge for all of the figures and pilots in
 a flight. Their distributions in this data set are as follows:
 
+\begin{table}[h!]
+\centering
 \begin{tabular}{r | r r r r r r}
 & Min. & 1st Qu. & Median & Mean & 3rd Qu. & Max. \\
 Pilot Count &  6 &  7 &  8 & 9.348 &  11 &  26 \\
 Grade Count & 35 & 64 & 81 & 94.97 & 110 & 359 \\
 \end{tabular}
+\end{table}
 
 The correlations between the four measures are strong, with the exception
 of Lilifords to Shapioro-Wilk. Find their values in Table \ref{table:allcorr}.
@@ -75,8 +84,9 @@ cvm.p.value &    0 & 2850 &   51 & 2799 \\
 
 The null hypothesis for these tests is that the distributions fit a normal
 distribution. Using the traditional cutoff,
-the Chi-Squared test finds no support for fit to normal roughly half the time.
-The other tests almost always find no support for fit to normal.
+the Chi-Squared test finds no support for fit to normal in roughly half
+of the cases.
+The other tests almost never find support for fit to normal.
 
 We can go deeper by looking at the distributions of p-values and then
 looking at some specific examples within the various quantiles.
@@ -105,7 +115,76 @@ Note that except for Chi-Squared, the mean value is greater than the
 third quantile value,
 demonstating that more than three-quarters of the values fall below the mean.
 
+We can look at plots of the distributions to find more insights about the
+fits. We show two plots side-by-side for representative p-values from the
+Anderson-Darling measure. The left plot is a histogram of the judge grades
+with derived normal curve superimposed. The right plot is a standard Q-Q
+plot using the derived normal curve.
+
+At the smallest p-value seen in Figure \ref{fig:all:min} we find a skew
+toward higher grades. The judge graded a majority of 9.0 with a mean grade
+of 8.5. The scarce 4.0 will always be seen as an outlier with respect to
+the normal curve. The upper tail of the normal curve exceeds the highest grade.
+
 \begin{figure}
   \centering
-  \includesvg{all_Min_f11646_jX341_11.73_01.svg}
+  \includegraphics[width=\columnwidth]{{all-Min-f11646-jX341-11.73-01}.png}
+  \caption{All figures example at minimum Anderson-Darling p-value}
+  \label{fig:all:min}
 \end{figure}
+
+At the first quantile upper limit seen in Figure \ref{fig:all:one}
+we also find a skew toward the higher grades, but also a longer tail
+to the lower grades.
+The upper tail of the normal curve exceeds the highest grade.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{{all-1st-f8930-jX49-15.33-01}.png}
+  \caption{All figures example at first quantile Anderson-Darling p-value}
+  \label{fig:all:one}
+\end{figure}
+
+At the second quantile upper limit seen in Figure \ref{fig:all:two}
+we have a bimodal distribution in which the judge gives a large number of
+7.0 and 9.0 with fewer grades given with values 7.5, 8.0, 8.5 and then
+a lesser number given with values 5.0, 6.0, 6.5, 9.5, and 10.0.
+That the upper tail of the normal curve exceeds the highest grade is
+beginning to look like a pattern.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{{all-Med-f9281-jX41-12.64-01}.png}
+  \caption{All figures example at second quantile Anderson-Darling p-value}
+  \label{fig:all:two}
+\end{figure}
+
+At the third quantile upper limit seen in Figure \ref{fig:all:three}
+the picture has improved somewhat. There are a few too many grades with
+value 6.0 and 8.0, too few with grades 7.5 and 10.0. To fit the curve,
+the judge should have given a dash of grades with value 10.5, which
+is not a valid grade.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{{all-3rd-f6004-jX443-12.91-01}.png}
+  \caption{All figures example at third quantile Anderson-Darling p-value}
+  \label{fig:all:three}
+\end{figure}
+
+At the maximum value seen in Figure \ref{fig:all:max}
+we have a judge who spreads their grades out more than in the other
+examples. The spread does show a strong, though excessive peak at the
+mean grade of 7.0. There are a few too many grades with value 4.0, 5.0,
+8.0, and 9.5. There are too few with values 5.5, 7.5, and 8.5.
+This judge almost manages to get the entire normal curve within the
+range of grades; however, the upper tail still exceeds the maximum grade
+of 10.0.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{{all-Max-f11663-jX1033-15.00-01}.png}
+  \caption{All figures example at maximum Anderson-Darling p-value}
+  \label{fig:all:max}
+\end{figure}
+
