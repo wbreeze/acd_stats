@@ -18,28 +18,45 @@ characterizeJGF <- function(d) {
   print("Category"); print(table(d$category));
   print("Class"); print(table(d$class));
   print("Format"); print(table(d$format));
+
   print("ChiSq Valid"); print(table(d$chiSq.valid));
-  print("ChiSq t p"); print(summary(d[d$chiSq.valid,]$chiSq.t.p));
-  print("ChiSq d p"); print(summary(d[d$chiSq.valid,]$chiSq.d.p));
+  vr <- d[d$chiSq.valid,]
+  print("ChiSq t p"); print(summary(vr$chiSq.t.p));
+  print("ChiSq t p-value <= 0.05");
+  print(table(vr$chiSq.t.p <= 0.05));
+  print("ChiSq d p"); print(summary(vr$chiSq.d.p));
+  print("ChiSq d p-value <= 0.05");
+  print(table(vr$chiSq.d.p <= 0.05));
+
   print("Shapiro Wilks Valid"); print(table(d$sw.valid));
-  print("Shapiro Wilks p"); print(summary(d[d$sw.valid,]$sw.p.value));
+  vr <- d[d$sw.valid,]
+  print("Shapiro Wilks p"); print(summary(vr$sw.p.value));
   print("Shapiro Wilks p-value <= 0.05");
-  print(table(d$sw.p.value[d$sw.valid] <= 0.05));
+  print(table(vr$sw.p.value <= 0.05));
+
   print("Lillifors Valid"); print(table(d$lf.valid));
-  print("Lillifors p"); print(summary(d[d$lf.valid,]$lf.p.value));
+  vr <- d[d$lf.valid,]
+  print("Lillifors p"); print(summary(vr$lf.p.value));
   print("Lillifors p-value <= 0.05");
-  print(table(d$lf.p.value[d$lf.valid] <= 0.05));
+  print(table(vr$lf.p.value <= 0.05));
+
   print("Anderson Darling Valid"); print(table(d$ad.valid));
-  print("Anderson Darling p"); print(summary(d[d$ad.valid,]$ad.p.value));
+  vr <- d[d$ad.valid,]
+  print("Anderson Darling p"); print(summary(vr$ad.p.value));
   print("Anderson Darling p-value <= 0.05");
-  print(table(d$ad.p.value[d$ad.valid] <= 0.05));
+  print(table(vr$ad.p.value <= 0.05));
+
   print("Cramer-von Mises Valid"); print(table(d$cvm.valid));
-  print("Cramer-von Mises p"); print(summary(d[d$cvm.valid,]$cvm.p.value));
+  vr <- d[d$cvm.valid,]
+  print("Cramer-von Mises p"); print(summary(vr$cvm.p.value));
   print("Cramer-von Mises p-value <= 0.05");
-  print(table(d$cvm.p.value[d$cvm.valid] <= 0.05));
+  print(table(vr$cvm.p.value <= 0.05));
+
   print("D'Agostino Valid"); print(table(d$da.valid));
-  print("D'Agostino p"); print(summary(d[d$da.valid,]$da.p.value));
-  print("D'Agostino skew"); print(summary(d[d$da.valid,]$da.skew));
+  vr <- d[d$da.valid,]
+  print("D'Agostino p"); print(summary(vr$da.p.value));
+  print("D'Agostino skew"); print(summary(vr$da.skew));
+
   correlateJGF(d)
 }
 
