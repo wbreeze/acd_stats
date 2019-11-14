@@ -86,10 +86,10 @@ PlotGOF <- function(base.url) {
     fp.sed <- sed.retrieveData(path)
     if (fp.sed$success) {
       cfp <- CDBFlightProgram(fp.sed$data)
-      fnm <- sprintf("%s_%s_f%s_j%s_%5.2f_%%02d.svg",
+      fnm <- sprintf("%s-%s-f%s-j%s-%5.2f-%%02d.png",
         key, substr(quart, 1, 3), flight, judge, k.mean)
       print(paste("Plotting to ", fnm))
-      svg(filename=fnm, width=14, height=7)
+      png(filename=fnm, width=3200, height=1600, res=300, pointsize=10)
       plotJGD(quart, flight, judge, cfp, k.mean)
       dev.off()
     } else {

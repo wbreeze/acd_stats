@@ -70,9 +70,7 @@ correlateJGF <- function(d) {
 }
 
 knownK <- function(d) {
-  d[d$format %in% c(
-    "Known", "Unknown", "Unknown II", "Flight 1", "Flight 2", "Flight 3"
-    ) &
+  d[d$format %in% c( "Known", "Unknown", "Unknown II", "Flight 1") &
     d$class %in% c("P", "G"),]
 }
 
