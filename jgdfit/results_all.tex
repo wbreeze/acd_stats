@@ -7,56 +7,60 @@ which there were more than five pilots and more than eleven grades given.
 We also look only at flights in which all of the pilots flew the same figures.
 To do so, we select for the flight format, taking only Known, Unknown, second
 unknown, second and third known flights. The distribution of flight formats is
-as follows:
+as in Table \ref{tab:allformat}:
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{r r r r r r}
-Known & Unknown & Unknown II  &  Flight 1  & Flight 2 & Flight 3  \\
-1488  & 1160 & 27  & 19  & 78 & 78  \\
-\end{tabular}
+\begin{table}[tbp]
+  \centering
+  \begin{tabular}{r r r r r r}
+  Known & Unknown & Unknown II & Flight 1 \\
+  1488 & 1160 & 27 & 19 \\
+  \end{tabular}
+  \caption{Distribution of flight formatsn for all-figures measurements}
+  \label{tab:allformat}
 \end{table}
 
-In all, we look at 2,615 powered flights and 235 glider flights. The flights
-breakdown by category is as follows:
+In all, we look at 2,511 powered flights and 183 glider flights. The flights
+breakdown by category is as in table \ref{tab:allcats}.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{r r r r r}
-primary  & sportsman & intermediate  &  advanced  & unlimited  \\
-    229  &      1264 &          854  &       444  &        59  \\
-\end{tabular}
-\end{table}
+\begin{table*}[tbp]
+  \begin{tabular}{r r r r r}
+  primary  & sportsman & intermediate  &  advanced  & unlimited  \\
+      177  &      1160 &          854  &       444  &        59  \\
+  \end{tabular}
+  \caption{Distribution of categories for all-figures measurements}
+  \label{tab:allcats}
+\end{table*}
 
 Pilot count is the number of pilots who participated in a flight.
 Grade count is the number of pilots times the number of figures, equals
 the number of grades given by a judge for all of the figures and pilots in
-a flight. Their distributions in this data set are as follows:
+a flight. Their distributions in this data set are as in
+Table \ref{tab:allcounts}.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{r | r r r r r r}
-& Min. & 1st Qu. & Median & Mean & 3rd Qu. & Max. \\
-Pilot Count &  6 &  7 &  8 & 9.348 &  11 &  26 \\
-Grade Count & 35 & 64 & 81 & 94.97 & 110 & 359 \\
-\end{tabular}
-\end{table}
+\begin{table*}[tbp]
+  \begin{tabular}{r | r r r r r r}
+  & Min. & 1st Qu. & Median & Mean & 3rd Qu. & Max. \\
+  Pilot Count &  6 &  7 &  8 & 9.348 &  11 &  26 \\
+  Grade Count & 35 & 64 & 81 & 94.97 & 110 & 359 \\
+  \end{tabular}
+  \caption{Distribution of pilot and grade counts for all-figures measurements}
+  \label{tab:allcounts}
+\end{table*}
 
 The correlations between the four measures are strong, with the exception
 of Lilifords to Shapioro-Wilk. Find their values in Table \ref{table:allcorr}.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{l | r r r r}
-& sw.p.value & lf.p.value & ad.p.value & cvm.p.value \\
- \hline
-sw.p.value   & 1.000  & 0.417  & 0.795   & 0.613 \\
-lf.p.value   & 0.417  & 1.000  & 0.696   & 0.809 \\
-ad.p.value   & 0.795  & 0.696  & 1.000   & 0.935 \\
-cvm.p.value  & 0.613  & 0.809  & 0.935   & 1.000 \\
-\end{tabular}
-\caption{Correlation of measures for all figures}
-\label{table:allcorr}
+\begin{table}[tbp]
+  \begin{tabular}{l | r r r r}
+  & sw & lf & ad & cvm \\
+   \hline
+  sw   & 1.000  & 0.417  & 0.795   & 0.613 \\
+  lf   & 0.417  & 1.000  & 0.696   & 0.809 \\
+  ad   & 0.795  & 0.696  & 1.000   & 0.935 \\
+  cvm  & 0.613  & 0.809  & 0.935   & 1.000 \\
+  \end{tabular}
+  \caption{Correlation of all-figures measurements}
+  \label{table:allcorr}
 \end{table}
 
 Table \ref{table:allsumm} shows summary results from the various goodness
@@ -66,7 +70,7 @@ results.
 The other two columns contain counts of p-value results from valid measures
 greater than and less than or equal to the traditional cutoff of 0.05.
 
-\begin{table}[h!]
+\begin{table}[tbp]
 \centering
 \begin{tabular}{l | r r r r}
 & Invalid & Valid & $> 0.05$ & $<= 0.05$ \\
@@ -95,21 +99,20 @@ Table \ref{table:alldist} shows the spread of p-values from the various tests.
 The numbers are from only those tests reported as valid.
 The minimum values from the data are always zero, and so omitted from the table.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{l | r r r r r r}
-& 1st Qu. & Median &  Mean & 3rd Qu. &  Max. \\
- \hline
-chiSq.t.p & 0.006 & 0.124 & 0.272 & 0.492 & 0.999 \\
-chiSq.d.p & 0.002 & 0.067 & 0.216 & 0.358 & 0.993 \\
-sw.p.value & 0.012e-04 & 0.914e-04 & 0.837e-02 & 0.229e-02 & 0.452 \\
-lf.p.value & 0.0 & 9.700e-07 & 2.453e-03 & 1.246e-04 & 2.208e-01 \\
-ad.p.value & 2.000e-08 & 7.350e-06 & 2.694e-03 & 3.441e-04 & 1.912e-01 \\
-cvm.p.value & 4.400e-07 & 2.989e-05 & 3.383e-03 & 6.480e-04 & 2.781e-01 \\
-\end{tabular}
-\caption{All figure GOF measure p-value distributions}
-\label{table:alldist}
-\end{table}
+\begin{table*}[tbp]
+  \begin{tabular}{l | r r r r r r}
+  & 1st Qu. & Median &  Mean & 3rd Qu. &  Max. \\
+   \hline
+  chiSq.t.p & 0.006 & 0.124 & 0.272 & 0.492 & 0.999 \\
+  chiSq.d.p & 0.002 & 0.067 & 0.216 & 0.358 & 0.993 \\
+  sw.p.value & 0.012e-04 & 0.914e-04 & 0.837e-02 & 0.229e-02 & 0.452 \\
+  lf.p.value & 0.0 & 9.700e-07 & 2.453e-03 & 1.246e-04 & 2.208e-01 \\
+  ad.p.value & 2.000e-08 & 7.350e-06 & 2.694e-03 & 3.441e-04 & 1.912e-01 \\
+  cvm.p.value & 4.400e-07 & 2.989e-05 & 3.383e-03 & 6.480e-04 & 2.781e-01 \\
+  \end{tabular}
+  \caption{All figure GOF measure p-value distributions}
+  \label{table:alldist}
+\end{table*}
 
 Note that except for Chi-Squared, the mean value is greater than the
 third quantile value,
@@ -126,7 +129,7 @@ toward higher grades. The judge graded a majority of 9.0 with a mean grade
 of 8.5. The scarce 4.0 will always be seen as an outlier with respect to
 the normal curve. The upper tail of the normal curve exceeds the highest grade.
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \includegraphics[width=\columnwidth]{{all-Min-f11646-jX341-11.73-01}.png}
   \caption{All figures example at minimum Anderson-Darling p-value}
@@ -138,7 +141,7 @@ we also find a skew toward the higher grades, but also a longer tail
 to the lower grades.
 The upper tail of the normal curve exceeds the highest grade.
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \includegraphics[width=\columnwidth]{{all-1st-f8930-jX49-15.33-01}.png}
   \caption{All figures example at first quantile Anderson-Darling p-value}
@@ -152,7 +155,7 @@ a lesser number given with values 5.0, 6.0, 6.5, 9.5, and 10.0.
 That the upper tail of the normal curve exceeds the highest grade is
 beginning to look like a pattern.
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \includegraphics[width=\columnwidth]{{all-Med-f9281-jX41-12.64-01}.png}
   \caption{All figures example at second quantile Anderson-Darling p-value}
@@ -165,7 +168,7 @@ value 6.0 and 8.0, too few with grades 7.5 and 10.0. To fit the curve,
 the judge should have given a dash of grades with value 10.5, which
 is not a valid grade.
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \includegraphics[width=\columnwidth]{{all-3rd-f6004-jX443-12.91-01}.png}
   \caption{All figures example at third quantile Anderson-Darling p-value}
@@ -181,7 +184,7 @@ This judge almost manages to get the entire normal curve within the
 range of grades; however, the upper tail still exceeds the maximum grade
 of 10.0.
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \includegraphics[width=\columnwidth]{{all-Max-f11663-jX1033-15.00-01}.png}
   \caption{All figures example at maximum Anderson-Darling p-value}
