@@ -1,35 +1,33 @@
 \section{Aerobatic Competition}
 
-Aerobatics, as practiced by CIVA and the IAC, is a judged sport.
+Aerobatics, as practiced by the World Air Sports Federation (FAI)
+Aerobatics Comission (CIVA) and by the International Aerobatic Club (IAC),
+is a judged sport. The pilot competitors perform in front of judges, who
+give grades to the pilots. In this way, it is similar to figure skating,
+gymnastics, and diving.
+
+CIVA flies a handful of European and World contests each year.
+Results are posted online \cite{civa-results} in human readable format.
+The largest contests are the World Aerobatic Championship \cite{wac}
+and the World Advanced Aerobatic Championship, which attract about sixty
+pilots, mostly from Europe and the United States.
+
+The airplanes flown at the world level cost as much as \$400,000 U.S. dollars.
+The pilots as individuals and as part of national teams invest years of
+training and practice whose value equals or exceeds that of the airplane.
+The total investment brought by pilots and national teams to the
+CIVA world contests can be estimated at about forty million U.S. dollars.
+
+The IAC flies about forty regional contests and one national contest
+per year in the United States.
+Results from IAC contests are posted online \cite{iaccdb}
+in human and machine readable formats.
+
 In aerobatics, pilots fly figures made up of a basic flight path
 overlaid with rolls, in which the airplane moves about it's fuselage
 while it's center continues on the flight path.
 
-The basic flight paths of the figures are made up of straight lines and
-loops. Straight lines may be horizontal, vertical, or along a forty-five
-degree line. Loops are segments of a circle of constant radius. They occur
-in transitions between lines. Their segments may form anything from
-one-eighth of a circle to an entire circle in one-eighth increments.
-
-Rolls superimposed on the flight paths are subdivided into those in which
-the air maintains laminar flow over the surface of the airplane and those
-in which the flow is turbulent over part of the wing. The former are
-generally referred to as "aileron-rolls" or simply "rolls." 
-The latter are referred to as "snap-rolls" or "flick-rolls", and "spins".
-
-Aileron rolls and snap rolls may occur on any line, and at the top of full loops.
-Spins are always performed on a vertical line moving down.
-Rolls can occur in one-eighth increments up to two full rolls, and may
-be broken-up with "points", or pauses, in increments of one-eighth, one-quarter,
-and one-half.
-
-The sport maintains a catalog of flight paths and rolls named
-the "Aresti catalog" after its developer,
-Spanish aviator Colonel José Luis Aresti Aguirre. [Reference to Aresti catalog]
-The Aresti catalog systematically assigns difficulty, a "K-factor" to each
-figure.
-
-A "flight program" consists of each of the competing pilots flying a sequence
+A ``flight program'' consists of each of the competing pilots flying a sequence
 of figures in front of the judges. The sequences of figures are predetermined
 for the flight program by any one of several methods.
 Judges receive the sequences that each pilot will fly in order to evaluate
@@ -46,19 +44,38 @@ figure.
 
 To complicate the grading slightly, a zero grade can take multiple forms.
 One form is that incremental flaws resulted in deductions that summed to
-ten or more. This is known as a "soft zero". A second form is that the
+ten or more. This is known as a ``soft zero''. A second form is that the
 figure flown did not match the figure that was supposed to be flown.
 It might have been missing a roll element or not have been flown along
-the prescribed flight path. This is known as a "hard zero". CIVA uses
-a form known as a "presentation zero" that a judge may use to indicate
-suspicion of a hard zero. A "conference zero" indicates that the judge
+the prescribed flight path. This is known as a ``hard zero''. CIVA uses
+a form known as a ``presentation zero'' that a judge may use to indicate
+suspicion of a hard zero. A ``conference zero'' indicates that the judge
 changed their grade to a hard zero in review following the performance
 of the pilot.
 
-A judge may also give a grade of "average". A grade of average indicates
+A judge may also give a grade of ``average''. A grade of average indicates
 that the judge was either distracted or unsure of the figure that was
 prescribed to be flown and therefore unable to evaluate the figure performed
 against the figure prescribed. It is preferred that the judge give an
 average under these conditions, rather than make-up a grade.
 The effect of averages is a reduction in the number of judges evaluating
 the figure.
+
+\subsection{Scoring}
+
+CIVA contests use a statistical system of converting judge grades to scores
+documented in the FAI sporting code as FPS \cite{fps}.
+The system normalizes judge grades using their mean and standard deviation,
+then determines upper and lower bounds based upon the mean and standard
+deviation of all of the grades from all of the judges. It then replaces
+individual judge grades exceeding these bounds with fitted (mean, normalized)
+grade values before computing a final score for each pilot.
+
+The FPS makes the normalization and outlying grade computations using
+grades from figure groups, which usually consist of grades for
+one figure flown by all of the pilots in one flight program, and with all
+of the grades from one flight program.
+
+This paper examines whether the distribution of judge grades from
+aerobatic contests fit the normal distribution as used by the CIVA
+FPS.
