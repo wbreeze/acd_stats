@@ -4,7 +4,7 @@ We now look at distributions of all of the grades given by a judge for
 a given flight-- all pilots and all figures.
 The distribution of flight formats is as in Table \ref{tab:allformat}.
 
-\begin{table}[tbp]
+\begin{table}[htbp]
   \centering
   \begin{tabular}{r r r r r r}
   Known & Unknown & Unknown II & Flight 1 \\
@@ -45,7 +45,7 @@ Table \ref{tab:allcounts}.
 The correlations between the four measures are strong, with the exception
 of Lilifords to Shapioro-Wilk. Find their values in Table \ref{table:allcorr}.
 
-\begin{table}[tbp]
+\begin{table}[htbp]
   \begin{tabular}{l | r r r r}
   & sw & lf & ad & cvm \\
    \hline
@@ -65,7 +65,7 @@ results.
 The other two columns contain counts of p-value results from valid measures
 greater than and less than or equal to the traditional cutoff of 0.05.
 
-\begin{table}[tbp]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{l | r r r r}
 & Invalid & Valid & $> 0.05$ & $<= 0.05$ \\
@@ -129,7 +129,7 @@ toward higher grades. The judge graded a majority of 9.0 with a mean grade
 of 8.5. The scarce 4.0 will always be seen as an outlier with respect to
 the normal curve. The upper tail of the normal curve exceeds the highest grade.
 
-\begin{figure}[p]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{{all-Min-f11646-jX341-11.73-01}.png}
   \caption{All figures example at minimum Anderson-Darling p-value}
@@ -141,7 +141,7 @@ we also find a skew toward the higher grades, but also a longer tail
 to the lower grades.
 The upper tail of the normal curve exceeds the highest grade.
 
-\begin{figure}[p]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{{all-1st-f8930-jX49-15.33-01}.png}
   \caption{All figures example at first quantile Anderson-Darling p-value}
@@ -155,7 +155,7 @@ a lesser number given with values 5.0, 6.0, 6.5, 9.5, and 10.0.
 That the upper tail of the normal curve exceeds the highest grade is
 beginning to look like a pattern.
 
-\begin{figure}[p]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{{all-Med-f9281-jX41-12.64-01}.png}
   \caption{All figures example at second quantile Anderson-Darling p-value}
@@ -168,7 +168,7 @@ value 6.0 and 8.0, too few with grades 7.5 and 10.0. To fit the curve,
 the judge should have given a dash of grades with value 10.5, which
 is not a valid grade.
 
-\begin{figure}[p]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{{all-3rd-f6004-jX443-12.91-01}.png}
   \caption{All figures example at third quantile Anderson-Darling p-value}
@@ -184,10 +184,9 @@ This judge almost manages to get the entire normal curve within the
 range of grades; however, the upper tail still exceeds the maximum grade
 of 10.0.
 
-\begin{figure}[p]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{{all-Max-f11663-jX1033-15.00-01}.png}
   \caption{All figures example at maximum Anderson-Darling p-value}
   \label{fig:all:max}
 \end{figure}
-
