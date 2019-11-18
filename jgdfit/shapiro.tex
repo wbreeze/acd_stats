@@ -1,4 +1,4 @@
-\section{Shapiro-Wilk}
+\subsection{Shapiro-Wilk}
 
 The Shapiro-Wilk test for goodness of fit requires that all of the values
 are unique. In order to use the Shapiro-Wilk test, we
@@ -9,12 +9,15 @@ of 0.5 from a continuum of performances by the pilots.
 Two methods to perturb the grades are
 \begin{itemize}
 \item add values selected from a random uniform distribution between -2.5 and
-2.5
+2.5.
 \item add values selected from a random normal distribution.
 \end{itemize}
 
-The advantage of using a uniform distribution is that we can uniformly and
-reliably be perturbed within the range. The disadvantage is that the mean
+Applying a uniform distribution is the Smirnov transformation described
+in \cite{lemkol}.
+The method uniformly and
+reliably perturbs the data within the range and has the advantage of
+prior use in practice. A disadvantage is that the mean
 of the perturbed values can end-up anywhere between -2.5 and 2.5 added to
 the actual grade.
 
@@ -23,7 +26,9 @@ values will remain close to the actual grade value. The disadvantage is that
 we must choose a standard deviation for the random normal distribution.
 The standard deviation must be such that the resulting perturbations are
 extremely rarely, with very low probability, outside of the range -2.5 to
-2.5.
+2.5.  A second, potential disadvantage is that this is a variation of the
+Smirnov transformation that, so far as we know,
+we are inventing for this study
 
 We chose to use for standard deviation a value that approximates the
 distribution of Bates \cite{Bates}. The Bates distribution has the
