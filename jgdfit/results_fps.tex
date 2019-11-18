@@ -1,0 +1,193 @@
+\section{FPS groups}
+
+The distribution of grades given by a judge over all figures in a flight
+provides measures of a larger number of grades. The FPS however uses figure
+groups that divide the judges' grades into subsets grouped by same figure
+flown.  We now look at distributions of grades given by a judge within the FPS
+groups for a given flight.
+
+The distribution of flight formats is as in Table
+\ref{tab:fpsformat}, also selecting for formats in which all of the pilots
+fly the same figures.
+
+\begin{table}[tbp]
+  \centering
+  \begin{tabular}{r r r r r r}
+  Known & Unknown & Unknown II & Flight 1 \\
+  7989 & 5734 & 175 & 49 \\
+  \end{tabular}
+  \caption{Distribution of flight formats for FPS group measurements}
+  \label{tab:fpsformat}
+\end{table}
+
+In all, we look at 13,298 powered figure groups and 649 glider. The figure
+groups breakdown by category is as in table \ref{tab:fpscats}.
+
+\begin{table*}[tbp]
+  \begin{tabular}{r r r r r}
+  primary  & sportsman & intermediate  &  advanced  & unlimited  \\
+      531  &      6345 &         4439  &      2313  &       319  \\
+  \end{tabular}
+  \caption{Distribution of categories for FPS group measurements}
+  \label{tab:fpscats}
+\end{table*}
+
+The distributions of pilot and grade count in this data set are as in
+Table \ref{tab:fpscounts}.
+
+\begin{table*}[tbp]
+  \begin{tabular}{r | r r r r r r}
+  & Min. & 1st Qu. & Median & Mean & 3rd Qu. & Max. \\
+  Pilot Count &  6 &  7 &  9 & 10.82 &  13 &  26 \\
+  Grade Count & 12 & 13 & 15 & 16.20 & 18 & 48 \\
+  \end{tabular}
+  \caption{Distribution of pilot and grade counts for FPS group measurements}
+  \label{tab:fpscounts}
+\end{table*}
+
+The correlations between the four measures are stronger than for the
+all-figures data.
+Find their values in Table \ref{table:fpscorr}.
+
+\begin{table}[tbp]
+  \begin{tabular}{l | r r r r}
+  & sw & lf & ad & cvm \\
+   \hline
+  sw   & 1.000  & 0.711  & 0.897   & 0.813 \\
+  lf   & 0.711  & 1.000  & 0.870   & 0.926 \\
+  ad   & 0.897  & 0.870  & 1.000   & 0.975 \\
+  cvm  & 0.813  & 0.926  & 0.975   & 1.000 \\
+  \end{tabular}
+  \caption{Correlation of FPS figure group measurements}
+  \label{table:fpscorr}
+\end{table}
+
+Table \ref{table:fpssumm} shows summary results from the various goodness
+of fit tests.
+The numbers for measures found to be valid and invalid cover all of the
+results.
+The other two columns contain counts of p-value results from valid measures
+greater than and less than or equal to the traditional cutoff of 0.05.
+There was only one valid result for the Chi-Squared test due to the
+reduced number of grade data points within the FPS groups. For that reason,
+we omit the Chi-Squared result.
+
+\begin{table}[tbp]
+\centering
+\begin{tabular}{l | r r r r}
+& Invalid & Valid & $> 0.05$ & $<= 0.05$ \\
+ \hline
+sw.p.value  & 0 & 13947 & 8311 & 5636 \\
+lf.p.value  & 6 & 13941 & 6351 & 7590 \\
+ad.p.value  & 6 & 13941 & 6458 & 7483 \\
+cvm.p.value & 6 & 13941 & 6640 & 7301 \\
+\end{tabular}
+\caption{FPS groups GOF measure p-value summary}
+\label{table:fpssumm}
+\end{table}
+
+The tests find support for fit to normal, using the traditional cutoff of
+0.05, in a little more than half, roughly 55\% of the cases.
+
+Table \ref{table:alldist} shows the spread of p-values from the various tests.
+The numbers are from only those tests reported as valid.
+The minimum values from the data are always zero, and so omitted from the table.
+
+\begin{table*}[tbp]
+  \begin{tabular}{l | r r r r r r}
+  & 1st Qu. & Median &  Mean & 3rd Qu. &  Max. \\
+   \hline
+  sw.p.value & 0.165e-01 & 0.854e-01 & 0.180 & 0.267 & 0.999 \\
+  lf.p.value & 0.435e-02 & 0.371e-01 & 0.115 & 0.153 & 0.997 \\
+  ad.p.value & 0.610e-02 & 0.407e-01 & 0.107 & 0.144 & 0.953 \\
+  cvm.p.value & 0.696e-02 & 0.446e-01 & 0.109 & 0.152 & 0.925 \\
+  \end{tabular}
+  \caption{FPS group GOF measure p-value distributions}
+  \label{table:fpsdist}
+\end{table*}
+
+At the smallest p-value seen in Figure \ref{fig:fps:min} we find a
+judge who, looking at three figures from seven pilots, almost always
+gave a grade of 9.0 with the few exceptions being a grade of 8.0.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\columnwidth]{{fps-Min-f6142-jX1442-6.67-01}.png}
+  \caption{FPS groups example at minimum Anderson-Darling p-value}
+  \label{fig:fps:min}
+\end{figure}
+
+At the first quantile upper limit seen in Figure \ref{fig:fps:one}
+we find a judge who most often gives a grade of seven, rarely lower and
+sometimes higher. This results in a skew toward the lower values.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\columnwidth]{{fps-1st-f6432-jX157-22.00-01}.png}
+  \caption{FPS groups example at first quantile Anderson-Darling p-value}
+  \label{fig:fps:one}
+\end{figure}
+
+At the second quantile upper limit we can look at distributions
+from three judges looking at the same figure group.
+This is instructive for seeing the further variety of distributions
+of grades that judges generate.
+
+In Figure \ref{fig:fps:twoa} we have simply a judge
+who favors the grade of 8.0 for thirteen pilots all flying the same
+figure. The normal distribution would have more of those eights as
+7.5 or 7.0 grades, resulting in a little bit of a skew toward the higher
+grades, mostly due to too many in the middle.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\columnwidth]{{fps-Med-f10531-jX216-10.00-01}.png}
+  \caption{FPS groups first example at second quantile Anderson-Darling p-value}
+  \label{fig:fps:twoa}
+\end{figure}
+
+In figure \ref{fig:fps:twob} the judge gives an almost uniform distribution
+from 7.0 to 9.0, although with a complete absence of grade 7.5.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\columnwidth]{{fps-Med-f10531-jX216-10.00-02}.png}
+  \caption{FPS groups second example at second quantile Anderson-Darling p-value}
+  \label{fig:fps:twob}
+\end{figure}
+
+In figure \ref{fig:fps:twoc} the judge uses a much larger range of grades,
+from 4.0 to 9.0.
+Due to there being only thirteen grades in all, the distribution contains
+zero, one, two, or three instances of each possible grade in the range.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\columnwidth]{{fps-Med-f10531-jX216-10.00-03}.png}
+  \caption{FPS groups third example at second quantile Anderson-Darling p-value}
+  \label{fig:fps:twoc}
+\end{figure}
+
+At the third quantile upper limit seen in Figure \ref{fig:fps:three}
+the judge gives most of their grades in the middle of their range, with
+a couple of instances above or below. More in the middle and fewer at the
+tails makes for a better fit to normal, but few of the individual judge
+grade counts match the density that would be expected from the normal.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\columnwidth]{{fps-3rd-f10767-jX125-17.20-01}.png}
+  \caption{FPS groups example at third quantile Anderson-Darling p-value}
+  \label{fig:fps:three}
+\end{figure}
+
+At the maximum value seen in Figure \ref{fig:fps:max}
+we have a better filled spread of grades with, as for the third quantile,
+more grades near the mean.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\columnwidth]{{fps-Max-f7758-jX1695-32.50-01}.png}
+  \caption{FPS groups example at maximum Anderson-Darling p-value}
+  \label{fig:fps:max}
+\end{figure}
