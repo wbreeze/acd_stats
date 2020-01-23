@@ -1,0 +1,43 @@
+\documentclass[10pt,twocolumn]{article}
+
+\title{Simulation study of power for goodness of fit to normal tests with
+  rounded data}
+\author{Douglas Lovell}
+\date{Draft, January, 2020}
+
+\usepackage{newclude}
+\usepackage{url}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Where zero is total failure, and ten is perfect performance, the continuous
+spectrum of performances between the two is rounded by the judges of
+aerobatic contests to grades from zero to ten in half point increments.
+This reports a simulation study, with such rounded data, of the power of
+goodness of fit tests to normal.
+\end{abstract}
+
+\section{Procedure}
+
+We run separate simulations for data set sizes $n$ from twelve to sixty.
+We simulate true fits by generating three thousand $n$ size data sets
+sampled from a normal distribution with mean of five and standard deviation
+of 2.5.
+We simulate false fits by generating one thousand $n$ size data sets
+sampled from each of left skew, right skew, and uniform distributions.
+On each generated data set we run the following goodness of fit tests:
+\begin{itemize}
+\end{itemize}
+
+Having the measurements, we determine best cutoff points for each data size
+and with each test. Given those, we report the power properties-- number of
+true and false positives, number of true and false negatives. We also train
+a classfier using the results of all of the tests, and report the power
+of that classifier.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

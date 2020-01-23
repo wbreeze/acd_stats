@@ -1,0 +1,20 @@
+Package: power
+Title: Measure and report power of GOF tests for judge grade data
+Version: 0.0.1
+Authors@R:
+    person(given = "Douglas",
+           family = "Lovell",
+           role = c("aut", "cre"),
+           email = "doug@wbreeze.com"
+           )
+Description: Judge grade data is rounded on the scale from zero to ten in
+ increments of 0.5. We simulate data and run GOF to normal tests in order to
+ determine the cutoff points for accepting or rejecting hypothesis of fit.
+ We determine cutoff points for data set sizes from twelve to sixty, and
+ the percentages of true positives, false positives, true negatives, and
+ false negatives resulting at those cutoff points.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    testthat (>= 2.1.0)
