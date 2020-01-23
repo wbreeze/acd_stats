@@ -1,15 +1,20 @@
 # acd_stats
 Aerobatic contest data statistical analyses and reports
 
-The `aerobatDB` directory contains code for an R package that queries
-International Aerobatic Club (IAC)
-aerobatic contest data published electronically as
-[IACCDB](https://iaccdb.iac.org/)
-and produces R data frames for analysis.
+The `aerobatStats` directory contains R code for
+- an R package that queries
+  International Aerobatic Club (IAC)
+  aerobatic contest data published electronically as
+  [IACCDB](https://iaccdb.iac.org/)
+  and produces R data frames for analysis.
+- measurements of goodness of fit to normal of judge grade distributions
 
-The `aerobatStats` directory contains code for an R package that
-uses the `aerobatDB` package to retrieve data and make statistical
-explorations of aerobatic contest data.
+The `jgdfit` directory contains development of a paper reporting
+goodness of fit measurements from IAC contest data.
+
+The `power` directory contains R code for a simulation study
+using rounded data of the kind found in judge grades,
+to measure the power of various goodness of fit to normal tests.
 
 ## Aerobatic Competition
 
