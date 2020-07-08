@@ -32,7 +32,8 @@ from each judge $j$ for each figure $f$ flown by each pilot $p$.
 \section{Tested hypothesis}
 
 CIVA contests use a statistical system of converting judge grades to scores,
-which system is documented in the FAI sporting code as FPS \cite{fps}.
+which system is documented in the FAI sporting code as the "Fair Play System"
+(FPS) \cite{fps}.
 
 The CIVA FPS represents subsets $G$ of the grades $g_{j,p,f}$
 as the normal distribution derived from their mean and variance,
@@ -49,10 +50,10 @@ grades given by judges in 2710 flight programs from IAC contests
 during six years from 2014 to 2019, and reports the results.
 
 For a particular judge $j$ we have a set
-$G = g_{j,p_1,f_1}, g_{p_2,f_1}, ..., g_{j,p_n,f_1}, ..., g_{j,p_n,f_m}$
+$G = g_{j,p_1,f_1}, g_{j,p_2,f_1}, ..., g_{j,p_n,f_1}, ..., g_{j,p_n,f_m}$
 as grades given $n$ different pilots flying the same $m$ figures
-in a flight program. The grades are discrete, measured in $1/2$
-increments from 0 to 10.  We test the null hypothesis $H0$ that the grades
+in a flight program. The grades are discrete, measured in half
+increments from zero to ten.  We test the null hypothesis $H0$ that the grades
 $G$ fit
 the normal distribution derived from their mean and variance,
 $Normal(\mu_G, \sigma^2_G)$.
