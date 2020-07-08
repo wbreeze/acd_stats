@@ -1,13 +1,37 @@
 \subsection{Clustering for Chi-Square}
 
-In order to apply the Chi-Square metric, we need to cluster grades which
-were given by the judge less than six times together with neighboring
-grades.
-
-Example
-
+In order to apply the Chi-Square metric, we need to cluster grades into
+buckets.
 The optimal method for doing this is the one that has least impact on
-the mean and variance of the data. The method described by
+the mean and variance of the data.
+
+The grade clusters must satisfy two constraints in order to get a goodness
+of fit metric from the Chi-Square method.
+
+First, there need to be at least six clusters. The number of degrees of freedom
+for the Chi-Square metric is then, at minimum six minus one, minus two for
+the two estimated values-- mean and standard deviation. This means that, with
+six clusters we have three degrees of freedom. Three degrees of freedom
+is the minimum we believe will give a meaningful goodness of fit test.
+
+Second, there need to be at least six instances within each cluster. This is
+the stricter criterion that leads to reduction in number of clusters.
+
+Needing at minimum six clusters with six grades, in a uniform distribution
+we would need thirty-six grades. The distributions are not uniform, so we
+nearly double that number. We combine figure grades following the FPS ordering
+of figures in order to produce a minimum of sixty grades per group.
+
+The constraints at play here are:
+
+\begin{enumerate}
+\item{A minimum number of six grades in any cluster}
+\item{Only adjacent clusters may be combined}
+\item{Combine the least number}
+\item{Have the weighted mean and variance close to the original}
+\end{enumerate}
+
+The method described by
 Greenacre \cite{Greenacre}
 and implemented by the
 greenclust \cite{greenclust}
@@ -23,14 +47,6 @@ ordered partitioning require a cumulative
 function that measures the quality of each partition.
 Here, we find that the mean and variance do not always decrease or
 increase when joining two clusters.
-
-The constraints at play here are:
-\begin{enumerate}
-\item{A minimum number of six grades in any cluster}
-\item{Only adjacent clusters may be combined}
-\item{Combine the least number}
-\item{Have the weighted mean and variance close to the original}
-\end{enumerate}
 
 Where $n$ is the number of grade values in the range of grades,
 we explore the $2^{n-1}$ combinations of joins using the heuristic
@@ -53,24 +69,3 @@ one together with the lower numbered cluster neighboring the string.
 Strings of zero sized clusters appear frequently in the data.
 This pre-processing step
 avoids having the algorithm try all combinations of zero sized clusters.
-
-\subsection{Number of grades}
-
-The grade clusters must satisfy two constraints in order to get a goodness
-of fit metric from the Chi-Square method.
-
-First, there need to be at least six clusters. The number of degrees of freedom
-for the Chi-Square metric is then, at minimum six minus one, minus two for
-the two estimated values-- mean and standard deviation. This means that, with
-six clusters we have three degrees of freedom. Three degrees of freedom
-is the minimum we believe will give a meaningful goodness of fit test.
-
-Second, there need to be at least six instances within each cluster. This is
-the stricter criterion that leads to reduction in number of clusters.
-
-Needing at minimum six clusters with six grades, in a uniform distribution
-we would need thirty-six grades. The distributions are not uniform, so we
-nearly double that number. We combine figure grades following the FPS ordering
-of figures in order to produce a minimum of sixty grades per group.
-
-Finally, we produce a measure with all of the grades from a judge for a flight.
