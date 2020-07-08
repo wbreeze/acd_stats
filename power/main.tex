@@ -33,7 +33,9 @@ On each generated data set we run the following goodness of fit tests:
 \end{itemize}
 
 Having the measurements, we determine best cutoff points for each data size
-and with each test. Given those, we report the power properties-- number of
+and with each test. We define "best" in two ways. The first is minimizing type
+one errors, the second minimizing type two errors.
+We report the power properties-- number of
 true and false positives, number of true and false negatives. We also train
 a classfier using the results of all of the tests, and report the power
 of that classifier.
