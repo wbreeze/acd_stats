@@ -1,10 +1,9 @@
 \subsection{Shapiro-Wilk}
 
-The Shapiro-Wilk test for goodness of fit requires that all of the values
-are unique. In order to use the Shapiro-Wilk test, we
-cannot use the grades without perturbing them in order to make them unique.
-In one view, the grades given by the judges are severely rounded to increments
+The grades given by the judges are rounded to increments
 of 0.5 from a continuum of performances by the pilots.
+In order to use the Shapiro-Wilk test, we
+must perturb the grades in order to make them unique.
 
 Two methods to perturb the grades are
 \begin{itemize}
@@ -23,26 +22,15 @@ the actual grade.
 
 Using the random normal distribution ensures that the mean of the perturbed
 values will remain close to the actual grade value. The disadvantage is that
-we must choose a standard deviation for the random normal distribution.
-The standard deviation must be such that the resulting perturbations are
+we must choose a standard deviation for the random normal distribution
+such that the resulting perturbations are
 extremely rarely, with very low probability, outside of the range -2.5 to
 2.5.  A second, potential disadvantage is that this is a variation of the
 Smirnov transformation that, so far as we know,
 we are inventing for this study
 
-We chose to use for standard deviation a value that approximates the
-distribution of Bates \cite{Bates}. The Bates distribution has the
-advantage of being distributed along a fixed interval around a mean, with
-decreasing probability for values further from the mean.
-A mean of zero and variance of $1/12n * 5$,
-where n is the number of instances of the grade, when used
-with the normal distribution, approximates the distribution of Bates between
--2.5 and 2.5.
-
 We perturbed the grades using random values chosen from a normal distribution
-with mean equal to zero and standard deviation equal to $\sqrt{5/12n}$.
-Choosing a standard deviation dependent on the number of instances
-of the grade causes the perturbations to remain closer to zero when there
-are more instances of a grade and within the -2.5 to 2.5 range.
+with mean equal to zero and standard deviation equal to $\sqrt{5/12n}$,
+approximating the distribution of Bates \cite{Bates} between -2.5 and 2.5.
 We report the p-value for the Shapiro-Wilk normality test after perturbing
 the grades.
